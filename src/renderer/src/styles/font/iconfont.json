@@ -1,0 +1,128 @@
+{
+  "id": "4649857",
+  "name": "QQ NT",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "720974",
+      "name": "信息",
+      "font_class": "xiazai16",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "1479642",
+      "name": "表情",
+      "font_class": "biaoqing",
+      "unicode": "e681",
+      "unicode_decimal": 59009
+    },
+    {
+      "icon_id": "1649166",
+      "name": "最小化",
+      "font_class": "zuixiaohua",
+      "unicode": "e67a",
+      "unicode_decimal": 59002
+    },
+    {
+      "icon_id": "1766510",
+      "name": "符号-折叠面板",
+      "font_class": "zhediemianban",
+      "unicode": "e6a0",
+      "unicode_decimal": 59040
+    },
+    {
+      "icon_id": "2301640",
+      "name": "用户",
+      "font_class": "yonghu",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "3267408",
+      "name": "收藏",
+      "font_class": "shoucang",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "4251741",
+      "name": "录像",
+      "font_class": "luxiang",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    },
+    {
+      "icon_id": "6186661",
+      "name": "邮箱",
+      "font_class": "youxiang",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    },
+    {
+      "icon_id": "8328310",
+      "name": "相册",
+      "font_class": "tupian",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "10582818",
+      "name": "个人空间",
+      "font_class": "gerenkongjian",
+      "unicode": "e67b",
+      "unicode_decimal": 59003
+    },
+    {
+      "icon_id": "10715419",
+      "name": "电话",
+      "font_class": "dianhua",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "10715423",
+      "name": "关闭",
+      "font_class": "guanbi",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "10717944",
+      "name": "更多",
+      "font_class": "gengduo",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    },
+    {
+      "icon_id": "11121473",
+      "name": "文件",
+      "font_class": "wenjian",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "11490920",
+      "name": "最大化",
+      "font_class": "zuidahua",
+      "unicode": "e651",
+      "unicode_decimal": 58961
+    },
+    {
+      "icon_id": "11555733",
+      "name": "点点点",
+      "font_class": "diandiandian",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "22978048",
+      "name": "游戏",
+      "font_class": "youxi",
+      "unicode": "e8a1",
+      "unicode_decimal": 59553
+    }
+  ]
+}
