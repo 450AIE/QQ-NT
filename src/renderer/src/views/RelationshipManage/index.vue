@@ -1,17 +1,10 @@
 <script setup>
-import { Search , Plus } from '@element-plus/icons-vue';
+import LeftSubOptions from '@renderer/components/LeftSubOptions/index.vue'
+import { Plus , Search } from '@element-plus/icons-vue';
+import { onMounted , ref , onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 import InfoBlock from '@renderer/components/InfoBlock/index.vue'
-import { onMounted, onUnmounted, ref } from 'vue';
-import  { useRouter } from 'vue-router'
-//这个不确定是否写成响应式
-const frendsList = [
-    {
-        name:'死于死于安乐死',
-        img:'https://s2.loli.net/2024/08/11/TNzyaPnfDLY9utC.jpg',
-        latestTime:'',//时间戳
-    }
-]
-//计算好友列表的滚动条出现邻接值
+
 const rightViewWidth = ref(0)
 const scrollHeight = ref(window.innerHeight - 60)
 window.addEventListener('resize',()=>{
@@ -67,14 +60,19 @@ onUnmounted(()=>{
     document.onmousemove = null
     document.onmouseup = null
 })
+//
+const menuArr = [
+    '我的设备',
+    '特别关心',
+    '我的好友',
+    '朋友',
+    '家人',
+    '同学',
+    '不常用联系人'
+]
 
-//先默认UID为1
-function openFriendSession(uid = 1){
-    router.push({path:'/friend_session',query:{uid}})
-}
 
 </script>
-
 
 <template>
     <LeftSubOptions></LeftSubOptions>
@@ -86,16 +84,23 @@ function openFriendSession(uid = 1){
                     <el-icon class="plus-icon"><Plus /></el-icon>
                 </div>
             </div>
-            <div class="scroll">
-                <el-scrollbar :max-height="scrollHeight">
-                    <InfoBlock v-for="(item,index) in 11" :key="index"
-                        username="死鱼死于安乐死"
-                        :time="new Date().getTime()"
-                        class="info-block"
-                        @click="openFriendSession(1)"
-                    ></InfoBlock>
-                </el-scrollbar>
-            </div>
+            <el-scrollbar :max-height="scrollHeight" class="scroll">
+                <div class="friend-manage w">好友管理器</div>
+                <div class="informs w">
+                    <div class="friend-inform">好友通知</div>
+                    <div class="group-inform">群通知</div>
+                </div>
+                <div class="seg-div">
+                    <el-segmented :options="['好友','群聊']" class="seg"></el-segmented>
+                </div>
+                <div class="el-collapse-div">
+                    <el-collapse class="el-collapse">
+                        <el-collapse-item :title="item" class="item" v-for="(item,index) in menuArr" :key="index">
+                            <InfoBlock v-for="item in 2" class="info-block"></InfoBlock>
+                        </el-collapse-item>
+                    </el-collapse>
+                </div>
+            </el-scrollbar>
         </div>
         <div class="resize" ref="resize"></div>
         <div class="right-view" ref="right">
@@ -108,28 +113,8 @@ function openFriendSession(uid = 1){
 <style scoped lang="scss">
 .container {
     height: 100vh;
-    position: relative;
-    .left-view {
-        position: relative;
-        min-width:220px;
-        max-width:400px;
-        float: left;
-    }
-    .resize {
-        float: left;
-        width: 3px;
-        height: 100vh;
-        background-color: orange;
-        cursor: ew-resize;
-    }
     .right-view {
-        float: left;
-        height: 100vh;
-        // width: 10px;
         background-color: #f2f2f2;
-    }
-    .info-block:hover {
-        background-color: #f5f5f5;
     }
     .search {
         background-color: #fff;
@@ -158,6 +143,72 @@ function openFriendSession(uid = 1){
             margin-right:10px;
             border-radius: 4px;
         }
+    }
+    .left-view {
+        float: left;
+        .friend-manage {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border:1px solid #ebebeb;
+            margin:10px;
+            padding:3px 0;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+        .scroll {
+            .informs {
+                border-bottom: 1px solid #ebebeb;
+                .friend-inform ,
+                 .group-inform {
+                    margin-bottom:10px;
+                }
+            }
+            .seg-div {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top:10px;
+                .seg {
+                    width: 100%;
+                    margin:0 20px;
+                }
+            }
+            .el-collapse-div {
+                .el-collapse {
+                    border:0;
+                    .item {
+                        :deep(){
+                            .el-collapse-item__header {
+                                border:0;
+                                padding-left:10px;
+                            }
+                            .el-collapse-item__wrap {
+                                border:0;
+                                .el-collapse-item__content {
+                                    padding:0;
+                                }
+                            }
+                        }
+                    }
+                    .info-block:hover {
+                        background-color: #f5f5f5;
+                    }
+                }
+
+            }
+        }
+    }
+    .resize {
+        width: 3px;
+        height: 100vh;
+        float: left;
+        cursor: ew-resize;
+        background-color: orange;
+    }
+    .right-view {
+        float: left;
     }
 }
 </style>
