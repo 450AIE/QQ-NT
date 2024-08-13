@@ -1,10 +1,16 @@
 <script setup>
+import axios from 'axios';
 import { onMounted, ref } from 'vue';
+import TextBubble from '@renderer/components/MessageBubble/TextMessage/index.vue'
 
 const scrollHeight = ref(window.innerHeight - 60)
 const resizeRef = ref(null)
 const bottomRef = ref(null)
+const inpRef = ref(null)
 const inpMsg = ref('')
+const scrollRef = ref(null)
+//存放所有消息的数组
+const msgArr = ref([])
 onMounted(()=>{
     resizeRef.value.onmousedown = e=>{
         let startY = e.clientY
@@ -31,6 +37,28 @@ onMounted(()=>{
         return
     }
 })
+async function sendMsg(e){
+    if(e.key === 'Enter')  e.preventDefault()
+    if(inpRef.value.value !== '' && (e.type === 'click' || (e.type === 'keydown' && e.key === 'Enter'))){
+        const sendMsg = inpRef.value.value
+        msgArr.value.push({direction:'row-reverse',msg:sendMsg})
+        inpRef.value.value = ''
+        // createMsgBubble(inpRef.value,0)
+        //这里没有请求接口，于是自己创建DOM显示消息
+        const res = await axios({url:`http://api.qingyunke.com/api.php?key=free&appid=0&msg=${sendMsg}`})
+        //这就是返回的消息
+        const resMsg = res.data.content
+        console.log(resMsg)
+        msgArr.value.push({direction:'row',msg:resMsg})
+        // createMsgBubble(resMsg,1)
+    }
+}
+
+//0表示我发的，1表示对方发的
+// function createMsgBubble(msg,who){
+
+// }
+
 </script>
 
 
@@ -41,18 +69,18 @@ onMounted(()=>{
             <div class="icon" v-for="itme in 6"></div>
         </div>
         <div class="session-window">
-                <el-scrollbar>
-
-                </el-scrollbar>
-            </div>
+            <el-scrollbar ref="scrollRef">
+                <TextBubble  v-for="(item,index) in msgArr" :key="index" :msg="item.msg" :direction="item.direction"></TextBubble>
+            </el-scrollbar>
+        </div>
         <div class="resize" ref="resizeRef"></div>
         <div class="bottom" ref="bottomRef">
             <div class="bottom-operate ww">
                 <div class="icon" v-for="item in 6"></div>
             </div>
-                <textarea  class="msg-inp ww"></textarea>
+                <textarea  class="msg-inp ww" v-model="inpMsg" ref="inpRef" @keydown="sendMsg"></textarea>
             <div class="bottom-btn-div">
-                <button class="bottom-btn"></button>
+                <button class="bottom-btn" @click="sendMsg"></button>
                 <span class="arrow">
                     <!--这里需要放一个字体图标向下的箭头，然后用旋转控制-->
                 </span>
@@ -121,6 +149,9 @@ onMounted(()=>{
                 border-radius: 4px;
                 background-color: #0099ff;
                 cursor: pointer;
+            }
+            .bottom-btn:active {
+                background-color: #0086e0;
             }
             .bottom-btn::before {
                 content: '发送';

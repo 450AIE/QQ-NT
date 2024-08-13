@@ -1,5 +1,5 @@
 <script setup>
-import SubOptionsItemsCard from '@renderer/components/SubOptionsItemsCard/index.vue'
+import SubOptionsItemsCard from './components/SubOptionsItemsCard/index.vue'
 </script>
 
 
@@ -33,6 +33,7 @@ import SubOptionsItemsCard from '@renderer/components/SubOptionsItemsCard/index.
     }
     .title {
         font-size: 20px;
+        margin-left:40px;
     }
     .added-items,
     .packed-items {
@@ -40,13 +41,16 @@ import SubOptionsItemsCard from '@renderer/components/SubOptionsItemsCard/index.
             width: 100%;
             display: flex;
             flex-wrap: wrap;
+            // background-color: orange;
             align-content: center;
+            margin-left:20px;
             .card:nth-child(n+6) {
                 margin-top:10px;
             }
             .card {
-                width: 50px;
-                height: 50px;
+                width: 70px;
+                height: 70px;
+                flex-shrink: 0;
                 background-color: #fff;
                 // flex-basis: 20%;
                 margin-right:10px;
@@ -55,6 +59,7 @@ import SubOptionsItemsCard from '@renderer/components/SubOptionsItemsCard/index.
     }
     .items-title {
         margin-bottom:10px;
+        margin-left:20px;
         font-size:12px;
         color: #b6b6b6;
     }

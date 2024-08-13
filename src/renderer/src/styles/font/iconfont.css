@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4649857 */
-  src: url('iconfont.woff2?t=1723293914402') format('woff2'),
-       url('iconfont.woff?t=1723293914402') format('woff'),
-       url('iconfont.ttf?t=1723293914402') format('truetype');
+  src: url('iconfont.woff2?t=1723550152788') format('woff2'),
+       url('iconfont.woff?t=1723550152788') format('woff'),
+       url('iconfont.ttf?t=1723550152788') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,114 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-lishijilu:before {
+  content: "\e8ad";
+}
+
+.icon-ai55:before {
+  content: "\e6ad";
+}
+
+.icon-ai240:before {
+  content: "\e6e4";
+}
+
+.icon-icobanbengengxin:before {
+  content: "\e67d";
+}
+
+.icon-xiangqing:before {
+  content: "\e6ab";
+}
+
+.icon-tianjia-xue:before {
+  content: "\e636";
+}
+
+.icon-icon-:before {
+  content: "\e620";
+}
+
+.icon-jianpan:before {
+  content: "\e618";
+}
+
+.icon-xiangling:before {
+  content: "\e634";
+}
+
+.icon-xiazai:before {
+  content: "\e606";
+}
+
+.icon-shezhi:before {
+  content: "\e694";
+}
+
+.icon-jiqiren:before {
+  content: "\e6ac";
+}
+
+.icon-QQyouxi:before {
+  content: "\e703";
+}
+
+.icon-haoyouguanli:before {
+  content: "\e6c9";
+}
+
+.icon-huabi:before {
+  content: "\e619";
+}
+
+.icon-shangwuzixun:before {
+  content: "\e67c";
+}
+
+.icon-jingyin:before {
+  content: "\e60c";
+}
+
+.icon-lock:before {
+  content: "\e881";
+}
+
+.icon-neicunka:before {
+  content: "\e7b2";
+}
+
+.icon-jieping:before {
+  content: "\e81e";
+}
+
+.icon-moonyueliang:before {
+  content: "\e6dd";
+}
+
+.icon-channel-weiyunapp:before {
+  content: "\e600";
+}
+
+.icon-touping:before {
+  content: "\e839";
+}
+
+.icon-QQyinle3:before {
+  content: "\e601";
+}
+
+.icon-AItengxunwendang-01:before {
+  content: "\e71c";
+}
+
+.icon-huanfu:before {
+  content: "\e629";
+}
+
+.icon-guanlishebei:before {
+  content: "\e837";
 }
 
 .icon-xiazai16:before {
@@ -81,10 +189,3 @@
   content: "\e8a1";
 }
 
-.icon {
-  width: 1em;
-  height: 1em;
-  vertical-align: -0.15em;
-  fill: currentColor;
-  overflow: hidden;
-}

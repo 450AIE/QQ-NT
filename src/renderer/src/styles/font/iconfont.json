@@ -6,6 +6,195 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "833265",
+      "name": "历史记录",
+      "font_class": "lishijilu",
+      "unicode": "e8ad",
+      "unicode_decimal": 59565
+    },
+    {
+      "icon_id": "996876",
+      "name": "禁止",
+      "font_class": "ai55",
+      "unicode": "e6ad",
+      "unicode_decimal": 59053
+    },
+    {
+      "icon_id": "999221",
+      "name": "关机",
+      "font_class": "ai240",
+      "unicode": "e6e4",
+      "unicode_decimal": 59108
+    },
+    {
+      "icon_id": "1285185",
+      "name": "ico版本更新",
+      "font_class": "icobanbengengxin",
+      "unicode": "e67d",
+      "unicode_decimal": 59005
+    },
+    {
+      "icon_id": "1457542",
+      "name": "详情",
+      "font_class": "xiangqing",
+      "unicode": "e6ab",
+      "unicode_decimal": 59051
+    },
+    {
+      "icon_id": "1474425",
+      "name": "添加",
+      "font_class": "tianjia-xue",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "3427860",
+      "name": "链接",
+      "font_class": "icon-",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
+      "icon_id": "3930491",
+      "name": "键盘",
+      "font_class": "jianpan",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "4189394",
+      "name": "响铃",
+      "font_class": "xiangling",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "4880421",
+      "name": "下载",
+      "font_class": "xiazai",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "6571721",
+      "name": "设置",
+      "font_class": "shezhi",
+      "unicode": "e694",
+      "unicode_decimal": 59028
+    },
+    {
+      "icon_id": "6762077",
+      "name": "机器人",
+      "font_class": "jiqiren",
+      "unicode": "e6ac",
+      "unicode_decimal": 59052
+    },
+    {
+      "icon_id": "6894326",
+      "name": "QQ游戏",
+      "font_class": "QQyouxi",
+      "unicode": "e703",
+      "unicode_decimal": 59139
+    },
+    {
+      "icon_id": "6974619",
+      "name": "好友管理",
+      "font_class": "haoyouguanli",
+      "unicode": "e6c9",
+      "unicode_decimal": 59081
+    },
+    {
+      "icon_id": "10121917",
+      "name": "画笔",
+      "font_class": "huabi",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "15191922",
+      "name": "商务咨询",
+      "font_class": "shangwuzixun",
+      "unicode": "e67c",
+      "unicode_decimal": 59004
+    },
+    {
+      "icon_id": "15821674",
+      "name": "静音",
+      "font_class": "jingyin",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "18165266",
+      "name": "锁,密码,锁定",
+      "font_class": "lock",
+      "unicode": "e881",
+      "unicode_decimal": 59521
+    },
+    {
+      "icon_id": "18211395",
+      "name": "内存卡",
+      "font_class": "neicunka",
+      "unicode": "e7b2",
+      "unicode_decimal": 59314
+    },
+    {
+      "icon_id": "19992969",
+      "name": "截屏",
+      "font_class": "jieping",
+      "unicode": "e81e",
+      "unicode_decimal": 59422
+    },
+    {
+      "icon_id": "20009239",
+      "name": "moon月亮",
+      "font_class": "moonyueliang",
+      "unicode": "e6dd",
+      "unicode_decimal": 59101
+    },
+    {
+      "icon_id": "29238072",
+      "name": "腾讯微云",
+      "font_class": "channel-weiyunapp",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "30054727",
+      "name": "投屏",
+      "font_class": "touping",
+      "unicode": "e839",
+      "unicode_decimal": 59449
+    },
+    {
+      "icon_id": "38599607",
+      "name": "QQ音乐-copy",
+      "font_class": "QQyinle3",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "38617555",
+      "name": "AI腾讯文档-01",
+      "font_class": "AItengxunwendang-01",
+      "unicode": "e71c",
+      "unicode_decimal": 59164
+    },
+    {
+      "icon_id": "39418616",
+      "name": "换肤",
+      "font_class": "huanfu",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "1415513",
+      "name": "管理设备",
+      "font_class": "guanlishebei",
+      "unicode": "e837",
+      "unicode_decimal": 59447
+    },
+    {
       "icon_id": "720974",
       "name": "信息",
       "font_class": "xiazai16",

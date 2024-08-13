@@ -43,7 +43,7 @@ function transRouter(subOptionIndex) {
             <el-popover placement="right" trigger="hover" width="50" :disabled="(index !== 4)" hide-after="60">
                 <template #reference>
                     <svg class="icon bg" aria-hidden="true">
-                        <use :xlink:href="item"></use>
+                        <use :xlink:href="item" class="active"></use>
                     </svg>
                 </template>
                 <div class="popover-manage" @click="showManageLeftSubWindow">
@@ -70,15 +70,15 @@ function transRouter(subOptionIndex) {
     align-items: center;
     height: 100vh;
     background-color: #f2f2f2;
-
+    .active {
+        background-color: #0099ff;
+        transition:all 0.4s ease;
+    }
     .upper-option {
         margin: 5px;
-
         :deep() {
-
             min-width: 10px;
         }
-
         .popover-manage {}
     }
 

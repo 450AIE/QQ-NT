@@ -12,6 +12,8 @@ window.addEventListener('resize',()=>{
     rightViewWidth.value = window.innerWidth - parseInt(left.value.offsetWidth) - 60 -3
     right.value.style.width = rightViewWidth.value + 'px'
 })
+//标记选择的模式，0位好友，1为群聊
+const chooseRelationship = ref(0)
 //要在setup的时候就获取router
 const router = useRouter()
 //ref元素
@@ -61,7 +63,7 @@ onUnmounted(()=>{
     document.onmouseup = null
 })
 //
-const menuArr = [
+const menuFriendArr = [
     '我的设备',
     '特别关心',
     '我的好友',
@@ -69,6 +71,14 @@ const menuArr = [
     '家人',
     '同学',
     '不常用联系人'
+]
+
+const menuGroupArr = [
+    '置顶群聊',
+    '未命名群聊',
+    '我创建的群聊',
+    '我管理的群聊',
+    '我加入的群聊'
 ]
 
 
@@ -91,13 +101,22 @@ const menuArr = [
                     <div class="group-inform">群通知</div>
                 </div>
                 <div class="seg-div">
-                    <el-segmented :options="['好友','群聊']" class="seg"></el-segmented>
+                    <el-segmented :options="['好友','群聊']" class="seg"
+                    @change="()=>chooseRelationship = chooseRelationship === 1 ? 0 : 1"
+                    ></el-segmented>
                 </div>
                 <div class="el-collapse-div">
                     <el-collapse class="el-collapse">
-                        <el-collapse-item :title="item" class="item" v-for="(item,index) in menuArr" :key="index">
-                            <InfoBlock v-for="item in 2" class="info-block"></InfoBlock>
-                        </el-collapse-item>
+                        <div v-if="chooseRelationship === 0">
+                            <el-collapse-item :title="item" class="item" v-for="(item,index) in menuFriendArr" :key="index">
+                                <InfoBlock v-for="item in 2" class="info-block"></InfoBlock>
+                            </el-collapse-item>
+                        </div>
+                        <div v-else>
+                            <el-collapse-item :title="item" class="item" v-for="(item,index) in menuGroupArr" :key="index">
+                                <InfoBlock v-for="item in 2" class="info-block"></InfoBlock>
+                            </el-collapse-item>
+                        </div>
                     </el-collapse>
                 </div>
             </el-scrollbar>
@@ -114,6 +133,7 @@ const menuArr = [
 .container {
     height: 100vh;
     .right-view {
+        height: 100vh;
         background-color: #f2f2f2;
     }
     .search {
