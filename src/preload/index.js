@@ -20,4 +20,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 contextBridge.exposeInMainWorld('ElectronAPI', {
     showManageLeftSubWindow:()=>ipcRenderer.send('show-manage-left-sub-window'),
     // startFriendSessionWindow:(uid)=>ipcRenderer.send('start-friend-session-window',uid)
+    minimize:()=>ipcRenderer.send('minimize'),
+    maximize:()=>ipcRenderer.send('maximize'),
+    closeApp:()=>ipcRenderer.send('closeApp')
 })

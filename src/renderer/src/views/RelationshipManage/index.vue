@@ -4,13 +4,12 @@ import { Plus , Search } from '@element-plus/icons-vue';
 import { onMounted , ref , onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import InfoBlock from '@renderer/components/InfoBlock/index.vue'
+import { menuFriendArr,menuGroupArr } from './menuList';
+import { dragHorizontal } from '../../utils/dragFunc';
 
-const rightViewWidth = ref(0)
 const scrollHeight = ref(window.innerHeight - 60)
 window.addEventListener('resize',()=>{
     scrollHeight.value = window.innerHeight -60
-    rightViewWidth.value = window.innerWidth - parseInt(left.value.offsetWidth) - 60 -3
-    right.value.style.width = rightViewWidth.value + 'px'
 })
 //标记选择的模式，0位好友，1为群聊
 const chooseRelationship = ref(0)
@@ -19,67 +18,16 @@ const router = useRouter()
 //ref元素
 const left = ref(null)
 const resize  = ref(null)
-const right = ref(null)
 //水平拖拽函数
 onMounted(()=>{
-    // function horizontalDrag(){
-        resize.value.onmousedown = e=>{
-            //距离视口左侧的距离
-            let startX = e.clientX
-            //获取左边元素的宽度，包含padding和margin,每次拖动都应该重新获取
-            let offsetWidth = left.value.offsetWidth
-            let moveLen = undefined
-            document.onmousemove = e=>{
-                let endX = e.clientX
-                moveLen = endX - startX
-                let width = offsetWidth + moveLen
-                if(width <= 220){
-                    width = 220
-                }else if(width >= 400){
-                    width = 400
-                }
-                left.value.style.width = width + 'px'
-                //右侧的宽度 = 窗口总宽度 - 左侧好友列表宽度 - 最左侧固定栏宽度
-                rightViewWidth.value = window.innerWidth - parseInt(left.value.style.width) - 60 -3
-                right.value.style.width = rightViewWidth.value + 'px'
-                // right.value.style.width = '30px'
-            }
-            //松开后解绑事件
-            document.onmouseup = e=>{
-                document.onmousemove = null
-                document.onmouseup = null
-            }
-            return
-        }
-    // }
-    // horizontalDrag()
-    //DOM渲染完后就立刻给右侧宽度赋值
-    rightViewWidth.value = window.innerWidth - left.value.offsetWidth - 60 -3
-    right.value.style.width = rightViewWidth.value + 'px'
+    dragHorizontal(resize,left,150,400)
 })
 //再次清除监听，以防万一，resize上的会自动解绑
 onUnmounted(()=>{
     document.onmousemove = null
     document.onmouseup = null
 })
-//
-const menuFriendArr = [
-    '我的设备',
-    '特别关心',
-    '我的好友',
-    '朋友',
-    '家人',
-    '同学',
-    '不常用联系人'
-]
 
-const menuGroupArr = [
-    '置顶群聊',
-    '未命名群聊',
-    '我创建的群聊',
-    '我管理的群聊',
-    '我加入的群聊'
-]
 
 
 </script>
@@ -131,9 +79,12 @@ const menuGroupArr = [
 
 <style scoped lang="scss">
 .container {
+    display: flex;
+    width: 100%;
     height: 100vh;
     .right-view {
         height: 100vh;
+        flex:1;
         background-color: #f2f2f2;
     }
     .search {
@@ -221,11 +172,11 @@ const menuGroupArr = [
         }
     }
     .resize {
-        width: 3px;
+        width: 2px;
         height: 100vh;
         float: left;
         cursor: ew-resize;
-        background-color: orange;
+        background-color: #ededed;
     }
     .right-view {
         float: left;

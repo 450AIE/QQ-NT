@@ -3,6 +3,7 @@ import { Search , Plus } from '@element-plus/icons-vue';
 import InfoBlock from '@renderer/components/InfoBlock/index.vue'
 import { onMounted, onUnmounted, ref } from 'vue';
 import  { useRouter } from 'vue-router'
+import { dragHorizontal } from '../../utils/dragFunc';
 //这个不确定是否写成响应式
 const frendsList = [
     {
@@ -12,55 +13,18 @@ const frendsList = [
     }
 ]
 //计算好友列表的滚动条出现邻接值
-const rightViewWidth = ref(0)
 const scrollHeight = ref(window.innerHeight - 60)
 window.addEventListener('resize',()=>{
     scrollHeight.value = window.innerHeight -60
-    rightViewWidth.value = window.innerWidth - parseInt(left.value.offsetWidth) - 60 -3
-    right.value.style.width = rightViewWidth.value + 'px'
 })
 //要在setup的时候就获取router
 const router = useRouter()
 //ref元素
 const left = ref(null)
 const resize  = ref(null)
-const right = ref(null)
 //水平拖拽函数
 onMounted(()=>{
-    // function horizontalDrag(){
-        resize.value.onmousedown = e=>{
-            //距离视口左侧的距离
-            let startX = e.clientX
-            //获取左边元素的宽度，包含padding和margin,每次拖动都应该重新获取
-            let offsetWidth = left.value.offsetWidth
-            let moveLen = undefined
-            document.onmousemove = e=>{
-                let endX = e.clientX
-                moveLen = endX - startX
-                let width = offsetWidth + moveLen
-                if(width <= 220){
-                    width = 220
-                }else if(width >= 400){
-                    width = 400
-                }
-                left.value.style.width = width + 'px'
-                //右侧的宽度 = 窗口总宽度 - 左侧好友列表宽度 - 最左侧固定栏宽度
-                rightViewWidth.value = window.innerWidth - parseInt(left.value.style.width) - 60 -3
-                right.value.style.width = rightViewWidth.value + 'px'
-                // right.value.style.width = '30px'
-            }
-            //松开后解绑事件
-            document.onmouseup = e=>{
-                document.onmousemove = null
-                document.onmouseup = null
-            }
-            return
-        }
-    // }
-    // horizontalDrag()
-    //DOM渲染完后就立刻给右侧宽度赋值
-    rightViewWidth.value = window.innerWidth - left.value.offsetWidth - 60 -3
-    right.value.style.width = rightViewWidth.value + 'px'
+    dragHorizontal(resize,left,150,400)
 })
 //再次清除监听，以防万一，resize上的会自动解绑
 onUnmounted(()=>{
@@ -98,7 +62,7 @@ function openFriendSession(uid = 1){
             </div>
         </div>
         <div class="resize" ref="resize"></div>
-        <div class="right-view" ref="right">
+        <div class="right-view">
             <router-view></router-view>
         </div>
     </div>
@@ -107,25 +71,24 @@ function openFriendSession(uid = 1){
 
 <style scoped lang="scss">
 .container {
+    display: flex;
     height: 100vh;
+    width: 100%;
     position: relative;
     .left-view {
         position: relative;
-        min-width:220px;
+        min-width:150px;
         max-width:400px;
-        float: left;
     }
     .resize {
-        float: left;
-        width: 3px;
+        width: 2px;
         height: 100vh;
-        background-color: orange;
+        background-color: #ededed;
         cursor: ew-resize;
     }
     .right-view {
-        float: left;
+        flex:1;
         height: 100vh;
-        // width: 10px;
         background-color: #f2f2f2;
     }
     .info-block:hover {
@@ -134,7 +97,6 @@ function openFriendSession(uid = 1){
     .search {
         background-color: #fff;
         display: flex;
-        // justify-content: center;
         padding-top:10px;
         align-items: center;
         height: 60px;

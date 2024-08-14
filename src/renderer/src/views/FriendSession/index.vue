@@ -2,8 +2,8 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import TextBubble from '@renderer/components/MessageBubble/TextMessage/index.vue'
-
-const scrollHeight = ref(window.innerHeight - 60)
+import { dragVertical } from '../../utils/dragFunc';
+import { topIconList,bottomIconList } from './iconList';
 const resizeRef = ref(null)
 const bottomRef = ref(null)
 const inpRef = ref(null)
@@ -12,30 +12,7 @@ const scrollRef = ref(null)
 //存放所有消息的数组
 const msgArr = ref([])
 onMounted(()=>{
-    resizeRef.value.onmousedown = e=>{
-        let startY = e.clientY
-        console.log(startY)
-        let offsetHeight = bottomRef.value.offsetHeight
-        let height = undefined
-        document.onmousemove = e=>{
-            let endY = e.clientY
-            console.log(endY)
-            //注意，高度是从上往下算
-            let moveLen = startY - endY
-            height = offsetHeight + moveLen
-            if(height <= 120){
-                height = 120
-            }else if(height >= 400){
-                height = 400
-            }
-            bottomRef.value.style.height = height + 'px'
-        }
-        document.onmouseup = e=>{
-            document.onmousemove = null
-            document.onmouseup = null
-        }
-        return
-    }
+    dragVertical(resizeRef,bottomRef,140,400)
 })
 async function sendMsg(e){
     if(e.key === 'Enter')  e.preventDefault()
@@ -66,7 +43,11 @@ async function sendMsg(e){
     <div class="container">
         <div class="top ww">
             <div class="username">TH</div>
-            <div class="icon" v-for="itme in 6"></div>
+            <div class="upper-icons" v-for="(item,index) in topIconList" :key="index">
+                <svg class="icon" aria-hidden="true">
+                    <use :xlink:href="item"></use>
+                </svg>
+            </div>
         </div>
         <div class="session-window">
             <el-scrollbar ref="scrollRef">
@@ -76,7 +57,11 @@ async function sendMsg(e){
         <div class="resize" ref="resizeRef"></div>
         <div class="bottom" ref="bottomRef">
             <div class="bottom-operate ww">
-                <div class="icon" v-for="item in 6"></div>
+                <div class="bottom-icon" v-for="(item,index) in bottomIconList" :key="index">
+                    <svg class="icon" aria-hidden="true">
+                        <use :xlink:href="item"></use>
+                    </svg>
+                </div>
             </div>
                 <textarea  class="msg-inp ww" v-model="inpMsg" ref="inpRef" @keydown="sendMsg"></textarea>
             <div class="bottom-btn-div">
@@ -98,11 +83,14 @@ async function sendMsg(e){
     width: 100%;
     height: 100vh;
     background-color: #f2f2f2;
+    .icon:hover {
+        fill: #3db0fc;
+    }
     .resize {
-        height: 3px;
+        height: 2px;
         width: 100%;
         cursor: s-resize;
-        background-color: orange;
+        background-color: #ededed;
     }
     .ww {
         padding: 0 20px;
@@ -125,10 +113,12 @@ async function sendMsg(e){
             left: 0;
             height: 30px;
             .icon {
-                height: 20px;
-                width: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 22px;
+                width: 22px;
                 flex-shrink: 0;
-                background-color: #fff;
                 border-radius:5px;
                 margin-right:15px;
             }
@@ -195,13 +185,19 @@ async function sendMsg(e){
         .username {
             width: 100%;
         }
-        .icon {
-            height: 20px;
-            width: 20px;
+        .upper-icons {
+            display: flex;
+            height: 25px;
+            width: 25px;
             flex-shrink: 0;
-            background-color: white;
+            align-items: center;
+            justify-content: center;
             border-radius: 5px;
-            margin-left: 10px;
+            margin-left: 15px;
+            .icon {
+                width: 100%;
+                height: 100%;
+            }
         }
     }
 }

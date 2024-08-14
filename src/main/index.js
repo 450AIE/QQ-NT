@@ -12,6 +12,7 @@ function createWindow() {
         show: false,
         minHeight: 500,
         minWidth: 500,
+        // frame:false,
         autoHideMenuBar: true,
         alwaysOnTop: true,
         webPreferences: {
@@ -89,6 +90,7 @@ ipcMain.on('show-manage-left-sub-window', () => {
         resizable:false,
         alwaysOnTop:true,
         modal:true,
+        frame:false,
         webPreferences:{
             preload:join(__dirname,'../preload/index.js')
         }
@@ -99,3 +101,8 @@ ipcMain.on('show-manage-left-sub-window', () => {
         windowsStack.pop()
     })
 })
+
+//监听关闭，最小化，最大化
+ipcMain.on('minimize',()=>windowsStack[0].minimize())
+ipcMain.on('maximize',()=>windowsStack[0].maximize())
+ipcMain.on('closeApp',()=>windowsStack[0].close())
