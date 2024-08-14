@@ -69,6 +69,7 @@ function transRouter(subOptionIndex) {
     flex-direction: column;
     align-items: center;
     height: 100vh;
+    -webkit-app-region: drag;
     background-color: #f2f2f2;
     .active {
         content: attr(text);

@@ -163,9 +163,6 @@ async function sendMsg(e){
                 font-size: 14px;
                 color:#80ccff;
             }
-            .arrow {
-
-            }
         }
         .msg-inp {
             outline: none;
@@ -186,6 +183,7 @@ async function sendMsg(e){
         align-items: center;
         justify-content: space-between;
         padding-top:20px;
+        -webkit-app-region: drag;
         .app-operate {
             position:absolute;
             right: 0;

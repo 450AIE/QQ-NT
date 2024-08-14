@@ -101,6 +101,7 @@ function openFriendSession(uid = 1){
         align-items: center;
         height: 70px;
         border-bottom:1px solid #ebebeb;
+        -webkit-app-region: drag;
         .plus-icon-div {
             display: flex;
             width: 30px;

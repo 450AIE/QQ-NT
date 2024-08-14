@@ -90,10 +90,10 @@ onUnmounted(()=>{
     .search {
         background-color: #fff;
         display: flex;
-        // justify-content: center;
+        -webkit-user-drag:drag;
         padding-top:10px;
         align-items: center;
-        height: 60px;
+        height: 70px;
         border-bottom:1px solid #ebebeb;
         .plus-icon-div {
             display: flex;
