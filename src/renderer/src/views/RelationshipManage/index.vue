@@ -7,9 +7,9 @@ import InfoBlock from '@renderer/components/InfoBlock/index.vue'
 import { menuFriendArr,menuGroupArr } from './menuList';
 import { dragHorizontal } from '../../utils/dragFunc';
 
-const scrollHeight = ref(window.innerHeight - 60)
+const scrollHeight = ref(window.innerHeight - 70)
 window.addEventListener('resize',()=>{
-    scrollHeight.value = window.innerHeight -60
+    scrollHeight.value = window.innerHeight -70
 })
 //标记选择的模式，0位好友，1为群聊
 const chooseRelationship = ref(0)
@@ -44,9 +44,9 @@ onUnmounted(()=>{
             </div>
             <el-scrollbar :max-height="scrollHeight" class="scroll">
                 <div class="friend-manage w">好友管理器</div>
-                <div class="informs w">
-                    <div class="friend-inform">好友通知</div>
-                    <div class="group-inform">群通知</div>
+                <div class="informs">
+                    <div class="friend-inform w">好友通知</div>
+                    <div class="group-inform w">群通知</div>
                 </div>
                 <div class="seg-div">
                     <el-segmented :options="['好友','群聊']" class="seg"
@@ -90,7 +90,7 @@ onUnmounted(()=>{
     .search {
         background-color: #fff;
         display: flex;
-        -webkit-user-drag:drag;
+        -webkit-app-region: drag;
         padding-top:10px;
         align-items: center;
         height: 70px;
@@ -130,9 +130,20 @@ onUnmounted(()=>{
         .scroll {
             .informs {
                 border-bottom: 1px solid #ebebeb;
+                display: flex;
+                flex-direction: column;
                 .friend-inform ,
                  .group-inform {
-                    margin-bottom:10px;
+                    position:relative;
+                    display: flex;
+                    flex:1;
+                    padding:10px;
+                    font-size: 14px;
+                    align-items: center;
+                }
+                .friend-inform:hover ,
+                .group-inform:hover {
+                    background-color: #f5f5f5;
                 }
             }
             .seg-div {
@@ -152,8 +163,18 @@ onUnmounted(()=>{
                     .item {
                         :deep(){
                             .el-collapse-item__header {
+                                position:relative;
                                 border:0;
-                                padding-left:10px;
+                                padding-left:35px;
+                                .el-collapse-item__arrow {
+                                    position:absolute;
+                                    left: 10px;
+                                    top:50%;
+                                    transform: translateY(-50%);
+                                }
+                                .el-collapse-item__arrow.is-active {
+                                    transform: translateY(-50%) rotate(90deg)
+                                }
                             }
                             .el-collapse-item__wrap {
                                 border:0;
