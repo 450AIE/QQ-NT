@@ -12,7 +12,7 @@ function createWindow() {
         show: false,
         minHeight: 500,
         minWidth: 500,
-        // frame:false,
+        frame:false,
         autoHideMenuBar: true,
         alwaysOnTop: true,
         webPreferences: {
@@ -104,5 +104,11 @@ ipcMain.on('show-manage-left-sub-window', () => {
 
 //监听关闭，最小化，最大化
 ipcMain.on('minimize',()=>windowsStack[0].minimize())
-ipcMain.on('maximize',()=>windowsStack[0].maximize())
+ipcMain.on('maximize',()=>{
+    if(windowsStack[0].isMaximized()){
+        windowsStack[0].restore()
+    }else{
+        windowsStack[0].maximize()
+    }
+})
 ipcMain.on('closeApp',()=>windowsStack[0].close())

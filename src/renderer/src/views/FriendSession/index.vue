@@ -4,6 +4,7 @@ import { onMounted, ref } from 'vue';
 import TextBubble from '@renderer/components/MessageBubble/TextMessage/index.vue'
 import { dragVertical } from '../../utils/dragFunc';
 import { topIconList,bottomIconList } from './iconList';
+import AppOperate from '@renderer/components/AppOperate/index.vue'
 const resizeRef = ref(null)
 const bottomRef = ref(null)
 const inpRef = ref(null)
@@ -42,6 +43,7 @@ async function sendMsg(e){
 <template>
     <div class="container">
         <div class="top ww">
+            <AppOperate class="app-operate"></AppOperate>
             <div class="username">TH</div>
             <div class="upper-icons" v-for="(item,index) in topIconList" :key="index">
                 <svg class="icon" aria-hidden="true">
@@ -178,10 +180,17 @@ async function sendMsg(e){
     }
     .top {
         display: flex;
-        height: 60px;
+        position:relative;
+        height: 70px;
         border-bottom: 2px solid #ebebeb;
         align-items: center;
         justify-content: space-between;
+        padding-top:20px;
+        .app-operate {
+            position:absolute;
+            right: 0;
+            top: 0;
+        }
         .username {
             width: 100%;
         }

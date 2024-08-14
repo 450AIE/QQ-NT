@@ -13,9 +13,9 @@ const frendsList = [
     }
 ]
 //计算好友列表的滚动条出现邻接值
-const scrollHeight = ref(window.innerHeight - 60)
+const scrollHeight = ref(window.innerHeight - 70)
 window.addEventListener('resize',()=>{
-    scrollHeight.value = window.innerHeight -60
+    scrollHeight.value = window.innerHeight -70
 })
 //要在setup的时候就获取router
 const router = useRouter()
@@ -99,7 +99,7 @@ function openFriendSession(uid = 1){
         display: flex;
         padding-top:10px;
         align-items: center;
-        height: 60px;
+        height: 70px;
         border-bottom:1px solid #ebebeb;
         .plus-icon-div {
             display: flex;
