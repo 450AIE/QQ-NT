@@ -9,7 +9,7 @@ const router = createRouter({
             children: [
                 {
                     path: 'friend_session',
-                    component: () => import('@renderer/views/FriendSession/index.vue')
+                    component: () => import('@renderer/views/FriendsList/views/FriendSession/index.vue')
                 }
             ]
         },
@@ -23,7 +23,13 @@ const router = createRouter({
         },
         {
             path:'/setting_global',
-            component:()=>import('@renderer/views/SettingViews/SettingGlobal/index.vue')
+            component:()=>import('@renderer/views/SettingViews/SettingGlobal/index.vue'),
+            children:[
+                {
+                    path:'general',
+                    component:()=>import('@renderer/views/SettingViews/views/GeneralSetting/index.vue')
+                }
+            ]
         }
     ]
 })

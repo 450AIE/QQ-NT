@@ -12,16 +12,27 @@ const frendsList = [
         latestTime:'',//时间戳
     }
 ]
+// const right = ref(null)
 //计算好友列表的滚动条出现邻接值
 const scrollHeight = ref(window.innerHeight - 70)
+//实现右侧宽度小于一定范围后折叠
+const rightWidth = ref(window.innerWidth - 70 - 200)
 window.addEventListener('resize',()=>{
     scrollHeight.value = window.innerHeight -70
+    // rightWidth.value = window.innerWidth - 70 - 200
+    // if(rightWidth.value < 200){
+    //     left.value.style.width = parseInt(left.value.style.width) + rightWidth.value + 'px'
+    // }else{
+    //     console.log(right.value.style)
+    //     right.value.style.width = rightWidth.value + 'px'
+    // }
 })
 //要在setup的时候就获取router
 const router = useRouter()
 //ref元素
 const left = ref(null)
 const resize  = ref(null)
+
 //水平拖拽函数
 onMounted(()=>{
     dragHorizontal(resize,left,150,400)
@@ -62,7 +73,7 @@ function openFriendSession(uid = 1){
             </div>
         </div>
         <div class="resize" ref="resize"></div>
-        <div class="right-view">
+        <div class="right-view" ref="right">
             <router-view></router-view>
         </div>
     </div>
@@ -78,6 +89,7 @@ function openFriendSession(uid = 1){
     .left-view {
         position: relative;
         min-width:150px;
+        width: 200px;
         max-width:400px;
     }
     .resize {

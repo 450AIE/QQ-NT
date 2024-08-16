@@ -1,14 +1,84 @@
 <script setup>
-
+import { ref } from 'vue';
+import AppOperate from '@renderer/components/AppOperate/index.vue'
+import SettingOptionDetailCard from '@renderer/views/SettingViews/components/SettingOptionDetailCard/index.vue'
+import { settingGlobalIconList } from './iconList';
+import { useRouter } from 'vue-router';
+const scrollHeight = ref(window.innerHeight - 70)
+window.addEventListener('resize',()=>{
+    scrollHeight.value = window.innerHeight - 70
+})
+const router = useRouter()
+//进入路由，打开相应的设置界面
+function openSettingView(index){
+    if(index === 0){
+        router.push('/setting_global/general')
+    }
+}
 </script>
 
 
 <template>
-   <div>
-   </div>
+    <AppOperate class="app-operate"></AppOperate>
+    <div class="container">
+        <div class="left w">
+            <div class="option w" v-for="(item,index) in settingGlobalIconList"
+            :key="index" @click="openSettingView(index)">
+                <svg class="icon" aria-hidden="true">
+                    <use :xlink:href="item.icon"></use>
+                </svg>
+                <span class="text">{{ item.text }}</span>
+            </div>
+        </div>
+        <div class="right">
+            <router-view></router-view>
+        </div>
+    </div>
 </template>
 
 
-<style scoped>
-
+<style scoped lang="scss">
+.container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    .left {
+        width: 200px;
+        height: 100vh;
+        background-color: #fff;
+        -webkit-app-region: drag;
+        padding-top:20px;
+        .option {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 40px;
+            margin-top:10px;
+            font-size: 14px;
+            .icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 20px;
+                width: 20px;
+                margin-right:10px;
+            }
+        }
+        .option:hover {
+            background-color: #ebebeb;
+            border-radius:10px;
+        }
+    }
+    .right {
+        flex:1;
+        background-color: #f2f2f2;
+        // background-color: orange;
+    }
+}
+.app-operate {
+    position:fixed;
+    z-index:99;
+    right: 0;
+    top: 0;
+}
 </style>

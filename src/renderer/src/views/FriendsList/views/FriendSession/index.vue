@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import TextBubble from '@renderer/components/MessageBubble/TextMessage/index.vue'
-import { dragVertical } from '../../utils/dragFunc';
+import { dragVertical } from '@renderer/utils/dragFunc';
 import { topIconList,bottomIconList } from './iconList';
 import AppOperate from '@renderer/components/AppOperate/index.vue'
 const resizeRef = ref(null)

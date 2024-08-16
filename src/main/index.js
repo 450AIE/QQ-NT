@@ -114,13 +114,16 @@ ipcMain.on('maximize',()=>{
         windowsStack[0].maximize()
     }
 })
-ipcMain.on('closeApp',()=>windowsStack[0].close())
+//只剩一个页面了会退出app
+ipcMain.on('closeWindow',()=>windowsStack[windowsStack.length - 1].close())
 //进入设置界面
 ipcMain.on('create-setting-global-window',()=>{
     const settingWin = new BrowserWindow({
         parent:windowsStack[0],
-        width:800,
+        width:700,
         height:800,
+        minWidth:700,
+        minHeight:800,
         resizable:true,
         alwaysOnTop:true,
         frame:false,

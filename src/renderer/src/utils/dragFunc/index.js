@@ -52,3 +52,8 @@ export function dragHorizontal(resizeRef,leftRef,minWidth,maxWidth){
         return
     }
 }
+
+//右侧被拉拢到一定宽度就收起来
+export function unfoldRight(rightRef,Width){
+
+}

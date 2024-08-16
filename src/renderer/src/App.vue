@@ -8,12 +8,10 @@ import LeftSubOptions from '@renderer/components/LeftSubOptions/index.vue'
   </div>
 
 </template>
-
-<!-- 利用flex圣杯布局 -->
 <style scoped>
 .app {
-  display: flex;
-  .router {
+   display: flex;
+   .router {
     flex: 1;
   }
 }

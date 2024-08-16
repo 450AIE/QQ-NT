@@ -23,7 +23,7 @@ function appOperate(type){
     }else if(type === '#icon-zuidahua'){
         ElectronAPI.maximize()
     }else if(type === '#icon-guanbi'){
-        ElectronAPI.closeApp()
+        ElectronAPI.closeWindow()
     }
 }
 

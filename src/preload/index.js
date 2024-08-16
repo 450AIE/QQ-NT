@@ -22,7 +22,7 @@ contextBridge.exposeInMainWorld('ElectronAPI', {
     // startFriendSessionWindow:(uid)=>ipcRenderer.send('start-friend-session-window',uid)
     minimize:()=>ipcRenderer.send('minimize'),
     maximize:()=>ipcRenderer.send('maximize'),
-    closeApp:()=>ipcRenderer.send('closeApp'),
+    closeWindow:()=>ipcRenderer.send('closeWindow'),
     closeSubManageWindow:()=>ipcRenderer.send('close-sub-manage-window'),
     createSettingGlobalWindow:()=>ipcRenderer.send('create-setting-global-window')
 })
