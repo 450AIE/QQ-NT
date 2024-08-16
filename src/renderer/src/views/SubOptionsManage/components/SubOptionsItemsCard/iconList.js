@@ -1,4 +1,6 @@
-export const subOptionsManageList = [
+import { ref } from "vue";
+
+export const subOptionsManageList = ref([
     {
         icon:'#icon-QQyinle3',
         text:'QQ音乐',
@@ -29,4 +31,4 @@ export const subOptionsManageList = [
         text:'短视频',
         status:false
     }
-]
+])

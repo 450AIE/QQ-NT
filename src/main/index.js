@@ -18,7 +18,8 @@ function createWindow() {
         webPreferences: {
             preload: join(__dirname, '../preload/index.js'),
             webSecurity: false,
-            sandbox: false
+            sandbox: false,
+            experimentalFeatures:true
         }
     })
     windowsStack.push(mainWindow)
@@ -81,7 +82,7 @@ app.on('window-all-closed', () => {
 
 
 //展现侧边栏设置窗口
-ipcMain.on('show-manage-left-sub-window', () => {
+ipcMain.on('create-sub-manage-window', () => {
     const subWin = new BrowserWindow({
         parent:windowsStack[0],
         width:500,
@@ -92,7 +93,7 @@ ipcMain.on('show-manage-left-sub-window', () => {
         modal:true,
         frame:false,
         webPreferences:{
-            preload:join(__dirname,'../preload/index.js')
+            preload:join(__dirname,'../preload/index.js'),
         }
     })
     subWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/sub_options_manage')
@@ -101,6 +102,8 @@ ipcMain.on('show-manage-left-sub-window', () => {
         windowsStack.pop()
     })
 })
+//关闭侧边栏设置窗口
+ipcMain.on('close-sub-manage-window',()=>windowsStack[1].destroy())
 
 //监听关闭，最小化，最大化
 ipcMain.on('minimize',()=>windowsStack[0].minimize())
@@ -112,3 +115,22 @@ ipcMain.on('maximize',()=>{
     }
 })
 ipcMain.on('closeApp',()=>windowsStack[0].close())
+//进入设置界面
+ipcMain.on('create-setting-global-window',()=>{
+    const settingWin = new BrowserWindow({
+        parent:windowsStack[0],
+        width:800,
+        height:800,
+        resizable:true,
+        alwaysOnTop:true,
+        frame:false,
+        webPreferences:{
+            preload:join(__dirname,'../preload/index.js')
+        }
+    })
+    settingWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/setting_global')
+    windowsStack.push(settingWin)
+    settingWin.on('closed',()=>{
+        windowsStack.pop()
+    })
+})

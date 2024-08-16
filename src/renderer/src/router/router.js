@@ -20,6 +20,10 @@ const router = createRouter({
         {
             path: '/relationship_manage',
             component: () => import('@renderer/views/RelationshipManage/index.vue')
+        },
+        {
+            path:'/setting_global',
+            component:()=>import('@renderer/views/SettingViews/SettingGlobal/index.vue')
         }
     ]
 })

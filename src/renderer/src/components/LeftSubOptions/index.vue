@@ -1,13 +1,15 @@
 <script setup>
 import { useRouter } from 'vue-router';
-
-const upperIconList = [
+import Bus from '../../utils/eventBus';
+import SettingOptions  from '@renderer/components/SettingOptions/index.vue'
+import { ref } from 'vue';
+let upperIconList = ref([
     '#icon-xiazai16',
     '#icon-yonghu',
     '#icon-gerenkongjian',
     '#icon-youxi',
     '#icon-diandiandian'
-]
+])
 const bottomIconList = [
     '#icon-gengduo',
     '#icon-wenjian',
@@ -17,6 +19,8 @@ const bottomIconList = [
 const showManageLeftSubWindow = () => {
     ElectronAPI.showManageLeftSubWindow()
 }
+//设置界面的组件
+const settingOptionsComponent = ref(null)
 const router = useRouter()
 //路由跳转
 function transRouter(subOptionIndex) {
@@ -27,6 +31,22 @@ function transRouter(subOptionIndex) {
         path = '/relationship_manage'
     }
     router.push(path)
+}
+//接收侧边栏选项修改
+Bus.on('changeSubOptions',(newOptionsArr)=>{
+    upperIconList.value = [...upperIconList.value,...newOptionsArr]
+    console.log('收到bus',newOptionsArr)
+})
+//点击底部的操作。最下面是0，从下网上增大
+function bottomOperate(index){
+    if(index === 0){
+        //如果组件打开了再次点击就关闭
+        if(settingOptionsComponent.value){
+            settingOptionsComponent.value = null
+        }else{
+            settingOptionsComponent.value = SettingOptions
+        }
+    }
 }
 </script>
 
@@ -52,11 +72,12 @@ function transRouter(subOptionIndex) {
             </el-popover>
         </div>
         <div class="bottom-option" v-for="(item, index) in bottomIconList" :key="index"
-            :style="{ bottom: index * 40 + 'px' }">
+            :style="{ bottom: index * 40 + 'px' }" @click="bottomOperate(index)">
             <svg class="icon blue" aria-hidden="true">
                 <use :xlink:href="item"></use>
             </svg>
         </div>
+        <component :is="settingOptionsComponent" class="setting"></component>
     </div>
 </template>
 
@@ -71,6 +92,15 @@ function transRouter(subOptionIndex) {
     height: 100vh;
     -webkit-app-region: drag;
     background-color: #f2f2f2;
+    overflow: visible;
+    .setting {
+        position:absolute;
+        left: 60px;
+        z-index: 99;
+        width: 220px!important;
+        // width: 300px!important;
+        bottom: 6px;
+    }
     .active {
         content: attr(text);
         position: absolute;

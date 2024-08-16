@@ -18,9 +18,11 @@ import { contextBridge, ipcRenderer } from 'electron'
 //   window.api = api
 // }
 contextBridge.exposeInMainWorld('ElectronAPI', {
-    showManageLeftSubWindow:()=>ipcRenderer.send('show-manage-left-sub-window'),
+    showManageLeftSubWindow:()=>ipcRenderer.send('create-sub-manage-window'),
     // startFriendSessionWindow:(uid)=>ipcRenderer.send('start-friend-session-window',uid)
     minimize:()=>ipcRenderer.send('minimize'),
     maximize:()=>ipcRenderer.send('maximize'),
-    closeApp:()=>ipcRenderer.send('closeApp')
+    closeApp:()=>ipcRenderer.send('closeApp'),
+    closeSubManageWindow:()=>ipcRenderer.send('close-sub-manage-window'),
+    createSettingGlobalWindow:()=>ipcRenderer.send('create-setting-global-window')
 })

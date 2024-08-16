@@ -6,26 +6,16 @@ const props = defineProps({
         type:Object
     }
 })
-//0为增加该选项到左侧边栏，1为卸载
-function operateOption(e){
-    console.log('点击')
-    //0,增加
-    if(e.target.dataset.id === 0){
-        e.target.dataset.id = 1
-        props.option.status = true
-    //卸载
-    }else{
-        e.target.dataset.id = 0
-        props.option.status = false
-    }
+
+function operateOption(){
+    props.option.status = !props.option.status
 }
 </script>
 
 
 <template>
     <div class="container" @click="set">
-        <div class="icon-plus"  :style="{backgroundColor: option.status === false ? '#e5f5ff' : '#f4e4e1'}"
-          @click="operateOption" :data-id=" option.status === false ? 0 : 1">
+        <div class="icon-plus"  :style="{backgroundColor: option.status === false ? '#e5f5ff' : '#f4e4e1'}" @click="operateOption">
             <el-icon :color="option.status === false ? '#2cabff' : '#f18f80'">
                 <Plus v-if="option.status === false"/>
                 <Minus  v-else />

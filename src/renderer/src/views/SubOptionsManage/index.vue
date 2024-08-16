@@ -1,19 +1,28 @@
 <script setup>
 import SubOptionsItemsCard from './components/SubOptionsItemsCard/index.vue'
-import { subOptionsManageList } from './components/SubOptionsItemsCard/iconList';
-import { ref } from 'vue';
-const selectedList = ref(subOptionsManageList.filter(opt=>opt.status === true))
-const unselectedList = ref(subOptionsManageList.filter(opt=>opt.status === false))
-console.log('进入的时候',subOptionsManageList)
+import { subOptionsManageList} from './components/SubOptionsItemsCard/iconList';
+import { ref, watch } from 'vue';
+import Bus from '../../utils/eventBus';
+const selectedList = ref(subOptionsManageList.value.filter(opt=>opt.status === true))
+const unselectedList = ref(subOptionsManageList.value.filter(opt=>opt.status === false))
 function exitSubManageWindow(e){
     //确定，将当前的状态保存给subOptionsManageList
-    if(e.target.dataset.id === 0){
-        subOptionsManageList = [...selectedList,...unselectedList]
+    if(e.target.dataset.id === '0'){
+        subOptionsManageList.value = [...selectedList.value,...unselectedList.value]
+        //通知左侧项目栏增加图标
+        Bus.emit('changeSubOptions',selectedList.value)
     }
     ElectronAPI.closeSubManageWindow()
 }
+//监视，数值里status发生变化就放到对应ref数组里
+watch(subOptionsManageList,()=>{
+    selectedList.value = subOptionsManageList.value.filter(opt=>opt.status === true)
+    unselectedList.value = subOptionsManageList.value.filter(opt=>opt.status === false)
+},{
+    deep:true
+})
 setInterval(()=>{
-    console.log(subOptionsManageList)
+    console.log(subOptionsManageList.value)
 },1000)
 </script>
 
