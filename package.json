@@ -1,9 +1,9 @@
 {
   "name": "qq-nt",
   "version": "1.0.0",
-  "description": "An Electron application with Vue",
+  "description": "LIKE QQ NT",
   "main": "./out/main/index.js",
-  "author": "example.com",
+  "author": "LIU YU",
   "homepage": "https://electron-vite.org",
   "scripts": {
     "format": "prettier --write .",
@@ -40,6 +40,7 @@
     "unplugin-vue-components": "^0.27.3",
     "vite": "^5.3.1",
     "vue": "^3.4.30",
+    "vue-draggable-plus": "^0.5.3",
     "vue-router": "^4.4.3"
   }
 }

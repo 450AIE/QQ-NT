@@ -96,7 +96,8 @@ ipcMain.on('create-sub-manage-window', () => {
             preload:join(__dirname,'../preload/index.js'),
         }
     })
-    subWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/sub_options_manage')
+    // subWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/sub_options_manage')
+    subWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'sub_options_manage'})
     windowsStack.push(subWin)
     subWin.on('closed',()=>{
         windowsStack.pop()
@@ -131,7 +132,8 @@ ipcMain.on('create-setting-global-window',()=>{
             preload:join(__dirname,'../preload/index.js')
         }
     })
-    settingWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/setting_global')
+    // settingWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/setting_global')
+    settingWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'setting_global'})
     windowsStack.push(settingWin)
     settingWin.on('closed',()=>{
         windowsStack.pop()

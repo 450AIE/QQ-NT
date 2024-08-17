@@ -14,7 +14,7 @@ function operateOption(){
 
 
 <template>
-    <div class="container" @click="set">
+    <div class="container">
         <div class="icon-plus"  :style="{backgroundColor: option.status === false ? '#e5f5ff' : '#f4e4e1'}" @click="operateOption">
             <el-icon :color="option.status === false ? '#2cabff' : '#f18f80'">
                 <Plus v-if="option.status === false"/>

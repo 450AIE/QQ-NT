@@ -21,6 +21,7 @@ watch(subOptionsManageList,()=>{
 },{
     deep:true
 })
+
 </script>
 
 
@@ -29,16 +30,17 @@ watch(subOptionsManageList,()=>{
         <div class="title ww">侧边栏管理</div>
         <div class="added-items ww">
             <div class="items-title" v-if="selectedList.length > 0">已添加业务</div>
-            <div class="items-cards">
-                <SubOptionsItemsCard  v-for="(item,index) in selectedList"
-                class="card" :key="index" :option="item"></SubOptionsItemsCard>
+                <div class="items-cards" >
+                    <SubOptionsItemsCard  v-for="(item,index) in selectedList"
+                    class="card" :key="index" :option="item"   draggable="true"
+                    ></SubOptionsItemsCard>
+                </div>
             </div>
-        </div>
         <div class="packed-items ww">
             <div class="items-title" v-if="unselectedList.length > 0">已收折业务</div>
             <div class="items-cards">
                 <SubOptionsItemsCard  v-for="(item,index) in unselectedList"
-                 class="card" :key="index" :option="item" ></SubOptionsItemsCard>
+                 class="card" :key="index" :option="item" draggable="true"></SubOptionsItemsCard>
             </div>
         </div>
         <div class="btn-div">
@@ -120,6 +122,9 @@ watch(subOptionsManageList,()=>{
                 background-color: #fff;
                 // flex-basis: 20%;
                 margin-right:10px;
+            }
+            .choose-active {
+                box-shadow:  0 0 10px 10px #c9c9c9;
             }
         }
     }
