@@ -4,6 +4,7 @@ import InfoBlock from '@renderer/components/InfoBlock/index.vue'
 import { onMounted, onUnmounted, ref } from 'vue';
 import  { useRouter } from 'vue-router'
 import { dragHorizontal } from '../../utils/dragFunc';
+import AppOerate from '@renderer/components/AppOperate/index.vue'
 //这个不确定是否写成响应式
 const frendsList = [
     {
@@ -12,21 +13,10 @@ const frendsList = [
         latestTime:'',//时间戳
     }
 ]
-// const right = ref(null)
+const right = ref(null)
 //计算好友列表的滚动条出现邻接值
 const scrollHeight = ref(window.innerHeight - 70)
-//实现右侧宽度小于一定范围后折叠
-const rightWidth = ref(window.innerWidth - 70 - 200)
-window.addEventListener('resize',()=>{
-    scrollHeight.value = window.innerHeight -70
-    // rightWidth.value = window.innerWidth - 70 - 200
-    // if(rightWidth.value < 200){
-    //     left.value.style.width = parseInt(left.value.style.width) + rightWidth.value + 'px'
-    // }else{
-    //     console.log(right.value.style)
-    //     right.value.style.width = rightWidth.value + 'px'
-    // }
-})
+const iconType = ref(0)
 //要在setup的时候就获取router
 const router = useRouter()
 //ref元素
@@ -35,12 +25,31 @@ const resize  = ref(null)
 
 //水平拖拽函数
 onMounted(()=>{
-    dragHorizontal(resize,left,150,400)
+    dragHorizontal(resize,left,220,400)
+    window.onresize = ()=>{
+        scrollHeight.value = window.innerHeight -70
+        //左侧小于最大时，拉长左侧
+        // if(left.value.offsetWidth < 530){
+        //     left.value.style.width = window.innerWidth - 60 -2 -300 + 'px'
+        // }
+        //右侧的不变，改变左边
+        //左右合并,加上图标
+        if(window.innerWidth < 512){
+            left.value.style.width = window.innerWidth - 60 -2 + 'px'
+            iconType.value = 1
+        }else{
+            iconType.value = 0
+            if(right.value.offsetWidth <= 300){
+                left.value.style.width = window.innerWidth - 60 -2 -300 + 'px'
+            }
+        }
+    }
 })
 //再次清除监听，以防万一，resize上的会自动解绑
 onUnmounted(()=>{
     document.onmousemove = null
     document.onmouseup = null
+    window.onresize = null
 })
 
 //先默认UID为1
@@ -77,10 +86,15 @@ function openFriendSession(uid = 1){
             <router-view></router-view>
         </div>
     </div>
+    <AppOerate class="app-operate" :type="iconType"></AppOerate>
 </template>
 
 
 <style scoped lang="scss">
+.app-operate {
+    right: 0;
+    top: 0;
+}
 .container {
     display: flex;
     height: 100vh;
@@ -88,9 +102,9 @@ function openFriendSession(uid = 1){
     position: relative;
     .left-view {
         position: relative;
-        min-width:150px;
-        width: 200px;
-        max-width:400px;
+        min-width:220px;
+        width: 220px;
+        max-width:530px;
     }
     .resize {
         width: 2px;
@@ -101,6 +115,7 @@ function openFriendSession(uid = 1){
     .right-view {
         flex:1;
         height: 100vh;
+        min-width: 0;
         background-color: #f2f2f2;
     }
     .info-block:hover {

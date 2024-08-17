@@ -1,5 +1,4 @@
 <script setup>
-import LeftSubOptions from '@renderer/components/LeftSubOptions/index.vue'
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup>
 import SubOptionsItemsCard from './components/SubOptionsItemsCard/index.vue'
-import { subOptionsManageList} from './components/SubOptionsItemsCard/iconList';
-import { ref, watch } from 'vue';
+import { subOptionsManageList} from './components/SubOptionsItemsCard/optionList';
+import {  ref, watch } from 'vue';
 import Bus from '../../utils/eventBus';
 const selectedList = ref(subOptionsManageList.value.filter(opt=>opt.status === true))
 const unselectedList = ref(subOptionsManageList.value.filter(opt=>opt.status === false))
@@ -21,9 +21,6 @@ watch(subOptionsManageList,()=>{
 },{
     deep:true
 })
-setInterval(()=>{
-    console.log(subOptionsManageList.value)
-},1000)
 </script>
 
 

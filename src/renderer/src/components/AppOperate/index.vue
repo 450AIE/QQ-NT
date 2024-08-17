@@ -1,4 +1,5 @@
 <script setup>
+import { onBeforeUpdate, onMounted, onUpdated, ref, watch } from 'vue';
 import { normalIconList,normalIconListWithFold } from './iconList';
 //0普通，1带折叠
 const props = defineProps({
@@ -9,13 +10,21 @@ const props = defineProps({
     }
 })
 let len = 0
-let operateIconList = undefined
+let operateIconList = ref([])
 if(props.type === 0){
-    operateIconList = normalIconList
+    operateIconList.value = normalIconList
 }else if(props.type === 1){
-    operateIconList = normalIconListWithFold
+    operateIconList.value = normalIconListWithFold
 }
-len = operateIconList.length
+len = operateIconList.value.length
+onBeforeUpdate(()=>{
+    if(props.type === 0){
+        operateIconList.value = normalIconList
+    }else if(props.type === 1){
+        operateIconList.value = normalIconListWithFold
+    }
+    len = operateIconList.value.length
+})
 
 function appOperate(type){
     if(type === '#icon-zuixiaohua'){
@@ -46,8 +55,9 @@ function appOperate(type){
 .container {
     display: flex;
     align-items: center;
-    position:relative;
+    position:absolute!important;
     height: 25px!important;
+    z-index:99;
     .icon {
         display: flex;
         align-items: center;

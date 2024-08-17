@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 import InfoBlock from '@renderer/components/InfoBlock/index.vue'
 import { menuFriendArr,menuGroupArr } from './menuList';
 import { dragHorizontal } from '../../utils/dragFunc';
-
+import AppOperate from '@renderer/components/AppOperate/index.vue'
 const scrollHeight = ref(window.innerHeight - 70)
 window.addEventListener('resize',()=>{
     scrollHeight.value = window.innerHeight -70
@@ -26,13 +26,14 @@ onMounted(()=>{
 onUnmounted(()=>{
     document.onmousemove = null
     document.onmouseup = null
+    window.onresize = null
 })
-
 
 
 </script>
 
 <template>
+    <AppOperate class="app-operate"></AppOperate>
     <LeftSubOptions></LeftSubOptions>
     <div class="container">
         <div class="left-view" ref="left">
@@ -78,6 +79,10 @@ onUnmounted(()=>{
 
 
 <style scoped lang="scss">
+.app-operate {
+    top: 0;
+    right: 0;
+}
 .container {
     display: flex;
     width: 100%;

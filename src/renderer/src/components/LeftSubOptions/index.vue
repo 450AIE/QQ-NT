@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router';
 import Bus from '../../utils/eventBus';
 import SettingOptions  from '@renderer/components/SettingOptions/index.vue'
-import { ref } from 'vue';
+import {  ref, onBeforeUnmount } from 'vue';
 let upperIconList = ref([
     '#icon-xiazai16',
     '#icon-yonghu',
@@ -33,10 +33,17 @@ function transRouter(subOptionIndex) {
     router.push(path)
 }
 //接收侧边栏选项修改
-Bus.on('changeSubOptions',(newOptionsArr)=>{
-    upperIconList.value = [...upperIconList.value,...newOptionsArr]
+Bus.on('changeSubOptions',changeSubOptions)
+function changeSubOptions(newOprtionsArr){
     console.log('收到bus',newOptionsArr)
+    upperIconList.value = [...upperIconList.value,...newOprtionsArr]
+}
+
+onBeforeUnmount(()=>{
+    Bus.off('changeSubOptions',changeSubOptions)
 })
+
+
 //点击底部的操作。最下面是0，从下网上增大
 function bottomOperate(index){
     if(index === 0){
@@ -88,6 +95,7 @@ function bottomOperate(index){
     display: flex;
     width: 60px!important;
     flex-direction: column;
+    flex-shrink: 0;
     align-items: center;
     height: 100vh;
     -webkit-app-region: drag;
