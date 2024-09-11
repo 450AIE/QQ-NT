@@ -1,7 +1,8 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-
+import fs from 'fs/promises'
+import {resolve} from 'path'
 //存放各个窗口的栈，第一个肯定是主窗口
 const windowsStack = []
 function createWindow() {
@@ -96,8 +97,11 @@ ipcMain.on('create-sub-manage-window', () => {
             preload:join(__dirname,'../preload/index.js'),
         }
     })
-    subWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/sub_options_manage')
-    // subWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'sub_options_manage'})
+    if (is.dev && process.env['ELECTRON_RENDERER_URL']){
+        subWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/sub_options_manage')
+    }else{
+        subWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'sub_options_manage'})
+    }
     windowsStack.push(subWin)
     subWin.on('closed',()=>{
         windowsStack.pop()
@@ -132,8 +136,11 @@ ipcMain.on('create-setting-global-window',()=>{
             preload:join(__dirname,'../preload/index.js')
         }
     })
-    settingWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/setting_global')
-    // settingWin.loadURL(join(__dirname, '../renderer/index.html'),{hash:'setting_global'})
+    if (is.dev && process.env['ELECTRON_RENDERER_URL']){
+        settingWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/setting_global')
+    }else{
+        settingWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'setting_global'})
+    }
     windowsStack.push(settingWin)
     settingWin.on('closed',()=>{
         windowsStack.pop()
@@ -154,8 +161,11 @@ ipcMain.on('create-collect-window',()=>{
             preload:join(__dirname,'../preload/index.js')
         }
     })
-    // collectWin.loadURL(join(__dirname, '../renderer/index.html'),{hash:'collect'})
-    collectWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/collect')
+    if (is.dev && process.env['ELECTRON_RENDERER_URL']){
+        collectWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/collect')
+    }else{
+        collectWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'collect'})
+    }
     windowsStack.push(collectWin)
     collectWin.on('closed',()=>{
         windowsStack.pop()
@@ -176,7 +186,11 @@ ipcMain.on('create-create-note-window',()=>{
             preload:join(__dirname,'../preload/index.js')
         }
     })
-    createNoteWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/create_note')
+    if (is.dev && process.env['ELECTRON_RENDERER_URL']){
+        createNoteWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/create_note')
+    }else{
+        createNoteWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'create_note'})
+    }
     windowsStack.push(createNoteWin)
     createNoteWin.on('closed',()=>{
         windowsStack.pop()
@@ -185,9 +199,23 @@ ipcMain.on('create-create-note-window',()=>{
 /**
  * func是触发更新的函数，args是形参，相当于把触发pinia状态更新的函数传递了过来
  */
-ipcMain.on('notify-others-update-pinia-state',(e,func,args)=>{
+ipcMain.on('notify-others-update-pinia-state',(_,func,args)=>{
     windowsStack.forEach(win=>{
         // 异步似乎导致了一些问题
         win.webContents.send('update-pinia-state',func,args)
     })
+})
+ipcMain.on('write-baseConfigStore-files',(_,fileData,path)=>{
+    try {
+        return fs.writeFile(resolve(__dirname,'./baseConfigStore.json'),JSON.stringify(fileData),'utf-8')
+    } catch (error) {
+        console.dir(error)
+    }
+})
+ipcMain.handle('read-baseConfigStore-files',()=>{
+    try {
+        return fs.readFile(resolve(__dirname,'./baseConfigStore.json'),'utf-8')
+    } catch (error) {
+        console.dir(error)
+    }
 })

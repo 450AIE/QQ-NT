@@ -6,26 +6,19 @@ import { storeToRefs } from 'pinia';
 
 const baseConfigStore = useBaseConfigStore()
 const {setUpperIconList,setSubOptionsManageList} = baseConfigStore
-const {subOptionsManageList,upperIconList} = storeToRefs(baseConfigStore)
+const {subOptionsManageList } = storeToRefs(baseConfigStore)
 const selectedList = ref(subOptionsManageList.value.filter(opt=>opt.status === true))
 const unselectedList = ref(subOptionsManageList.value.filter(opt=>opt.status === false))
-function exitSubManageWindow(e){
+async function exitSubManageWindow(e){
     //确定，将当前的状态保存给subOptionsManageList
     if(e.target.dataset.id === '0'){
         setSubOptionsManageList([...selectedList.value,...unselectedList.value])
-        // 用pinia进行传递修改
-        // console.log('这是修改后的SubOptionsManageList:',subOptionsManageList.value)
-        // console.log('这是要存进去的东西',[...subOptionsManageList.value.map(item=>{
-        //     if(item.status) return item.icon
-        // })].filter(item=>item!==undefined))
-
-        // 发现了问题所在，upperIconList.value就是问题所在
         setUpperIconList([...selectedList.value.map(item=>item.icon)])
         // console.log('改变后的upperIconList.value:',upperIconList.value)
-        //通知左侧项目栏增加图标,改用pinia
-        // Bus.emit('changeSubOptions',selectedList.value)
     }
-    // ElectronAPI.closeSubManageWindow()
+    // 切换路由后组件被销毁，但是setTimeout不会被销毁
+    await ElectronAPI.writeBaseConfigStoreFiles()
+    ElectronAPI.closeSubManageWindow()
 }
 //
 ElectronAPI.onListenerPiniaStateUpdate((_,func,args)=>{

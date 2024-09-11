@@ -9,16 +9,17 @@ const {bottomIconList,upperIconList} = storeToRefs(baseConfigStore)
 const showManageLeftSubWindow = () => {
     ElectronAPI.showManageLeftSubWindow()
 }
-//
-// const instance = getCurrentInstance()
+// 一进入就要读取baseConfigStore的设置
+async function readBaseConfigStoreFiles(){
+    const res = await ElectronAPI.readBaseConfigStoreFiles()
+    console.log(res)
+}
+readBaseConfigStoreFiles()
+
 // 监听pinia更新
 ElectronAPI.onListenerPiniaStateUpdate((_,func,args)=>{
     baseConfigStore[func](...JSON.parse(args))
 })
-// setInterval(()=>{
-//     console.log(upperIconList.value)
-//     // instance.proxy.$forceUpdate()
-// },1000)
 //设置界面的组件
 const settingOptionsComponent = ref(null)
 const router = useRouter()
@@ -32,18 +33,6 @@ function transRouter(subOptionIndex) {
     }
     router.push(path)
 }
-//接收侧边栏选项修改,改用pinia
-// Bus.on('changeSubOptions',changeSubOptions)
-// function changeSubOptions(newOprtionsArr){
-//     console.log('收到bus',newOptionsArr)
-//     upperIconList.value = [...upperIconList.value,...newOprtionsArr]
-// }
-
-// onBeforeUnmount(()=>{
-//     Bus.off('changeSubOptions',changeSubOptions)
-// })
-
-
 //点击底部的操作。最下面是0，从下网上增大
 function bottomOperate(index){
     if(index === 0){

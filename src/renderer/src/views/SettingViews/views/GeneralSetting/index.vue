@@ -25,6 +25,7 @@ function shiftTheme(e){
         baseConfigStore.setDarkTheme(true)
     }
 }
+
 </script>
 
 
