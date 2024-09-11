@@ -25,7 +25,7 @@ const resize  = ref(null)
 
 //水平拖拽函数
 onMounted(()=>{
-    dragHorizontal(resize,left,220,400)
+    dragHorizontal(resize,left,220,450)
     window.onresize = ()=>{
         scrollHeight.value = window.innerHeight -70
         //左侧小于最大时，拉长左侧
@@ -39,8 +39,10 @@ onMounted(()=>{
             iconType.value = 1
         }else{
             iconType.value = 0
-            if(right.value.offsetWidth <= 300){
+            if(window.innerWidth >= 582){
                 left.value.style.width = window.innerWidth - 60 -2 -300 + 'px'
+            }else{
+                left.value.style.width = '220px'
             }
         }
     }
@@ -101,10 +103,11 @@ function openFriendSession(uid = 1){
     width: 100%;
     position: relative;
     .left-view {
+        flex-shrink: 0;
         position: relative;
         min-width:220px;
         width: 220px;
-        max-width:530px;
+        max-width:450px;
     }
     .resize {
         width: 2px;
@@ -116,10 +119,10 @@ function openFriendSession(uid = 1){
         flex:1;
         height: 100vh;
         min-width: 0;
-        background-color: #f2f2f2;
+        background-color: var(--background-gray1-color);
     }
     .info-block:hover {
-        background-color: #f5f5f5;
+        background-color: var(--background-gray2-color);
     }
     .search {
         background-color: #fff;
@@ -135,7 +138,7 @@ function openFriendSession(uid = 1){
             height: 30px;
             justify-content: center;
             align-items: center;
-            background-color: #f5f5f5;
+            background-color: var(--background-gray2-color);
             border-radius: 4px;
             .plus-icon {
                 color: #9f9f9f;

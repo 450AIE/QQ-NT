@@ -30,14 +30,15 @@ const router = createRouter({
                     component:()=>import('@renderer/views/SettingViews/views/GeneralSetting/index.vue')
                 }
             ]
+        },
+        {
+            path:'/collect',
+            component:()=>import('@renderer/views/Collect/index.vue')
+        },
+        {
+            path:'/create_note',
+            component:()=>import('@renderer/views/Collect/views/CreateNote/index.vue')
         }
     ]
 })
-// export function transRouterToFriendList(router){
-//     router.push('/')
-// }
-// export function transRouterToFriendSession(router,uid){
-//     router.push({path:'/friend_session',query:{uid}})
-// }
-// export function trans
 export default router

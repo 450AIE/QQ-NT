@@ -24,5 +24,10 @@ contextBridge.exposeInMainWorld('ElectronAPI', {
     maximize:()=>ipcRenderer.send('maximize'),
     closeWindow:()=>ipcRenderer.send('closeWindow'),
     closeSubManageWindow:()=>ipcRenderer.send('close-sub-manage-window'),
-    createSettingGlobalWindow:()=>ipcRenderer.send('create-setting-global-window')
+    createSettingGlobalWindow:()=>ipcRenderer.send('create-setting-global-window'),
+    createCollectWindow:()=>ipcRenderer.send('create-collect-window'),
+    createCreateNoteWindow:()=>ipcRenderer.send('create-create-note-window'),
+    notifyAllWindowUpdatePiniaState:(func,args)=>ipcRenderer.send('notify-others-update-pinia-state',func,args),
+    // cb函数内接收函数名和args,args注意要手动JSON.parse()
+    onListenerPiniaStateUpdate:(cb)=>ipcRenderer.on('update-pinia-state',cb)
 })

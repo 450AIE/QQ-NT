@@ -83,7 +83,7 @@ async function sendMsg(e){
     flex-shrink: 0;
     width: 100%;
     height: 100vh;
-    background-color: #f2f2f2;
+    background-color: var(--background-gray1-color);
     .icon:hover {
         fill: #3db0fc;
     }
@@ -138,7 +138,7 @@ async function sendMsg(e){
                 outline: none;
                 border:0;
                 border-radius: 4px;
-                background-color: #0099ff;
+                background-color: $background-blue-color;
                 cursor: pointer;
             }
             .bottom-btn:active {
@@ -171,7 +171,7 @@ async function sendMsg(e){
             flex:1;
             font-size: 16px;
             font-family: 'Microsoft YaHei';
-            background-color: #f2f2f2;
+            background-color: var(--background-gray1-color);
         }
     }
     .top {

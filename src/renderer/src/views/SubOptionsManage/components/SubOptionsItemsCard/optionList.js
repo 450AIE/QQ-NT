@@ -32,3 +32,7 @@ export const subOptionsManageList = ref([
         status:false
     }
 ])
+
+export function setSubOptionsManageList(newList){
+    subOptionsManageList.value = [...newList]
+}

@@ -19,6 +19,7 @@ declare module 'vue' {
     LeftSubOptions: typeof import('./src/components/LeftSubOptions/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchBar: typeof import('./src/components/SearchBar/index.vue')['default']
     SettingOptions: typeof import('./src/components/SettingOptions/index.vue')['default']
     TextMessage: typeof import('./src/components/MessageBubble/TextMessage/index.vue')['default']
   }

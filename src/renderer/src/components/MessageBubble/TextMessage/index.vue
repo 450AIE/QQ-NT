@@ -19,7 +19,7 @@ defineProps({
         :style="{marginLeft:direction === 'row' ? '0' : '10px',
         marginRight:direction === 'row'? '10px' : '0'}"
         ></div>
-        <div class="msg" :style="{backgroundColor: direction === 'row'? '#fff' : '#0099ff',
+        <div class="msg" :style="{backgroundColor: direction === 'row'? '#fff' : '$background-blue-color',
             color:direction === 'row'? 'black' : '#fff'
         }">
             {{ msg }}

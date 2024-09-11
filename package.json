@@ -20,8 +20,11 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-vue": "^5.1.12",
     "electron-updater": "^6.1.7",
-    "mitt": "^3.0.1"
+    "mitt": "^3.0.1",
+    "pinia-plugin-persist": "^1.0.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^1.0.2",
@@ -29,7 +32,6 @@
     "@rushstack/eslint-patch": "^1.10.3",
     "@vitejs/plugin-vue": "^5.1.2",
     "@vue/eslint-config-prettier": "^9.0.0",
-    "axios": "^1.7.3",
     "electron": "^31.0.2",
     "electron-builder": "^24.13.3",
     "electron-vite": "^2.3.0",

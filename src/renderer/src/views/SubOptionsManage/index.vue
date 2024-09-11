@@ -1,19 +1,37 @@
 <script setup>
 import SubOptionsItemsCard from './components/SubOptionsItemsCard/index.vue'
-import { subOptionsManageList} from './components/SubOptionsItemsCard/optionList';
 import {  ref, watch } from 'vue';
-import Bus from '../../utils/eventBus';
+import useBaseConfigStore from '../../store/baseConfigStore';
+import { storeToRefs } from 'pinia';
+
+const baseConfigStore = useBaseConfigStore()
+const {setUpperIconList,setSubOptionsManageList} = baseConfigStore
+const {subOptionsManageList,upperIconList} = storeToRefs(baseConfigStore)
 const selectedList = ref(subOptionsManageList.value.filter(opt=>opt.status === true))
 const unselectedList = ref(subOptionsManageList.value.filter(opt=>opt.status === false))
 function exitSubManageWindow(e){
     //确定，将当前的状态保存给subOptionsManageList
     if(e.target.dataset.id === '0'){
-        subOptionsManageList.value = [...selectedList.value,...unselectedList.value]
-        //通知左侧项目栏增加图标
-        Bus.emit('changeSubOptions',selectedList.value)
+        setSubOptionsManageList([...selectedList.value,...unselectedList.value])
+        // 用pinia进行传递修改
+        // console.log('这是修改后的SubOptionsManageList:',subOptionsManageList.value)
+        // console.log('这是要存进去的东西',[...subOptionsManageList.value.map(item=>{
+        //     if(item.status) return item.icon
+        // })].filter(item=>item!==undefined))
+
+        // 发现了问题所在，upperIconList.value就是问题所在
+        setUpperIconList([...selectedList.value.map(item=>item.icon)])
+        // console.log('改变后的upperIconList.value:',upperIconList.value)
+        //通知左侧项目栏增加图标,改用pinia
+        // Bus.emit('changeSubOptions',selectedList.value)
     }
-    ElectronAPI.closeSubManageWindow()
+    // ElectronAPI.closeSubManageWindow()
 }
+//
+ElectronAPI.onListenerPiniaStateUpdate((_,func,args)=>{
+    // console.log('subManage ipcRender执行,执行的函数是',func,...args)
+    baseConfigStore[func](...JSON.parse(args))
+})
 //监视，数值里status发生变化就放到对应ref数组里
 watch(subOptionsManageList,()=>{
     selectedList.value = subOptionsManageList.value.filter(opt=>opt.status === true)
@@ -56,7 +74,7 @@ watch(subOptionsManageList,()=>{
     position:relative;
     width: 100vw;
     height: 100vh;
-    background-color: #f2f2f2;
+    background-color: var(--background-gray1-color);
     .btn-div {
         position:absolute;
         right: 0;
@@ -70,7 +88,7 @@ watch(subOptionsManageList,()=>{
             right: 80px;
             bottom: 10px;
             border-radius:3px;
-            background-color: #0099ff;
+            background-color: $background-blue-color;
             color: #fff;
             outline: none;
             border:1px solid #d0d0d0;

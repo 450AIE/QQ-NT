@@ -84,43 +84,43 @@ app.on('window-all-closed', () => {
 //展现侧边栏设置窗口
 ipcMain.on('create-sub-manage-window', () => {
     const subWin = new BrowserWindow({
-        parent:windowsStack[0],
+        parent:windowsStack[windowsStack.length - 1],
         width:500,
         height:500,
         center:true,
         resizable:false,
         alwaysOnTop:true,
-        modal:true,
+        // modal:true,
         frame:false,
         webPreferences:{
             preload:join(__dirname,'../preload/index.js'),
         }
     })
-    // subWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/sub_options_manage')
-    subWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'sub_options_manage'})
+    subWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/sub_options_manage')
+    // subWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'sub_options_manage'})
     windowsStack.push(subWin)
     subWin.on('closed',()=>{
         windowsStack.pop()
     })
 })
 //关闭侧边栏设置窗口
-ipcMain.on('close-sub-manage-window',()=>windowsStack[1].destroy())
+ipcMain.on('close-sub-manage-window',()=>windowsStack[windowsStack.length - 1].destroy())
 
 //监听关闭，最小化，最大化
-ipcMain.on('minimize',()=>windowsStack[0].minimize())
+ipcMain.on('minimize',()=>BrowserWindow.getFocusedWindow().minimize())
 ipcMain.on('maximize',()=>{
-    if(windowsStack[0].isMaximized()){
-        windowsStack[0].restore()
+    if(BrowserWindow.getFocusedWindow().isMaximized()){
+        BrowserWindow.getFocusedWindow().restore()
     }else{
-        windowsStack[0].maximize()
+        BrowserWindow.getFocusedWindow().maximize()
     }
 })
 //只剩一个页面了会退出app
-ipcMain.on('closeWindow',()=>windowsStack[windowsStack.length - 1].close())
+ipcMain.on('closeWindow',()=>BrowserWindow.getFocusedWindow().close())
 //进入设置界面
 ipcMain.on('create-setting-global-window',()=>{
     const settingWin = new BrowserWindow({
-        parent:windowsStack[0],
+        parent:windowsStack[windowsStack.length - 1],
         width:700,
         height:800,
         minWidth:700,
@@ -132,10 +132,62 @@ ipcMain.on('create-setting-global-window',()=>{
             preload:join(__dirname,'../preload/index.js')
         }
     })
-    // settingWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/setting_global')
-    settingWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'setting_global'})
+    settingWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/setting_global')
+    // settingWin.loadURL(join(__dirname, '../renderer/index.html'),{hash:'setting_global'})
     windowsStack.push(settingWin)
     settingWin.on('closed',()=>{
         windowsStack.pop()
+    })
+})
+// 创建收藏页面
+ipcMain.on('create-collect-window',()=>{
+    const collectWin = new BrowserWindow({
+        parent:windowsStack[windowsStack.length - 1],
+        width:1000,
+        height:800,
+        minWidth:700,
+        minHeight:800,
+        resizable:true,
+        alwaysOnTop:true,
+        frame:false,
+        webPreferences:{
+            preload:join(__dirname,'../preload/index.js')
+        }
+    })
+    // collectWin.loadURL(join(__dirname, '../renderer/index.html'),{hash:'collect'})
+    collectWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/collect')
+    windowsStack.push(collectWin)
+    collectWin.on('closed',()=>{
+        windowsStack.pop()
+    })
+})
+
+ipcMain.on('create-create-note-window',()=>{
+    const createNoteWin = new BrowserWindow({
+        parent:windowsStack[windowsStack.length - 1],
+        width:1000,
+        height:800,
+        minWidth:700,
+        minHeight:800,
+        resizable:true,
+        alwaysOnTop:true,
+        frame:false,
+        webPreferences:{
+            preload:join(__dirname,'../preload/index.js')
+        }
+    })
+    createNoteWin.loadURL(process.env['ELECTRON_RENDERER_URL']+'/#/create_note')
+    windowsStack.push(createNoteWin)
+    createNoteWin.on('closed',()=>{
+        windowsStack.pop()
+    })
+})
+/**
+ * func是触发更新的函数，args是形参，相当于把触发pinia状态更新的函数传递了过来
+ */
+ipcMain.on('notify-others-update-pinia-state',(e,func,args)=>{
+    windowsStack.forEach(win=>{
+        // 异步似乎导致了一些问题
+        win.webContents.send('update-pinia-state',func,args)
     })
 })

@@ -16,11 +16,32 @@ const chooseRelationship = ref(0)
 //要在setup的时候就获取router
 const router = useRouter()
 //ref元素
+const right = ref(null)
 const left = ref(null)
 const resize  = ref(null)
 //水平拖拽函数
 onMounted(()=>{
-    dragHorizontal(resize,left,150,400)
+    dragHorizontal(resize,left,220,450)
+    window.onresize = ()=>{
+        scrollHeight.value = window.innerHeight -70
+        //左侧小于最大时，拉长左侧
+        // if(left.value.offsetWidth < 530){
+        //     left.value.style.width = window.innerWidth - 60 -2 -300 + 'px'
+        // }
+        //右侧的不变，改变左边
+        //左右合并,加上图标
+        if(window.innerWidth < 512){
+            left.value.style.width = window.innerWidth - 60 -2 + 'px'
+            iconType.value = 1
+        }else{
+            iconType.value = 0
+            if(window.innerWidth >= 582){
+                left.value.style.width = window.innerWidth - 60 -2 -300 + 'px'
+            }else{
+                left.value.style.width = '220px'
+            }
+        }
+    }
 })
 //再次清除监听，以防万一，resize上的会自动解绑
 onUnmounted(()=>{
@@ -90,7 +111,7 @@ onUnmounted(()=>{
     .right-view {
         height: 100vh;
         flex:1;
-        background-color: #f2f2f2;
+        background-color: var(--background-gray1-color);
     }
     .search {
         background-color: #fff;
@@ -106,7 +127,7 @@ onUnmounted(()=>{
             height: 30px;
             justify-content: center;
             align-items: center;
-            background-color: #f5f5f5;
+            background-color: var(--background-gray2-color);
             border-radius: 4px;
             .plus-icon {
                 color: #9f9f9f;
@@ -121,6 +142,10 @@ onUnmounted(()=>{
         }
     }
     .left-view {
+        flex-shrink: 0;
+        min-width: 220px;
+        width: 220px;
+        max-width: 450px;
         float: left;
         .friend-manage {
             display: flex;
@@ -148,7 +173,7 @@ onUnmounted(()=>{
                 }
                 .friend-inform:hover ,
                 .group-inform:hover {
-                    background-color: #f5f5f5;
+                    background-color: var(--background-gray2-color);
                 }
             }
             .seg-div {
@@ -190,7 +215,7 @@ onUnmounted(()=>{
                         }
                     }
                     .info-block:hover {
-                        background-color: #f5f5f5;
+                        background-color: var(--background-gray2-color);
                     }
                 }
 

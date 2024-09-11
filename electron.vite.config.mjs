@@ -14,6 +14,7 @@ export default defineConfig({
   },
   renderer: {
     resolve: {
+        extensions:['.js','.vue','.json'],
       alias: {
         '@renderer': resolve('src/renderer/src')
       }
@@ -26,6 +27,19 @@ export default defineConfig({
       Components({
         resolvers: [ElementPlusResolver()],
       }),
-    ]
-  }
+    ],
+    css:{
+        preprocessorOptions:{
+            scss:{
+                additionalData:"@import './src/renderer/src/styles/index.scss';",
+                javascriptEnabled:true
+            }
+        }
+    },
+    // server:{
+    //     proxy:{
+    //         '/hmApi':
+    //     }
+    // }
+  },
 })

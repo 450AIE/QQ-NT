@@ -75,7 +75,7 @@ function settingOperate(index){
     }
     .column:hover {
         border-radius:4px;
-        background-color: #f5f5f5;
+        background-color: var(--background-gray2-color);
         .icon {
             animation: iconAnimation 0.3s ease;
         }

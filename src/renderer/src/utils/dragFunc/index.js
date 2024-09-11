@@ -37,6 +37,7 @@ export function dragHorizontal(resizeRef,leftRef,minWidth,maxWidth){
             let endX = e.clientX
             moveLen = endX - startX
             let width = offsetWidth + moveLen
+            // 规范边界
             if(width <= minWidth){
                 width = minWidth
             }else if(width >= maxWidth){

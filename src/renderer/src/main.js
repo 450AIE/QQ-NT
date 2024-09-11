@@ -7,8 +7,9 @@ import App from './App.vue'
 // import VueRouter from 'vue-router'
 import router from './router/router'
 import { createPinia } from 'pinia'
+import stateSync from './store/plugins/stateSync'
 
-const pinia = createPinia()
+const pinia = createPinia().use(stateSync)
 const app = createApp(App)
 // app.use(VueRouter)
 app.use(router)

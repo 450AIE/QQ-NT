@@ -15,6 +15,7 @@ function openSettingView(index){
         router.push('/setting_global/general')
     }
 }
+
 </script>
 
 
@@ -71,7 +72,7 @@ function openSettingView(index){
     }
     .right {
         flex:1;
-        background-color: #f2f2f2;
+        background-color: var(--background-gray1-color);
         // background-color: orange;
     }
 }

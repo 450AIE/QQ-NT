@@ -1,24 +1,24 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import Bus from '../../utils/eventBus';
 import SettingOptions  from '@renderer/components/SettingOptions/index.vue'
-import {  ref, onBeforeUnmount } from 'vue';
-let upperIconList = ref([
-    '#icon-xiazai16',
-    '#icon-yonghu',
-    '#icon-gerenkongjian',
-    '#icon-youxi',
-    '#icon-diandiandian'
-])
-const bottomIconList = [
-    '#icon-gengduo',
-    '#icon-wenjian',
-    '#icon-shoucang',
-    '#icon-youxiang'
-]
+import {  ref } from 'vue';
+import useBaseConfigStore from '../../store/baseConfigStore';
+import { storeToRefs } from 'pinia';
+const baseConfigStore = useBaseConfigStore()
+const {bottomIconList,upperIconList} = storeToRefs(baseConfigStore)
 const showManageLeftSubWindow = () => {
     ElectronAPI.showManageLeftSubWindow()
 }
+//
+// const instance = getCurrentInstance()
+// 监听pinia更新
+ElectronAPI.onListenerPiniaStateUpdate((_,func,args)=>{
+    baseConfigStore[func](...JSON.parse(args))
+})
+// setInterval(()=>{
+//     console.log(upperIconList.value)
+//     // instance.proxy.$forceUpdate()
+// },1000)
 //设置界面的组件
 const settingOptionsComponent = ref(null)
 const router = useRouter()
@@ -32,16 +32,16 @@ function transRouter(subOptionIndex) {
     }
     router.push(path)
 }
-//接收侧边栏选项修改
-Bus.on('changeSubOptions',changeSubOptions)
-function changeSubOptions(newOprtionsArr){
-    console.log('收到bus',newOptionsArr)
-    upperIconList.value = [...upperIconList.value,...newOprtionsArr]
-}
+//接收侧边栏选项修改,改用pinia
+// Bus.on('changeSubOptions',changeSubOptions)
+// function changeSubOptions(newOprtionsArr){
+//     console.log('收到bus',newOptionsArr)
+//     upperIconList.value = [...upperIconList.value,...newOprtionsArr]
+// }
 
-onBeforeUnmount(()=>{
-    Bus.off('changeSubOptions',changeSubOptions)
-})
+// onBeforeUnmount(()=>{
+//     Bus.off('changeSubOptions',changeSubOptions)
+// })
 
 
 //点击底部的操作。最下面是0，从下网上增大
@@ -53,6 +53,9 @@ function bottomOperate(index){
         }else{
             settingOptionsComponent.value = SettingOptions
         }
+        // 收藏
+    }else if(index === 1){
+        ElectronAPI.createCollectWindow()
     }
 }
 </script>
@@ -99,7 +102,7 @@ function bottomOperate(index){
     align-items: center;
     height: 100vh;
     -webkit-app-region: drag;
-    background-color: #f2f2f2;
+    background-color: var(--background-gray1-color);
     overflow: visible;
     .setting {
         position:absolute;

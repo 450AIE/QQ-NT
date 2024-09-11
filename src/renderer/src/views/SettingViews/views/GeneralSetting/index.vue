@@ -1,4 +1,5 @@
 <script setup>
+import useBaseConfigStore from '@renderer/store/baseConfigStore';
 import SettingOptionDetailCard from '@renderer/views/SettingViews/components/SettingOptionDetailCard/index.vue'
 import { ref } from 'vue';
 //切换白天黑夜
@@ -11,6 +12,17 @@ function changeTheme(e){
     }else if(e.target.dataset.id === '1'){
         dayRef.value.classList.remove('active')
         nightRef.value.classList.add('active')
+    }
+    shiftTheme(e)
+}
+const baseConfigStore = useBaseConfigStore()
+function shiftTheme(e){
+    // 白天
+    if(e.dataset.id === 0 && baseConfigStore.isDarkTheme){
+        baseConfigStore.setDarkTheme(false)
+    // 黑夜
+    }else if(e.dataset.id === 1 && !baseConfigStore.isDarkTheme){
+        baseConfigStore.setDarkTheme(true)
     }
 }
 </script>
@@ -25,11 +37,11 @@ function changeTheme(e){
             <SettingOptionDetailCard title="外观设置" height="150">
                 <template  class="theme-card" @click="changeTheme">
                     <div class="theme active" ref="dayRef">
-                        <img src="@renderer/assets/dayTheme.png" data-id="0" alt="">
+                        <img src="../../../../assets/dayTheme.png" data-id="0" alt="">
                         <span>白天模式</span>
                     </div>
                     <div class="theme" ref="nightRef">
-                        <img src="@renderer/assets/nightTheme.png" data-id="1" alt="">
+                        <img src="../../../../assets/nightTheme.png" data-id="1" alt="">
                         <span>夜间模式</span>
                     </div>
                 </template>
@@ -74,7 +86,7 @@ function changeTheme(e){
             }
             .theme.active {
                 img {
-                    border: 2px solid #0099ff;
+                    border: 2px solid $background-blue-color;
                     border-radius: 6px;
                 }
             }
