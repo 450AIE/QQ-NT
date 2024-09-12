@@ -7,6 +7,7 @@ import InfoBlock from '@renderer/components/InfoBlock/index.vue'
 import { menuFriendArr,menuGroupArr } from './menuList';
 import { dragHorizontal } from '../../utils/dragFunc';
 import AppOperate from '@renderer/components/AppOperate/index.vue'
+import SearchBar from '@renderer/components/SearchBar/index.vue'
 const scrollHeight = ref(window.innerHeight - 70)
 window.addEventListener('resize',()=>{
     scrollHeight.value = window.innerHeight -70
@@ -58,12 +59,7 @@ onUnmounted(()=>{
     <LeftSubOptions></LeftSubOptions>
     <div class="container">
         <div class="left-view" ref="left">
-            <div class="search w">
-                <el-input placeholder="搜索" class="inp" :prefix-icon="Search" />
-                <div class="plus-icon-div">
-                    <el-icon class="plus-icon"><Plus /></el-icon>
-                </div>
-            </div>
+            <SearchBar />
             <el-scrollbar :max-height="scrollHeight" class="scroll">
                 <div class="friend-manage w">好友管理器</div>
                 <div class="informs">
@@ -113,34 +109,6 @@ onUnmounted(()=>{
         flex:1;
         background-color: var(--background-gray1-color);
     }
-    .search {
-        background-color: #fff;
-        display: flex;
-        -webkit-app-region: drag;
-        padding-top:10px;
-        align-items: center;
-        height: 70px;
-        border-bottom:1px solid #ebebeb;
-        .plus-icon-div {
-            display: flex;
-            width: 30px;
-            height: 30px;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--background-gray2-color);
-            border-radius: 4px;
-            .plus-icon {
-                color: #9f9f9f;
-            }
-        }
-        .inp {
-            height: 30px;
-            flex:1;
-            user-select: none;
-            margin-right:10px;
-            border-radius: 4px;
-        }
-    }
     .left-view {
         flex-shrink: 0;
         min-width: 220px;
@@ -158,6 +126,7 @@ onUnmounted(()=>{
             border-radius: 4px;
         }
         .scroll {
+            background-color: var(--friend-list-and-relationship-manage-background-color);
             .informs {
                 border-bottom: 1px solid #ebebeb;
                 display: flex;
@@ -193,6 +162,7 @@ onUnmounted(()=>{
                     .item {
                         :deep(){
                             .el-collapse-item__header {
+                                background-color: var(--friend-list-and-relationship-manage-background-color);
                                 position:relative;
                                 border:0;
                                 padding-left:35px;

@@ -18,11 +18,11 @@ function changeTheme(e){
 const baseConfigStore = useBaseConfigStore()
 function shiftTheme(e){
     // 白天
-    if(e.dataset.id === 0 && baseConfigStore.isDarkTheme){
-        baseConfigStore.setDarkTheme(false)
+    if(e.target.dataset.id === '0' && baseConfigStore.isDarkTheme){
+        baseConfigStore.setIsDarkTheme(false)
     // 黑夜
-    }else if(e.dataset.id === 1 && !baseConfigStore.isDarkTheme){
-        baseConfigStore.setDarkTheme(true)
+    }else if(e.target.dataset.id === '1' && !baseConfigStore.isDarkTheme){
+        baseConfigStore.setIsDarkTheme(true)
     }
 }
 
@@ -37,11 +37,11 @@ function shiftTheme(e){
         <div class="scroll">
             <SettingOptionDetailCard title="外观设置" height="150">
                 <template  class="theme-card" @click="changeTheme">
-                    <div class="theme active" ref="dayRef">
+                    <div class="theme" ref="dayRef" :class="{'active':!baseConfigStore.isDarkTheme}">
                         <img src="../../../../assets/dayTheme.png" data-id="0" alt="">
                         <span>白天模式</span>
                     </div>
-                    <div class="theme" ref="nightRef">
+                    <div class="theme" ref="nightRef" :class="{'active':baseConfigStore.isDarkTheme}">
                         <img src="../../../../assets/nightTheme.png" data-id="1" alt="">
                         <span>夜间模式</span>
                     </div>

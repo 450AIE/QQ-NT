@@ -52,9 +52,10 @@ function settingOperate(index){
     width: 200px;
     border-radius:4px;
     padding:6px 0;
+    color: var(--normal-font-color);
     opacity: 0.8;
-    box-shadow: 0 10px 6px 4px #e2e2e2;
-    background-color: #fff!important;
+    box-shadow: 0 10px 6px 4px var(--sub-setting-popover-background-color);
+    background-color: var(--sub-setting-popover-background-color)!important;
     // background:linear-gradient(to bottom, rgba(255,255,255,0.1),rgba(255,255,255,0.7))!important;
     backdrop-filter: blur(14px)!important;
     .column {
@@ -64,6 +65,7 @@ function settingOperate(index){
         margin:0 10px;
         flex:1;
         .icon {
+            fill: var(--icon-fill-color);
             width: 20px;
             height: 20px;
             display: flex;

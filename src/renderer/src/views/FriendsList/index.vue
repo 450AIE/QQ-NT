@@ -5,6 +5,7 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import  { useRouter } from 'vue-router'
 import { dragHorizontal } from '../../utils/dragFunc';
 import AppOerate from '@renderer/components/AppOperate/index.vue'
+import SearchBar from '@renderer/components/SearchBar/index.vue'
 //这个不确定是否写成响应式
 const frendsList = [
     {
@@ -66,12 +67,7 @@ function openFriendSession(uid = 1){
     <LeftSubOptions></LeftSubOptions>
     <div class="container">
         <div class="left-view" ref="left">
-            <div class="search w">
-                <el-input placeholder="搜索" class="inp" :prefix-icon="Search" />
-                <div class="plus-icon-div">
-                    <el-icon class="plus-icon"><Plus /></el-icon>
-                </div>
-            </div>
+            <SearchBar  />
             <div class="scroll">
                 <el-scrollbar :max-height="scrollHeight">
                     <InfoBlock v-for="(item,index) in 11" :key="index"
@@ -123,34 +119,6 @@ function openFriendSession(uid = 1){
     }
     .info-block:hover {
         background-color: var(--background-gray2-color);
-    }
-    .search {
-        background-color: #fff;
-        display: flex;
-        padding-top:10px;
-        align-items: center;
-        height: 70px;
-        border-bottom:1px solid #ebebeb;
-        -webkit-app-region: drag;
-        .plus-icon-div {
-            display: flex;
-            width: 30px;
-            height: 30px;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--background-gray2-color);
-            border-radius: 4px;
-            .plus-icon {
-                color: #9f9f9f;
-            }
-        }
-        .inp {
-            height: 30px;
-            flex:1;
-            user-select: none;
-            margin-right:10px;
-            border-radius: 4px;
-        }
     }
 }
 </style>

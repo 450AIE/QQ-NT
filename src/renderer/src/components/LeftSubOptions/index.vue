@@ -1,7 +1,9 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import SettingOptions  from '@renderer/components/SettingOptions/index.vue'
-import {  ref } from 'vue';
+import {  onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
+import lightQQLogo from '../../assets/light-QQ-logo.png'
+import darkQQLogo from '../../assets/dark-QQ-logo.png'
 import useBaseConfigStore from '../../store/baseConfigStore';
 import { storeToRefs } from 'pinia';
 const baseConfigStore = useBaseConfigStore()
@@ -23,20 +25,20 @@ async function readBaseConfigStoreFiles(){
                 // 获取首字母
                 const dataNameFirstChar = key.slice(3,4).toLowerCase()
                 const dataName = dataNameFirstChar + dataNameWithoutFirstChar
-                console.log('变量名为:',dataName)
-                console.log('变量为:',baseConfigStore[dataName])
-                console.log('函数为:',key)
+                // console.log('变量名为:',dataName)
+                // console.log('变量为:',baseConfigStore[dataName])
+                // console.log('函数为:',key)
                 baseConfigStore[key](res[dataName])
             }
         }
     }
 }
 readBaseConfigStoreFiles()
-
 // 监听pinia更新
 ElectronAPI.onListenerPiniaStateUpdate((_,func,args)=>{
     baseConfigStore[func](...JSON.parse(args))
 })
+// ElectronAPI.removeListenerPiniaStateUpdate(piniaStateUpdate)
 //设置界面的组件
 const settingOptionsComponent = ref(null)
 const router = useRouter()
@@ -64,13 +66,31 @@ function bottomOperate(index){
         ElectronAPI.createCollectWindow()
     }
 }
+const {isDarkTheme} = storeToRefs(useBaseConfigStore())
+// 卸载前清除IPC的监听，避免内存泄漏
+onBeforeUnmount(()=>{
+    ElectronAPI.removeListenerPiniaStateUpdate()
+})
+// 控制屏幕大小变化后收纳多余图标到管理气泡中
+// onMounted(()=>{
+//     window.addEventListener('resize',()=>{
+//         let iconAllHeight = window.innerHeight - 100 - 5*40 - 200
+//         // 标记收纳多少个
+//         let sum = 0
+//         while(iconAllHeight > 0){
+//             iconAllHeight -= 40
+//             ++sum
+//         }
+
+//     })
+// })
 </script>
 
 
 <template>
     <div class="container">
         <div class="title">
-            <img src="../../assets/QQ.png" alt="">
+            <img :src="isDarkTheme?darkQQLogo:lightQQLogo" alt="">
         </div>
         <div class="img">
             <img src="../../assets/user.png" alt="">
@@ -128,14 +148,15 @@ function bottomOperate(index){
         transition:all 0.4s ease;
     }
     .upper-option {
+        fill: var(--icon-fill-color);
         margin: 5px;
         :deep() {
             min-width: 10px;
         }
-        .popover-manage {}
     }
 
     .bottom-option {
+        fill: var(--icon-fill-color);
         position: absolute;
         // bottom: 10px;
         margin: 5px;
@@ -151,7 +172,7 @@ function bottomOperate(index){
     }
 
     .bg:hover {
-        background-color: #e9e9e9;
+        background-color: var(--sub-icon-hover-background-color,#e9e9e9);
         border-radius: 10px;
     }
 

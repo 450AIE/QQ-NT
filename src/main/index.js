@@ -19,7 +19,6 @@ function createWindow() {
         webPreferences: {
             preload: join(__dirname, '../preload/index.js'),
             sandbox: false,
-            experimentalFeatures:true
         }
     })
     windowsStack.push(mainWindow)
@@ -87,9 +86,9 @@ ipcMain.on('create-sub-manage-window', () => {
         parent:windowsStack[windowsStack.length - 1],
         width:500,
         height:500,
-        center:true,
         resizable:false,
         alwaysOnTop:true,
+        show: false,
         // modal:true,
         frame:false,
         webPreferences:{
@@ -101,6 +100,9 @@ ipcMain.on('create-sub-manage-window', () => {
     }else{
         subWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'sub_options_manage'})
     }
+    subWin.on('ready-to-show', () => {
+        subWin.show()
+    })
     windowsStack.push(subWin)
     subWin.on('closed',()=>{
         windowsStack.pop()
@@ -127,6 +129,7 @@ ipcMain.on('create-setting-global-window',()=>{
         width:700,
         height:800,
         minWidth:700,
+        show: false,
         minHeight:800,
         resizable:true,
         alwaysOnTop:true,
@@ -140,6 +143,9 @@ ipcMain.on('create-setting-global-window',()=>{
     }else{
         settingWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'setting_global'})
     }
+    settingWin.on('ready-to-show', () => {
+        settingWin.show()
+    })
     windowsStack.push(settingWin)
     settingWin.on('closed',()=>{
         windowsStack.pop()
@@ -152,6 +158,7 @@ ipcMain.on('create-collect-window',()=>{
         width:1000,
         height:800,
         minWidth:700,
+        show: false,
         minHeight:800,
         resizable:true,
         alwaysOnTop:true,
@@ -165,6 +172,9 @@ ipcMain.on('create-collect-window',()=>{
     }else{
         collectWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'collect'})
     }
+    collectWin.on('ready-to-show', () => {
+        collectWin.show()
+    })
     windowsStack.push(collectWin)
     collectWin.on('closed',()=>{
         windowsStack.pop()
@@ -177,6 +187,7 @@ ipcMain.on('create-create-note-window',()=>{
         width:1000,
         height:800,
         minWidth:700,
+        show: false,
         minHeight:800,
         resizable:true,
         alwaysOnTop:true,
@@ -190,6 +201,9 @@ ipcMain.on('create-create-note-window',()=>{
     }else{
         createNoteWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'create_note'})
     }
+    createNoteWin.on('ready-to-show', () => {
+        createNoteWin.show()
+    })
     windowsStack.push(createNoteWin)
     createNoteWin.on('closed',()=>{
         windowsStack.pop()
@@ -203,14 +217,6 @@ ipcMain.on('notify-others-update-pinia-state',(_,func,args)=>{
         win.webContents.send('update-pinia-state',func,args)
     })
 })
-// ipcMain.on('write-baseConfigStore-files',(_,fileData,path)=>{
-//     try {
-//         // console.log(resolve(__dirname,'./baseConfigStore.json'))
-//         return fs.writeFile(resolve(__dirname,'./baseConfigStore.json'),fileData,'utf-8')
-//     } catch (error) {
-//         console.dir(error)
-//     }
-// })
 ipcMain.on('write-baseConfigStore-files',(_,fileData,path)=>{
     try {
         // console.log(resolve(__dirname,'./baseConfigStore.json'))

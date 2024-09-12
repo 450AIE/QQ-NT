@@ -53,7 +53,7 @@ defineProps({
     -moz-user-select: none;
     -ms-user-select: none;
     position: relative;
-    background-color: #fff;
+    background-color: var(--friend-list-and-relationship-manage-background-color);
     .img {
         position:absolute;
         width: 50px;

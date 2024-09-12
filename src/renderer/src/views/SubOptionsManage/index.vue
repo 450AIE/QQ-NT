@@ -1,6 +1,6 @@
 <script setup>
 import SubOptionsItemsCard from './components/SubOptionsItemsCard/index.vue'
-import {  ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import useBaseConfigStore from '../../store/baseConfigStore';
 import { storeToRefs } from 'pinia';
 
@@ -18,13 +18,21 @@ async function exitSubManageWindow(e){
     }
     // 切换路由后组件被销毁，但是setTimeout不会被销毁
     ElectronAPI.writeBaseConfigStoreFiles(JSON.stringify(baseConfigStore))
+    // ElectronAPI.removeListenerPiniaStateUpdate(piniaStateUpdateHandler)
     ElectronAPI.closeSubManageWindow()
 }
+// function piniaStateUpdateHandler(_,func,args){
+//     // console.log('subManage ipcRender执行,执行的函数是',func,...args)
+//     baseConfigStore[func](...JSON.parse(args))
+// }
+// 监听pinia更新
+// ElectronAPI.onListenerPiniaStateUpdate(piniaStateUpdateHandler)
+// 组件要卸载时，关闭监听
 //
-ElectronAPI.onListenerPiniaStateUpdate((_,func,args)=>{
-    // console.log('subManage ipcRender执行,执行的函数是',func,...args)
-    baseConfigStore[func](...JSON.parse(args))
-})
+// onBeforeUnmount(()=>{
+//     console.log(piniaStateUpdateHandler)
+//     ElectronAPI.removeListenerPiniaStateUpdate(piniaStateUpdateHandler)
+// })
 //监视，数值里status发生变化就放到对应ref数组里
 watch(subOptionsManageList,()=>{
     selectedList.value = subOptionsManageList.value.filter(opt=>opt.status === true)
@@ -38,6 +46,7 @@ watch(subOptionsManageList,()=>{
 
 <template>
     <div class="container">
+        <div class="drag-region" />
         <div class="title ww">侧边栏管理</div>
         <div class="added-items ww">
             <div class="items-title" v-if="selectedList.length > 0">已添加业务</div>
@@ -68,6 +77,15 @@ watch(subOptionsManageList,()=>{
     width: 100vw;
     height: 100vh;
     background-color: var(--background-gray1-color);
+    .drag-region {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 80px;
+        -webkit-app-region: drag;
+        z-index: 100;
+    }
     .btn-div {
         position:absolute;
         right: 0;
@@ -84,7 +102,7 @@ watch(subOptionsManageList,()=>{
             background-color: $background-blue-color;
             color: #fff;
             outline: none;
-            border:1px solid #d0d0d0;
+            border:1px solid #877f7f;
             border:0;
             cursor: pointer;
         }

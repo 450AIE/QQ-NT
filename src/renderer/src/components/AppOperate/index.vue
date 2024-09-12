@@ -58,6 +58,7 @@ function appOperate(type){
     position:absolute!important;
     height: 25px!important;
     z-index:99;
+    background-color: var(--app-operate-background-color);
     .icon {
         display: flex;
         align-items: center;
@@ -66,9 +67,10 @@ function appOperate(type){
         width: 40px;
         height: 25px;
         padding:5px;
+        fill:var(--app-operate-icon-color);
     }
     .icon:hover {
-        background-color: #eaeaea;
+        background-color: var(--app-operate-hover-background-color);
     }
     .icon:last-child:hover {
         background-color: #c42b1c;

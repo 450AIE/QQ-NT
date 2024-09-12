@@ -6,6 +6,8 @@
   -webkit-user-drag:none;
   -webkit-app-region: no-drag;
   user-select: none;
+  /* 注意搜索栏图标的颜色也变了，要自己设置 */
+  /* color: var(--normal-font-color); */
 }
 /* *::-webkit-scrollbar {
   display: none;
@@ -27,6 +29,16 @@
     --background-gray5-color:#e9e9e9;
     --background-blue-color:#0099ff;
     --search-bar-border-bottom-color:#ebebeb;
+    --normal-font-color:black;
+    --sub-setting-popover-background-color:#fff;
+    --icon-fill-color:black;
+    --sub-icon-hover-background-color:#e9e9e9;
+    --search-bar-background-color:#fff;
+    --search-bar-input-background-color:#ffffff;
+    --friend-list-and-relationship-manage-background-color:#fff;
+    --app-operate-background-color:#f2f2f2;
+    --app-operate-hover-background-color:#eaeaea;
+    --app-operate-icon-color:black;
 }
 
 
@@ -38,4 +50,14 @@
 .dark-theme {
     --background-gray1-color:#111111;
     --background-gray2-color:#2d2d2d;
+    --normal-font-color:#fff;
+    --sub-setting-popover-background-color:#242424;
+    --icon-fill-color:#ccc;
+    --sub-icon-hover-background-color:#1a1a1a;
+    --search-bar-background-color:#1b1b1b;
+    --search-bar-input-background-color:#282828;
+    --friend-list-and-relationship-manage-background-color:#1b1b1b;
+    --app-operate-background-color:#111111;
+    --app-operate-hover-background-color:#242424;
+    --app-operate-icon-color:#fff;
 }

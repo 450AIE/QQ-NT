@@ -14,7 +14,7 @@ defineProps({
 <template>
    <div class="search w">
         <el-input placeholder="搜索" class="inp" :prefix-icon="Search" />
-        <div class="plus-icon-div" v-if="WithIcon">
+        <div class="plus-icon-div" v-if="withIcon">
             <el-icon class="plus-icon"><Plus /></el-icon>
         </div>
     </div>
@@ -23,7 +23,7 @@ defineProps({
 
 <style scoped lang="scss">
 .search {
-        background-color: #fff;
+        background-color: var(--search-bar-background-color);
         display: flex;
         padding-top:10px;
         align-items: center;
