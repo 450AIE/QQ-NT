@@ -11,8 +11,25 @@ const showManageLeftSubWindow = () => {
 }
 // 一进入就要读取baseConfigStore的设置
 async function readBaseConfigStoreFiles(){
-    const res = await ElectronAPI.readBaseConfigStoreFiles()
-    console.log(res)
+    let res = await ElectronAPI.readBaseConfigStoreFiles()
+    res = JSON.parse(res)
+    console.log('读取到的本地存储的baseConfigStore文件:',res)
+    for(let key in baseConfigStore){
+        if(baseConfigStore.hasOwnProperty(key)){
+            // 调用set函数修改state
+            if(key.startsWith('set') && typeof baseConfigStore[key] === 'function'){
+                // 获取变量名，没有首字母
+                const dataNameWithoutFirstChar = key.slice(4)
+                // 获取首字母
+                const dataNameFirstChar = key.slice(3,4).toLowerCase()
+                const dataName = dataNameFirstChar + dataNameWithoutFirstChar
+                console.log('变量名为:',dataName)
+                console.log('变量为:',baseConfigStore[dataName])
+                console.log('函数为:',key)
+                baseConfigStore[key](res[dataName])
+            }
+        }
+    }
 }
 readBaseConfigStoreFiles()
 

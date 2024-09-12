@@ -6,7 +6,7 @@ import {isEqual} from 'lodash'
 const useBaseConfigStore = defineStore('baseConfigStore',()=>{
     // 是否暗夜模式
     const isDarkTheme = ref(false)
-    const setDarkTheme = (flag)=>{
+    const setIsDarkTheme = (flag)=>{
         if(isDarkTheme.value === flag) return false
         isDarkTheme.value = flag
         return true
@@ -72,7 +72,7 @@ const useBaseConfigStore = defineStore('baseConfigStore',()=>{
     }
     return {
         isDarkTheme,
-        setDarkTheme,
+        setIsDarkTheme,
         upperIconList,
         bottomIconList,
         setUpperIconList,

@@ -18,7 +18,6 @@ function createWindow() {
         alwaysOnTop: true,
         webPreferences: {
             preload: join(__dirname, '../preload/index.js'),
-            webSecurity: false,
             sandbox: false,
             experimentalFeatures:true
         }
@@ -201,20 +200,29 @@ ipcMain.on('create-create-note-window',()=>{
  */
 ipcMain.on('notify-others-update-pinia-state',(_,func,args)=>{
     windowsStack.forEach(win=>{
-        // 异步似乎导致了一些问题
         win.webContents.send('update-pinia-state',func,args)
     })
 })
+// ipcMain.on('write-baseConfigStore-files',(_,fileData,path)=>{
+//     try {
+//         // console.log(resolve(__dirname,'./baseConfigStore.json'))
+//         return fs.writeFile(resolve(__dirname,'./baseConfigStore.json'),fileData,'utf-8')
+//     } catch (error) {
+//         console.dir(error)
+//     }
+// })
 ipcMain.on('write-baseConfigStore-files',(_,fileData,path)=>{
     try {
-        return fs.writeFile(resolve(__dirname,'./baseConfigStore.json'),JSON.stringify(fileData),'utf-8')
+        // console.log(resolve(__dirname,'./baseConfigStore.json'))
+        // console.log(resolve(app.getPath('userData'),'./baseConfigStore.json'))
+        return fs.writeFile(resolve(app.getPath('userData'),'./baseConfigStore.json'),fileData,'utf-8')
     } catch (error) {
         console.dir(error)
     }
 })
 ipcMain.handle('read-baseConfigStore-files',()=>{
     try {
-        return fs.readFile(resolve(__dirname,'./baseConfigStore.json'),'utf-8')
+        return fs.readFile(resolve(app.getPath('userData'),'./baseConfigStore.json'),'utf-8')
     } catch (error) {
         console.dir(error)
     }

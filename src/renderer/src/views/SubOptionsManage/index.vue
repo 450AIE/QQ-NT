@@ -17,7 +17,7 @@ async function exitSubManageWindow(e){
         // console.log('改变后的upperIconList.value:',upperIconList.value)
     }
     // 切换路由后组件被销毁，但是setTimeout不会被销毁
-    await ElectronAPI.writeBaseConfigStoreFiles()
+    ElectronAPI.writeBaseConfigStoreFiles(JSON.stringify(baseConfigStore))
     ElectronAPI.closeSubManageWindow()
 }
 //
