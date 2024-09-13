@@ -23,6 +23,7 @@ const router = createRouter({
         },
         {
             path:'/setting_global',
+            redirect:'/setting_global/general',
             component:()=>import('@renderer/views/SettingViews/SettingGlobal/index.vue'),
             children:[
                 {

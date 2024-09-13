@@ -2,9 +2,12 @@
 import AppOperator from '@renderer/components/AppOperate/index.vue'
 import CollectBlock from './components/collectBlock/index.vue'
 import SearchBar from '@renderer/components/SearchBar/index.vue'
+import useBeforeCreateGetUpdatedPiniaState from '@renderer/hooks/useBeforeCreateGetUpdatedPiniaState'
+useBeforeCreateGetUpdatedPiniaState()
 function openCreateNotWindow(){
     ElectronAPI.createCreateNoteWindow()
 }
+
 </script>
 
 

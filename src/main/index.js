@@ -233,3 +233,11 @@ ipcMain.handle('read-baseConfigStore-files',()=>{
         console.dir(error)
     }
 })
+// 监听新窗口的创建，通知其他窗口有新窗口创建。
+ipcMain.on('new-window-created',()=>{
+    windowsStack.forEach(win=>win.webContents.send('new-window-created'))
+})
+// 监听了'new-window-created'事件的窗口可以传递pinia数据同步
+ipcMain.on('send-new-created-window-updated-pinia-state',(_,store)=>{
+    windowsStack[windowsStack.length - 1].webContents.send('receive-new-created-window-updated-pinia-state',store)
+})

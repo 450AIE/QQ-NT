@@ -4,6 +4,8 @@ import AppOperate from '@renderer/components/AppOperate/index.vue'
 import SettingOptionDetailCard from '@renderer/views/SettingViews/components/SettingOptionDetailCard/index.vue'
 import { settingGlobalIconList } from './iconList';
 import { useRouter } from 'vue-router';
+import useBeforeCreateGetUpdatedPiniaState from '@renderer/hooks/useBeforeCreateGetUpdatedPiniaState'
+useBeforeCreateGetUpdatedPiniaState()
 const scrollHeight = ref(window.innerHeight - 70)
 window.addEventListener('resize',()=>{
     scrollHeight.value = window.innerHeight - 70

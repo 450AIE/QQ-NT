@@ -7,7 +7,7 @@ import darkQQLogo from '../../assets/dark-QQ-logo.png'
 import useBaseConfigStore from '../../store/baseConfigStore';
 import { storeToRefs } from 'pinia';
 const baseConfigStore = useBaseConfigStore()
-const {bottomIconList,upperIconList} = storeToRefs(baseConfigStore)
+const {bottomIconList,upperIconList,isDarkTheme} = storeToRefs(baseConfigStore)
 const showManageLeftSubWindow = () => {
     ElectronAPI.showManageLeftSubWindow()
 }
@@ -15,7 +15,7 @@ const showManageLeftSubWindow = () => {
 async function readBaseConfigStoreFiles(){
     let res = await ElectronAPI.readBaseConfigStoreFiles()
     res = JSON.parse(res)
-    console.log('读取到的本地存储的baseConfigStore文件:',res)
+    // console.log('读取到的本地存储的baseConfigStore文件:',res)
     for(let key in baseConfigStore){
         if(baseConfigStore.hasOwnProperty(key)){
             // 调用set函数修改state
@@ -52,6 +52,10 @@ function transRouter(subOptionIndex) {
     }
     router.push(path)
 }
+// 监听新窗口的创建，将当前的pinia状态传递给该窗口（但是不敢确定该组件内的pinia状态是否最新）
+ElectronAPI.onListenerNewWindowCreated(()=>{
+    ElectronAPI.sendUpdatedPiniaStateToNewCreatedWindow(JSON.stringify(baseConfigStore))
+})
 //点击底部的操作。最下面是0，从下网上增大
 function bottomOperate(index){
     if(index === 0){
@@ -66,24 +70,11 @@ function bottomOperate(index){
         ElectronAPI.createCollectWindow()
     }
 }
-const {isDarkTheme} = storeToRefs(useBaseConfigStore())
 // 卸载前清除IPC的监听，避免内存泄漏
 onBeforeUnmount(()=>{
+    ElectronAPI.removeListenerNewWindowCreated()
     ElectronAPI.removeListenerPiniaStateUpdate()
 })
-// 控制屏幕大小变化后收纳多余图标到管理气泡中
-// onMounted(()=>{
-//     window.addEventListener('resize',()=>{
-//         let iconAllHeight = window.innerHeight - 100 - 5*40 - 200
-//         // 标记收纳多少个
-//         let sum = 0
-//         while(iconAllHeight > 0){
-//             iconAllHeight -= 40
-//             ++sum
-//         }
-
-//     })
-// })
 </script>
 
 
