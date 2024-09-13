@@ -108,7 +108,7 @@ function openFriendSession(uid = 1){
     .resize {
         width: 2px;
         height: 100vh;
-        background-color: #ededed;
+        background-color: var(--resize-bar-background-color);
         cursor: ew-resize;
     }
     .right-view {

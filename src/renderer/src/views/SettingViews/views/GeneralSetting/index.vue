@@ -97,8 +97,9 @@ function shiftTheme(e){
         position:relative;
         width:100%;
         height: 70px;
+        color: var(--setting-font-color);
         // background-color: orange;
-        border-bottom: 1px solid #ececec;
+        border-bottom: 1px solid var(--setting-top-border-bottom-background-color);
         .title-text {
             position:absolute;
             left: 20px;

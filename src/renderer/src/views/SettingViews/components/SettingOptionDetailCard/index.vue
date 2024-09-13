@@ -30,14 +30,16 @@ defineProps({
     flex-direction: column;
     width:100%;
     .title {
+        color: var(--setting-font-color);
         font-size: 14px;
         margin-left:10px;
     }
     .content{
         width:100%;
         flex:1;
-        background-color: #fff;
-        margin-top:10px;
+        color: var(--setting-font-color);
+        background-color: var(--sub-options-items-card-background-color);
+        margin:10px 10px 5px 0 ;
         border-radius: 3%;
     }
 }

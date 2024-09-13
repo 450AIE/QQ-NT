@@ -28,7 +28,7 @@ defineProps({
         padding-top:10px;
         align-items: center;
         height: 70px;
-        border-bottom:1px solid #ebebeb;
+        border-bottom:1px solid var(--search-bar-border-bottom-color);
         -webkit-app-region: drag;
         .plus-icon-div {
             display: flex;
@@ -48,6 +48,12 @@ defineProps({
             user-select: none;
             margin-right:10px;
             border-radius: 4px;
+            :deep(){
+                .el-input__wrapper {
+                    background: var(--el-input-background-color);
+                    box-shadow: 0 0 0 0;
+                }
+            }
         }
     }
 </style>

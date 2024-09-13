@@ -53,7 +53,7 @@ function settingOperate(index){
     border-radius:4px;
     padding:6px 0;
     color: var(--normal-font-color);
-    opacity: 0.8;
+    opacity: 0.85;
     box-shadow: 0 10px 6px 4px var(--sub-setting-popover-background-color);
     background-color: var(--sub-setting-popover-background-color)!important;
     // background:linear-gradient(to bottom, rgba(255,255,255,0.1),rgba(255,255,255,0.7))!important;

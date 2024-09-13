@@ -87,11 +87,14 @@ async function sendMsg(e){
     .icon:hover {
         fill: #3db0fc;
     }
+    .icon {
+        fill:var(--icon-fill-color)
+    }
     .resize {
         height: 2px;
         width: 100%;
         cursor: s-resize;
-        background-color: #ededed;
+        background-color: var(--resize-bar-background-color);
     }
     .ww {
         padding: 0 20px;
@@ -106,7 +109,7 @@ async function sendMsg(e){
         min-height: 120px;
         max-height:400px;
         height: 100px;
-        border-top:2px solid #ebebeb;
+        border-top:1px solid var(--friend-session-bottom-border-top-background-color);
         .bottom-operate {
             display: flex;
             align-items: center;
@@ -178,7 +181,8 @@ async function sendMsg(e){
         display: flex;
         position:relative;
         height: 70px;
-        border-bottom: 2px solid #ebebeb;
+        color: var(--normal-font-color);
+        border-bottom: 1px solid var(--friend-session-top-border-bottom-background-color);
         align-items: center;
         justify-content: space-between;
         padding-top:20px;

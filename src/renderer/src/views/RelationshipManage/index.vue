@@ -119,16 +119,20 @@ onUnmounted(()=>{
             display: flex;
             align-items: center;
             justify-content: center;
-            border:1px solid #ebebeb;
+            border:1px solid var(--friend-manage-button-border-color);
             margin:10px;
-            padding:3px 0;
+            padding:5px 0;
             font-size: 14px;
             border-radius: 4px;
+            &:hover {
+                background: var(--friend-manage-button-hover-background-color);
+            }
         }
         .scroll {
+            color: var(--friend-list-and-relationship-manage-font-color);
             background-color: var(--friend-list-and-relationship-manage-background-color);
             .informs {
-                border-bottom: 1px solid #ebebeb;
+                border-bottom: 1px solid var(--group-info-column-border-bottom-background-color);
                 display: flex;
                 flex-direction: column;
                 .friend-inform ,
@@ -152,8 +156,21 @@ onUnmounted(()=>{
                 justify-content: center;
                 margin-top:10px;
                 .seg {
+                    color: var(--friend-list-and-relationship-manage-font-color);
                     width: 100%;
                     margin:0 20px;
+                    background-color: var(--background-gray2-color);
+                    :deep(){
+                        .el-segmented__group {
+                            position:relative;
+                            .el-segmented__item {
+                                &:hover {
+                                    color: var(--friend-list-and-relationship-manage-font-color);
+                                    background-color: var(--segment-hover-block-background-color);
+                                }
+                            }
+                        }
+                    }
                 }
             }
             .el-collapse-div {
@@ -165,6 +182,7 @@ onUnmounted(()=>{
                                 background-color: var(--friend-list-and-relationship-manage-background-color);
                                 position:relative;
                                 border:0;
+                                color: var(--friend-list-and-relationship-manage-font-color);
                                 padding-left:35px;
                                 .el-collapse-item__arrow {
                                     position:absolute;
@@ -197,7 +215,7 @@ onUnmounted(()=>{
         height: 100vh;
         float: left;
         cursor: ew-resize;
-        background-color: #ededed;
+        background-color: var(--resize-bar-background-color);
     }
     .right-view {
         float: left;

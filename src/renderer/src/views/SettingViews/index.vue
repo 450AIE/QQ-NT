@@ -48,7 +48,7 @@ function openSettingView(index){
     .left {
         width: 200px;
         height: 100vh;
-        background-color: #fff;
+        background-color: var(--setting-left-options-background-color);
         -webkit-app-region: drag;
         padding-top:20px;
         .option {
@@ -58,6 +58,7 @@ function openSettingView(index){
             height: 40px;
             margin-top:10px;
             font-size: 14px;
+            color: var(--setting-font-color);
             .icon {
                 display: flex;
                 align-items: center;
@@ -65,10 +66,11 @@ function openSettingView(index){
                 height: 20px;
                 width: 20px;
                 margin-right:10px;
+                fill:var(--icon-fill-color)
             }
         }
         .option:hover {
-            background-color: #ebebeb;
+            background-color: var(--setting-left-option-hover-background-color);
             border-radius:10px;
         }
     }

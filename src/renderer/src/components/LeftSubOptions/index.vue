@@ -16,7 +16,9 @@ const {bottomIconList,upperIconList,isDarkTheme} = storeToRefs(baseConfigStore)
 const showManageLeftSubWindow = () => {
     ElectronAPI.showManageLeftSubWindow()
 }
-// 一进入就要读取baseConfigStore的设置
+// 一进入就要读取baseConfigStore的设置，注意，只有第一次才读取，之后切换到这个路由就不读取
+// 了，否则会读取旧的状态。或者卸载前就写入配置，这样每次读取就读取新的。
+// 当前选择：卸载前写入配置
 async function readBaseConfigStoreFiles(){
     let res = await ElectronAPI.readBaseConfigStoreFiles()
     res = JSON.parse(res)
@@ -67,8 +69,9 @@ function bottomOperate(index){
         ElectronAPI.createCollectWindow()
     }
 }
-// 卸载前清除IPC的监听，避免内存泄漏
+// 卸载前清除IPC的监听，避免内存泄漏，并且写入配置
 onBeforeUnmount(()=>{
+    ElectronAPI.writeBaseConfigStoreFiles(JSON.stringify(baseConfigStore))
     ElectronAPI.removeListenerNewWindowCreated()
     ElectronAPI.removeListenerPiniaStateUpdate()
 })
@@ -165,7 +168,7 @@ onBeforeUnmount(()=>{
     }
 
     .blue:hover {
-        fill: blue;
+        fill: #0099ff;
     }
 
     .img {
