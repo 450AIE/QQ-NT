@@ -25,8 +25,6 @@ async function exitSubManageWindow(e){
 //     // console.log('subManage ipcRender执行,执行的函数是',func,...args)
 //     baseConfigStore[func](...JSON.parse(args))
 // }
-// 监听pinia更新
-// ElectronAPI.onListenerPiniaStateUpdate(piniaStateUpdateHandler)
 // 组件要卸载时，关闭监听
 //
 // onBeforeUnmount(()=>{

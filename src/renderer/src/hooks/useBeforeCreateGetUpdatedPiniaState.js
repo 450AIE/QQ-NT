@@ -14,7 +14,6 @@ function useBeforeCreateGetUpdatedPiniaState(){
 function getUpdatedPiniaState(_,jsonStore){
     const baseConfigStore = useBaseConfigStore()
     const store = JSON.parse(jsonStore)
-    console.log('之前',baseConfigStore)
     for(let key in baseConfigStore){
         if(baseConfigStore.hasOwnProperty(key)){
             // 调用set函数修改state
@@ -24,14 +23,10 @@ function getUpdatedPiniaState(_,jsonStore){
                 // 获取首字母
                 const dataNameFirstChar = key.slice(3,4).toLowerCase()
                 const dataName = dataNameFirstChar + dataNameWithoutFirstChar
-                console.log('变量名为:',dataName)
-                console.log('变量为:',baseConfigStore[dataName])
-                console.log('函数为:',key)
                 baseConfigStore[key](store[dataName])
             }
         }
     }
-    console.log('之后',baseConfigStore)
 }
 
 export default useBeforeCreateGetUpdatedPiniaState

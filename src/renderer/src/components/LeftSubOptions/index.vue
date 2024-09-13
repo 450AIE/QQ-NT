@@ -6,6 +6,11 @@ import lightQQLogo from '../../assets/light-QQ-logo.png'
 import darkQQLogo from '../../assets/dark-QQ-logo.png'
 import useBaseConfigStore from '../../store/baseConfigStore';
 import { storeToRefs } from 'pinia';
+import useUpdatePiniaStateSync from '@renderer/hooks/useUpdatePiniaStateSync'
+// import useBeforeCreateGetUpdatedPiniaState from '@renderer/hooks/useBeforeCreateGetUpdatedPiniaState'
+// 监听pinia更新
+useUpdatePiniaStateSync()
+// useBeforeCreateGetUpdatedPiniaState()
 const baseConfigStore = useBaseConfigStore()
 const {bottomIconList,upperIconList,isDarkTheme} = storeToRefs(baseConfigStore)
 const showManageLeftSubWindow = () => {
@@ -25,20 +30,12 @@ async function readBaseConfigStoreFiles(){
                 // 获取首字母
                 const dataNameFirstChar = key.slice(3,4).toLowerCase()
                 const dataName = dataNameFirstChar + dataNameWithoutFirstChar
-                // console.log('变量名为:',dataName)
-                // console.log('变量为:',baseConfigStore[dataName])
-                // console.log('函数为:',key)
                 baseConfigStore[key](res[dataName])
             }
         }
     }
 }
 readBaseConfigStoreFiles()
-// 监听pinia更新
-ElectronAPI.onListenerPiniaStateUpdate((_,func,args)=>{
-    baseConfigStore[func](...JSON.parse(args))
-})
-// ElectronAPI.removeListenerPiniaStateUpdate(piniaStateUpdate)
 //设置界面的组件
 const settingOptionsComponent = ref(null)
 const router = useRouter()
