@@ -3,6 +3,8 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs/promises'
 import {resolve} from 'path'
+import  { pushThisWindow ,isHasTheWindow, getWindow} from './utils/WindowStackFunc'
+import { COLLECT_WINDOW, CREATE_NOTE_WINDOW, MAIN_WINDOW, SETTING_WINDOW, SUBOPTIONS_MANAGE_WINDOW } from './window-type'
 //存放各个窗口的栈，第一个肯定是主窗口
 const windowsStack = []
 function createWindow() {
@@ -21,11 +23,10 @@ function createWindow() {
             sandbox: false,
         }
     })
-    windowsStack.push(mainWindow)
     mainWindow.on('ready-to-show', () => {
         mainWindow.show()
     })
-
+    pushThisWindow(windowsStack,MAIN_WINDOW,mainWindow)
     mainWindow.webContents.setWindowOpenHandler((details) => {
         shell.openExternal(details.url)
         return { action: 'deny' }
@@ -82,6 +83,7 @@ app.on('window-all-closed', () => {
 
 //展现侧边栏设置窗口
 ipcMain.on('create-sub-manage-window', () => {
+    if(isHasTheWindow(windowsStack,SUBOPTIONS_MANAGE_WINDOW)) return
     const subWin = new BrowserWindow({
         parent:windowsStack[windowsStack.length - 1],
         width:500,
@@ -103,13 +105,18 @@ ipcMain.on('create-sub-manage-window', () => {
     subWin.on('ready-to-show', () => {
         subWin.show()
     })
-    windowsStack.push(subWin)
+    pushThisWindow(windowsStack,SUBOPTIONS_MANAGE_WINDOW,subWin)
     subWin.on('closed',()=>{
         windowsStack.pop()
     })
 })
 //关闭侧边栏设置窗口
-ipcMain.on('close-sub-manage-window',()=>windowsStack[windowsStack.length - 1].destroy())
+ipcMain.on('close-sub-manage-window',()=>{
+    const subWin = getWindow(windowsStack,SUBOPTIONS_MANAGE_WINDOW)
+    if(subWin){
+        subWin.destroy()
+    }
+})
 
 //监听关闭，最小化，最大化
 ipcMain.on('minimize',()=>BrowserWindow.getFocusedWindow().minimize())
@@ -124,6 +131,7 @@ ipcMain.on('maximize',()=>{
 ipcMain.on('closeWindow',()=>BrowserWindow.getFocusedWindow().close())
 //进入设置界面
 ipcMain.on('create-setting-global-window',()=>{
+    if(isHasTheWindow(windowsStack,SETTING_WINDOW)) return
     const settingWin = new BrowserWindow({
         parent:windowsStack[windowsStack.length - 1],
         width:700,
@@ -146,13 +154,14 @@ ipcMain.on('create-setting-global-window',()=>{
     settingWin.on('ready-to-show', () => {
         settingWin.show()
     })
-    windowsStack.push(settingWin)
+    pushThisWindow(windowsStack,SETTING_WINDOW,settingWin)
     settingWin.on('closed',()=>{
         windowsStack.pop()
     })
 })
 // 创建收藏页面
 ipcMain.on('create-collect-window',()=>{
+    if(isHasTheWindow(windowsStack,COLLECT_WINDOW)) return
     const collectWin = new BrowserWindow({
         parent:windowsStack[windowsStack.length - 1],
         width:1000,
@@ -172,16 +181,18 @@ ipcMain.on('create-collect-window',()=>{
     }else{
         collectWin.loadFile(join(__dirname, '../renderer/index.html'),{hash:'collect'})
     }
+    pushThisWindow(windowsStack,COLLECT_WINDOW,collectWin)
     collectWin.on('ready-to-show', () => {
         collectWin.show()
     })
-    windowsStack.push(collectWin)
     collectWin.on('closed',()=>{
         windowsStack.pop()
     })
 })
 
 ipcMain.on('create-create-note-window',()=>{
+    // 如果存在当前窗口就不再创建
+    if(isHasTheWindow(windowsStack,CREATE_NOTE_WINDOW)) return
     const createNoteWin = new BrowserWindow({
         parent:windowsStack[windowsStack.length - 1],
         width:1000,
@@ -204,7 +215,7 @@ ipcMain.on('create-create-note-window',()=>{
     createNoteWin.on('ready-to-show', () => {
         createNoteWin.show()
     })
-    windowsStack.push(createNoteWin)
+    pushThisWindow(windowsStack,CREATE_NOTE_WINDOW,createNoteWin)
     createNoteWin.on('closed',()=>{
         windowsStack.pop()
     })
@@ -213,8 +224,9 @@ ipcMain.on('create-create-note-window',()=>{
  * func是触发更新的函数，args是形参，相当于把触发pinia状态更新的函数传递了过来
  */
 ipcMain.on('notify-others-update-pinia-state',(_,func,args)=>{
-    windowsStack.forEach(win=>{
-        win.webContents.send('update-pinia-state',func,args)
+    windowsStack.forEach((win)=>{
+        console.log(win)
+        win.window.webContents.send('update-pinia-state',func,args)
     })
 })
 ipcMain.on('write-baseConfigStore-files',(_,fileData,path)=>{
@@ -235,9 +247,9 @@ ipcMain.handle('read-baseConfigStore-files',()=>{
 })
 // 监听新窗口的创建，通知其他窗口有新窗口创建。
 ipcMain.on('new-window-created',()=>{
-    windowsStack.forEach(win=>win.webContents.send('new-window-created'))
+    windowsStack.forEach((win)=>win.window.webContents.send('new-window-created'))
 })
 // 监听了'new-window-created'事件的窗口可以传递pinia数据同步
 ipcMain.on('send-new-created-window-updated-pinia-state',(_,store)=>{
-    windowsStack[windowsStack.length - 1].webContents.send('receive-new-created-window-updated-pinia-state',store)
+    windowsStack[windowsStack.length - 1].window.webContents.send('receive-new-created-window-updated-pinia-state',store)
 })
