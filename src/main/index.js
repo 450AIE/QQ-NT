@@ -225,7 +225,6 @@ ipcMain.on('create-create-note-window',()=>{
  */
 ipcMain.on('notify-others-update-pinia-state',(_,func,args)=>{
     windowsStack.forEach((win)=>{
-        console.log(win)
         win.window.webContents.send('update-pinia-state',func,args)
     })
 })

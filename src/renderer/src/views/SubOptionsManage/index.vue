@@ -3,7 +3,12 @@ import SubOptionsItemsCard from './components/SubOptionsItemsCard/index.vue'
 import { onMounted, ref, watch } from 'vue';
 import useBaseConfigStore from '../../store/baseConfigStore';
 import { storeToRefs } from 'pinia';
+import useUpdatePiniaStateSync from '../../hooks/useUpdatePiniaStateSync';
+import useBeforeCreateGetUpdatedPiniaState from '../../hooks/useBeforeCreateGetUpdatedPiniaState';
 
+
+useUpdatePiniaStateSync()
+useBeforeCreateGetUpdatedPiniaState()
 const baseConfigStore = useBaseConfigStore()
 const {setUpperIconList,setSubOptionsManageList} = baseConfigStore
 const {subOptionsManageList } = storeToRefs(baseConfigStore)
@@ -74,7 +79,7 @@ watch(subOptionsManageList,()=>{
     position:relative;
     width: 100vw;
     height: 100vh;
-    background-color: var(--background-gray1-color);
+    background-color: var(--sub-options-manage-background-color);
     .drag-region {
         position: absolute;
         top: 0;
@@ -119,7 +124,8 @@ watch(subOptionsManageList,()=>{
             cursor: pointer;
         }
         .cancel {
-            background-color: #e9e9e9;
+            color: var(--setting-font-color);
+            background-color: var(--sub-options-manage-item-card-background-color);
         }
     }
     .ww {
@@ -127,6 +133,7 @@ watch(subOptionsManageList,()=>{
         margin-bottom: 0;
     }
     .title {
+        color: var(--sub-options-manage-font-color);
         font-size: 20px;
         margin-left:40px;
     }
@@ -146,8 +153,9 @@ watch(subOptionsManageList,()=>{
                 width: 70px;
                 height: 70px;
                 flex-shrink: 0;
-                background-color: #fff;
+                // background-color: var(--sub-options-manage-item-card-background-color);
                 // flex-basis: 20%;
+                border-radius: 6px;
                 margin-right:10px;
             }
             .choose-active {

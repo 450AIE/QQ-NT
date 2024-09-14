@@ -75,6 +75,20 @@ onBeforeUnmount(()=>{
     ElectronAPI.removeListenerNewWindowCreated()
     ElectronAPI.removeListenerPiniaStateUpdate()
 })
+// 监听窗口高度，控制收纳左侧多余的图标
+window.addEventListener('resize',onListenerWindowHeightToUnfoldIcons)
+function onListenerWindowHeightToUnfoldIcons(){
+    // 上面的logo和头像占85
+    // 下面的图标每个高45
+    const windowHeight = window.innerHeight
+    // 每个图标占据45高度
+    let addedIconSum = upperIconList.value.length - 5
+    let restHeight = windowHeight - 85 - (5+4)*45
+    console.log('剩余高度',restHeight)
+    console.log('当前有的多余图标数目',addedIconSum)
+    let newIconSum = parseInt(restHeight / 45)
+    console.log('当前可以存放数目为',newIconSum)
+}
 </script>
 
 
@@ -157,6 +171,7 @@ onBeforeUnmount(()=>{
         display: flex;
         justify-content: center;
         align-items: center;
+        flex-shrink: 0;
         width: 35px;
         height: 35px;
         padding: 8px;
@@ -172,10 +187,10 @@ onBeforeUnmount(()=>{
     }
 
     .img {
+        flex-shrink: 0;
         margin: 10px 5px;
         width: 35px;
         height: 35px;
-
         img {
             width: 100%;
             height: 100%;
@@ -186,7 +201,7 @@ onBeforeUnmount(()=>{
 
     .title {
         margin: 6px 10px;
-
+        flex-shrink: 0;
         img {
             width: 100%;
             height: 100%;
