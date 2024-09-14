@@ -65,6 +65,7 @@ function shiftTheme(e){
             height: 100%;
             flex-shrink: 0;
             display: flex;
+            margin-right:10px;
             // align-items: center;
             .theme {
                 display: flex;

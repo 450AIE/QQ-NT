@@ -5,7 +5,7 @@ const baseConfigStore = useBaseConfigStore()
 
 <template>
   <div class="app"  :class="{'light-theme':!baseConfigStore.isDarkTheme,'dark-theme':baseConfigStore.isDarkTheme}">
-        <router-view class="router"
+        <router-view class="app-router"
         ></router-view>
   </div>
 
@@ -13,7 +13,7 @@ const baseConfigStore = useBaseConfigStore()
 <style scoped>
 .app {
    display: flex;
-   .router {
+   .app-router {
     flex: 1;
   }
 }

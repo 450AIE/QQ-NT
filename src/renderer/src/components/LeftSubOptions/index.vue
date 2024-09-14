@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import SettingOptions  from '@renderer/components/SettingOptions/index.vue'
-import {  onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
+import {watch,  onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
 import lightQQLogo from '../../assets/light-QQ-logo.png'
 import darkQQLogo from '../../assets/dark-QQ-logo.png'
 import useBaseConfigStore from '../../store/baseConfigStore';
@@ -12,6 +12,10 @@ import useUpdatePiniaStateSync from '@renderer/hooks/useUpdatePiniaStateSync'
 useUpdatePiniaStateSync()
 // useBeforeCreateGetUpdatedPiniaState()
 const baseConfigStore = useBaseConfigStore()
+// 控制显示在左边的图标
+const upperIcons = ref([])
+// 控制被收纳的图标
+const foldedIcons = ref([])
 const {bottomIconList,upperIconList,isDarkTheme} = storeToRefs(baseConfigStore)
 const showManageLeftSubWindow = () => {
     ElectronAPI.showManageLeftSubWindow()
@@ -74,21 +78,44 @@ onBeforeUnmount(()=>{
     ElectronAPI.writeBaseConfigStoreFiles(JSON.stringify(baseConfigStore))
     ElectronAPI.removeListenerNewWindowCreated()
     ElectronAPI.removeListenerPiniaStateUpdate()
+    window.removeEventListener('resize',onListenerWindowHeightToUnfoldIcons)
+})
+onMounted(()=>{
+    window.addEventListener('resize',onListenerWindowHeightToUnfoldIcons)
 })
 // 监听窗口高度，控制收纳左侧多余的图标
-window.addEventListener('resize',onListenerWindowHeightToUnfoldIcons)
+// 同时要watch变化
 function onListenerWindowHeightToUnfoldIcons(){
     // 上面的logo和头像占85
     // 下面的图标每个高45
     const windowHeight = window.innerHeight
     // 每个图标占据45高度
-    let addedIconSum = upperIconList.value.length - 5
+    // 已经选择了的所有options数目，排除了5个固定的
+    let selectedIconsSum = upperIconList.value.length - 5
     let restHeight = windowHeight - 85 - (5+4)*45
-    console.log('剩余高度',restHeight)
-    console.log('当前有的多余图标数目',addedIconSum)
+    // console.log('剩余高度',restHeight)
+    // console.log('当前有的多余图标数目',addedIconSum)
     let newIconSum = parseInt(restHeight / 45)
-    console.log('当前可以存放数目为',newIconSum)
+    // 要收纳的总数
+    const foldedIconsSum = selectedIconsSum - newIconSum
+    // console.log('当前可以存放数目为',newIconSum)
+    upperIcons.value = [...upperIconList.value.slice(0,5 + newIconSum)]
+    // selectedIconsSum === 0的话slice(5,5)得到的也是[]
+    foldedIcons.value = [...upperIconList.value.slice(5,5+foldedIconsSum)]
 }
+// 实现见监听upperIconList改变从而改变左侧的显示
+watch(upperIconList,()=>{
+    let selectedIconsSum = upperIconList.value.length - 5
+    const windowHeight = window.innerHeight
+    let restHeight = windowHeight - 85 - (5+4)*45
+    let newIconSum = parseInt(restHeight / 45)
+    const foldedIconsSum = selectedIconsSum - newIconSum
+    upperIcons.value = [...upperIconList.value.slice(0,5 + newIconSum)]
+    foldedIcons.value = [...upperIconList.value.slice(5,5+foldedIconsSum)]
+},{
+    deep:true,
+    immediate:true
+})
 </script>
 
 
@@ -100,15 +127,25 @@ function onListenerWindowHeightToUnfoldIcons(){
         <div class="img">
             <img src="../../assets/user.png" alt="">
         </div>
-        <div class="upper-option" v-for="(item, index) in upperIconList" :key="index" @click="transRouter(index)">
-            <el-popover placement="right" trigger="hover" width="50" :disabled="(index !== 4)" hide-after="60">
+        <div class="upper-option" v-for="(item, index) in upperIcons" :key="index" @click="transRouter(index)">
+            <el-popover placement="right" trigger="hover" width="50" :disabled="(index !== 4 || foldedIcons.length ===0)" hide-after="100"
+            popper-class="popper">
                 <template #reference>
                     <svg class="icon bg" aria-hidden="true">
                         <use :xlink:href="item"></use>
                     </svg>
                 </template>
-                <div class="popover-manage" @click="showManageLeftSubWindow">
-                    管理
+                <div @click="showManageLeftSubWindow">
+                    <div
+                    :style="{
+                        margin:'5px 0 5px 0' ,
+
+                    }"
+                      v-for="(item,index) in foldedIcons" :key="index">
+                        <svg  aria-hidden="true" width="25" height="30">
+                            <use :xlink:href="item"></use>
+                        </svg>
+                    </div>
                 </div>
             </el-popover>
         </div>
@@ -158,6 +195,7 @@ function onListenerWindowHeightToUnfoldIcons(){
         :deep() {
             min-width: 10px;
         }
+
     }
 
     .bottom-option {
