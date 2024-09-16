@@ -31,7 +31,7 @@
     --search-bar-border-bottom-color:#ebebeb;
     --friend-list-and-relationship-manage-font-color:black;
     --setting-font-color:black;
-    --sub-options-manage-font-color:#fff;
+    --sub-options-manage-font-color:black;
     --sub-options-manage-cancel-button-background-color:#fff;
     --normal-font-color:black;
     --sub-setting-popover-background-color:#fff;
@@ -93,7 +93,6 @@
     --setting-top-border-bottom-background-color:#1f1f1f;
     --sub-options-items-card-background-color:#262626;
     --sub-options-manage-background-color:#262626;
-    --sub-options-manage-item-card-background-color:#333333;
     --sub-options-manage-item-card-background-color:#333333;
     --setting-left-options-background-color:#1b1b1b;
     --setting-left-option-selected-background-color:#373737;

@@ -29,39 +29,53 @@ const useBaseConfigStore = defineStore('baseConfigStore',()=>{
     // 管理页面，控制左侧是显示哪些图标
     const subOptionsManageList = ref([
         {
+            id:1,
             icon:'#icon-QQyinle3',
             text:'QQ音乐',
             status:false
         },
         {
+            id:2,
             icon:'#icon-jiqiren',
             text:'机器人',
             status:false
         },
         {
+            id:3,
             icon:'#icon-shangwuzixun',
             text:'咨询客服',
             status:false
         },
         {
+            id:4,
             icon:'#icon-QQyouxi',
             text:'QQ游戏',
             status:false
         },
         {
+            id:5,
             icon:'#icon-AItengxunwendang-01',
             text:'腾讯文档',
             status:false
         },
         {
+            id:6,
             icon:'#icon-touping',
             text:'短视频',
             status:false
         }
     ])
-    const setSubOptionsManageList=(newList)=>{
-        if(isEqual(newList,subOptionsManageList.value)) return false
-        subOptionsManageList.value = [...newList]
+    // 数组内对象的顺序不同会影响isEqual，要排序
+    const setSubOptionsManageList=(newList,isSubOptionsManageStrike = false)=>{
+        const newArr = newList.sort((cur,nex)=>cur.id-nex.id)
+        const oldArr = subOptionsManageList.value.sort((cur,nex)=>cur.id-nex.id)
+        // console.log('old:',oldArr)
+        // console.log('new:',newArr)
+        console.log(isEqual(oldArr,newArr))
+        // if(flag) return true
+        if(isSubOptionsManageStrike) return true
+        if(isEqual(newArr,oldArr)) return false
+        subOptionsManageList.value = newArr
         return true
     }
     const setUpperIconList = (newIconList)=>{
@@ -70,7 +84,15 @@ const useBaseConfigStore = defineStore('baseConfigStore',()=>{
         upperIconList.value = arr
         return true
     }
+    // const testText = ref(1)
+    // const setTestText = (newText)=>{
+    //     if(newText === testText.value) return false
+    //     testText.value = newText
+    //     return true
+    // }
     return {
+        // testText,
+        // setTestText,
         isDarkTheme,
         setIsDarkTheme,
         upperIconList,
@@ -79,8 +101,6 @@ const useBaseConfigStore = defineStore('baseConfigStore',()=>{
         subOptionsManageList,
         setSubOptionsManageList
     }
-},{
-    persist:true
 })
 
 export default useBaseConfigStore

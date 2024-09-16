@@ -3,7 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs/promises'
 import {resolve} from 'path'
-import  { pushThisWindow ,isHasTheWindow, getWindow} from './utils/WindowStackFunc'
+import  { pushThisWindow ,isHasTheWindow, getWindow, popThisWindow} from './utils/WindowStackFunc'
 import { COLLECT_WINDOW, CREATE_NOTE_WINDOW, MAIN_WINDOW, SETTING_WINDOW, SUBOPTIONS_MANAGE_WINDOW } from './window-type'
 //存放各个窗口的栈，第一个肯定是主窗口
 const windowsStack = []
@@ -107,7 +107,7 @@ ipcMain.on('create-sub-manage-window', () => {
     })
     pushThisWindow(windowsStack,SUBOPTIONS_MANAGE_WINDOW,subWin)
     subWin.on('closed',()=>{
-        windowsStack.pop()
+        popThisWindow(windowsStack,SUBOPTIONS_MANAGE_WINDOW)
     })
 })
 //关闭侧边栏设置窗口
@@ -156,7 +156,7 @@ ipcMain.on('create-setting-global-window',()=>{
     })
     pushThisWindow(windowsStack,SETTING_WINDOW,settingWin)
     settingWin.on('closed',()=>{
-        windowsStack.pop()
+        popThisWindow(windowsStack,SETTING_WINDOW)
     })
 })
 // 创建收藏页面
@@ -186,7 +186,7 @@ ipcMain.on('create-collect-window',()=>{
         collectWin.show()
     })
     collectWin.on('closed',()=>{
-        windowsStack.pop()
+        popThisWindow(windowsStack,COLLECT_WINDOW)
     })
 })
 
@@ -217,7 +217,7 @@ ipcMain.on('create-create-note-window',()=>{
     })
     pushThisWindow(windowsStack,CREATE_NOTE_WINDOW,createNoteWin)
     createNoteWin.on('closed',()=>{
-        windowsStack.pop()
+        popThisWindow(windowsStack,CREATE_NOTE_WINDOW)
     })
 })
 /**
@@ -232,6 +232,7 @@ ipcMain.on('write-baseConfigStore-files',(_,fileData,path)=>{
     try {
         // console.log(resolve(__dirname,'./baseConfigStore.json'))
         // console.log(resolve(app.getPath('userData'),'./baseConfigStore.json'))
+        // console.log('写文件')
         return fs.writeFile(resolve(app.getPath('userData'),'./baseConfigStore.json'),fileData,'utf-8')
     } catch (error) {
         console.dir(error)
@@ -246,7 +247,11 @@ ipcMain.handle('read-baseConfigStore-files',()=>{
 })
 // 监听新窗口的创建，通知其他窗口有新窗口创建。
 ipcMain.on('new-window-created',()=>{
-    windowsStack.forEach((win)=>win.window.webContents.send('new-window-created'))
+    windowsStack.forEach((win)=>{
+        if(win){
+            win.window.webContents.send('new-window-created')
+        }
+    })
 })
 // 监听了'new-window-created'事件的窗口可以传递pinia数据同步
 ipcMain.on('send-new-created-window-updated-pinia-state',(_,store)=>{

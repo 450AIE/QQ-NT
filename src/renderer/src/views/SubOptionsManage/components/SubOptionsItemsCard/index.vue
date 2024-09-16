@@ -4,7 +4,7 @@ import useUpdatePiniaStateSync from '@renderer/hooks/useUpdatePiniaStateSync.js'
 import useBaseConfigStore from '@renderer/store/baseConfigStore';
 import { Minus, Plus } from '@element-plus/icons-vue';
 import { storeToRefs } from 'pinia';
-useUpdatePiniaStateSync()
+// useUpdatePiniaStateSync()
 // useBeforeCreateGetUpdatedPiniaState()
 const {isDarkTheme} = storeToRefs(useBaseConfigStore())
 const props = defineProps({
@@ -25,7 +25,6 @@ function operateOption(){
         <div class="icon-plus"  :style="{backgroundColor: option.status === false ? '#e5f5ff' : '#f4e4e1'}"
          @click="operateOption" v-if="!isDarkTheme">
             <el-icon :color="option.status === false ? '#2cabff' : '#f18f80'">
-            <!-- <el-icon :class="{'opertate-icon':option.status}"> -->
                 <Plus v-if="option.status === false"/>
                 <Minus  v-else />
             </el-icon>
@@ -33,7 +32,6 @@ function operateOption(){
         <div class="icon-plus"  :style="{backgroundColor: option.status === false ? '#2e3843' : '#473633'}"
         @click="operateOption" v-else>
             <el-icon :color="option.status === false ? '#095cb1' : '#aa4331'">
-            <!-- <el-icon :class="{'opertate-icon':option.status}"> -->
                 <Plus v-if="option.status === false"/>
                 <Minus  v-else />
             </el-icon>

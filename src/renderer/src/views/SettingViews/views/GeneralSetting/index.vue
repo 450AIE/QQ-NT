@@ -1,8 +1,10 @@
 <script setup>
+import useBeforeCreateGetUpdatedPiniaState from '@renderer/hooks/useBeforeCreateGetUpdatedPiniaState';
 import useBaseConfigStore from '@renderer/store/baseConfigStore';
 import SettingOptionDetailCard from '@renderer/views/SettingViews/components/SettingOptionDetailCard/index.vue'
 import { ref } from 'vue';
 //切换白天黑夜
+useBeforeCreateGetUpdatedPiniaState()
 const dayRef = ref(null)
 const nightRef = ref(null)
 function changeTheme(e){
@@ -65,7 +67,6 @@ function shiftTheme(e){
             height: 100%;
             flex-shrink: 0;
             display: flex;
-            margin-right:10px;
             // align-items: center;
             .theme {
                 display: flex;

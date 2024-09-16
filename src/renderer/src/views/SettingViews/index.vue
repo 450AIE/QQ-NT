@@ -5,7 +5,9 @@ import SettingOptionDetailCard from '@renderer/views/SettingViews/components/Set
 import { settingGlobalIconList } from './iconList';
 import { useRouter } from 'vue-router';
 import useBeforeCreateGetUpdatedPiniaState from '@renderer/hooks/useBeforeCreateGetUpdatedPiniaState'
+import useUpdatePiniaStateSync from '../../hooks/useUpdatePiniaStateSync';
 useBeforeCreateGetUpdatedPiniaState()
+useUpdatePiniaStateSync()
 const scrollHeight = ref(window.innerHeight - 70)
 window.addEventListener('resize',()=>{
     scrollHeight.value = window.innerHeight - 70

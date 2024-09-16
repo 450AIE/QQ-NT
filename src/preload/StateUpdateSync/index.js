@@ -10,7 +10,7 @@ const stateUpdateSync = {
     sendUpdatedPiniaStateToNewCreatedWindow:(store)=>ipcRenderer.send('send-new-created-window-updated-pinia-state',store),
     // 新创建的窗口内接收传递的store调用set更新，更新后就自动移除
     onceListenerToGetUpdatedPiniaState:(cb)=>ipcRenderer.once('receive-new-created-window-updated-pinia-state',cb),
-    removeListenerPiniaStateUpdate:(handler)=>ipcRenderer.removeAllListeners('update-pinia-state',handler),
+    removeListenerPiniaStateUpdate:()=>ipcRenderer.removeAllListeners('update-pinia-state'),
     removeListenerNewWindowCreated:()=>ipcRenderer.removeAllListeners('new-window-created')
 }
 

@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import SettingOptions  from '@renderer/components/SettingOptions/index.vue'
-import {watch,  onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
+import {watch,  onBeforeMount, onBeforeUnmount, onMounted, ref, onBeforeUpdate, onUpdated } from 'vue';
 import lightQQLogo from '../../assets/light-QQ-logo.png'
 import darkQQLogo from '../../assets/dark-QQ-logo.png'
 import useBaseConfigStore from '../../store/baseConfigStore';
@@ -26,6 +26,7 @@ const showManageLeftSubWindow = () => {
 async function readBaseConfigStoreFiles(){
     let res = await ElectronAPI.readBaseConfigStoreFiles()
     res = JSON.parse(res)
+    console.log('本地读取的store为:',res)
     // console.log('读取到的本地存储的baseConfigStore文件:',res)
     for(let key in baseConfigStore){
         if(baseConfigStore.hasOwnProperty(key)){
@@ -41,6 +42,7 @@ async function readBaseConfigStoreFiles(){
         }
     }
 }
+// setInterval(()=>console.log(baseConfigStore.subOptionsManageList),2000)
 readBaseConfigStoreFiles()
 //设置界面的组件
 const settingOptionsComponent = ref(null)
@@ -57,7 +59,16 @@ function transRouter(subOptionIndex) {
 }
 // 监听新窗口的创建，将当前的pinia状态传递给该窗口（但是不敢确定该组件内的pinia状态是否最新）
 ElectronAPI.onListenerNewWindowCreated(()=>{
+    // if(obj === JSON.stringify(baseConfigStore))
+    // {console.log('传递的仓库没变')
+    //  return}
+    //  console.log('传递了新的仓库')
+    //  console.log('obj:',obj && JSON.parse(obj))
+    //  console.log('新仓库:',JSON.parse(JSON.stringify(baseConfigStore)))
+    // obj = JSON.stringify(baseConfigStore)
     ElectronAPI.sendUpdatedPiniaStateToNewCreatedWindow(JSON.stringify(baseConfigStore))
+    // console.log('传递的仓库是:',baseConfigStore)
+    // ElectronAPI.writeBaseConfigStoreFiles(JSON.stringify(baseConfigStore))
 })
 //点击底部的操作。最下面是0，从下网上增大
 function bottomOperate(index){
@@ -75,9 +86,9 @@ function bottomOperate(index){
 }
 // 卸载前清除IPC的监听，避免内存泄漏，并且写入配置
 onBeforeUnmount(()=>{
+    // console.log('卸载前的store:',baseConfigStore)
     ElectronAPI.writeBaseConfigStoreFiles(JSON.stringify(baseConfigStore))
     ElectronAPI.removeListenerNewWindowCreated()
-    ElectronAPI.removeListenerPiniaStateUpdate()
     window.removeEventListener('resize',onListenerWindowHeightToUnfoldIcons)
 })
 onMounted(()=>{
@@ -128,14 +139,14 @@ watch(upperIconList,()=>{
             <img src="../../assets/user.png" alt="">
         </div>
         <div class="upper-option" v-for="(item, index) in upperIcons" :key="index" @click="transRouter(index)">
-            <el-popover placement="right" trigger="hover" width="50" :disabled="(index !== 4 || foldedIcons.length ===0)" hide-after="100"
+            <el-popover placement="right" trigger="hover" width="50" :disabled="(index !== 4)" hide-after="100"
             popper-class="popper">
                 <template #reference>
                     <svg class="icon bg" aria-hidden="true">
                         <use :xlink:href="item"></use>
                     </svg>
                 </template>
-                <div @click="showManageLeftSubWindow">
+                <div @click="showManageLeftSubWindow" v-if="foldedIcons.length !==0">
                     <div
                     :style="{
                         margin:'5px 0 5px 0' ,
@@ -147,6 +158,7 @@ watch(upperIconList,()=>{
                         </svg>
                     </div>
                 </div>
+                <div v-else @click="showManageLeftSubWindow">管理</div>
             </el-popover>
         </div>
         <div class="bottom-option" v-for="(item, index) in bottomIconList" :key="index"
@@ -155,7 +167,7 @@ watch(upperIconList,()=>{
                 <use :xlink:href="item"></use>
             </svg>
         </div>
-        <component :is="settingOptionsComponent" class="setting"></component>
+        <component :is="settingOptionsComponent" class="setting"/>
     </div>
 </template>
 

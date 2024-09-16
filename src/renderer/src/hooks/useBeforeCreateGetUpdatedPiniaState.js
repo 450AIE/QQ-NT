@@ -14,6 +14,7 @@ function useBeforeCreateGetUpdatedPiniaState(){
 function getUpdatedPiniaState(_,jsonStore){
     const baseConfigStore = useBaseConfigStore()
     const store = JSON.parse(jsonStore)
+    // console.log('收到的store是:',store)
     for(let key in baseConfigStore){
         if(baseConfigStore.hasOwnProperty(key)){
             // 调用set函数修改state

@@ -7,43 +7,33 @@ import useUpdatePiniaStateSync from '../../hooks/useUpdatePiniaStateSync';
 import useBeforeCreateGetUpdatedPiniaState from '../../hooks/useBeforeCreateGetUpdatedPiniaState';
 
 
-useUpdatePiniaStateSync()
 useBeforeCreateGetUpdatedPiniaState()
+useUpdatePiniaStateSync()
 const baseConfigStore = useBaseConfigStore()
 const {setUpperIconList,setSubOptionsManageList} = baseConfigStore
 const {subOptionsManageList } = storeToRefs(baseConfigStore)
 const selectedList = ref(subOptionsManageList.value.filter(opt=>opt.status === true))
 const unselectedList = ref(subOptionsManageList.value.filter(opt=>opt.status === false))
-async function exitSubManageWindow(e){
+function exitSubManageWindow(e){
     //确定，将当前的状态保存给subOptionsManageList
     if(e.target.dataset.id === '0'){
-        setSubOptionsManageList([...selectedList.value,...unselectedList.value])
+        setSubOptionsManageList([...selectedList.value,...unselectedList.value],true)
         setUpperIconList([...selectedList.value.map(item=>item.icon)])
+        ElectronAPI.writeBaseConfigStoreFiles(JSON.stringify(baseConfigStore))
         // console.log('改变后的upperIconList.value:',upperIconList.value)
     }
-    // 切换路由后组件被销毁，但是setTimeout不会被销毁
-    ElectronAPI.writeBaseConfigStoreFiles(JSON.stringify(baseConfigStore))
-    // ElectronAPI.removeListenerPiniaStateUpdate(piniaStateUpdateHandler)
     ElectronAPI.closeSubManageWindow()
 }
-// function piniaStateUpdateHandler(_,func,args){
-//     // console.log('subManage ipcRender执行,执行的函数是',func,...args)
-//     baseConfigStore[func](...JSON.parse(args))
-// }
-// 组件要卸载时，关闭监听
-//
-// onBeforeUnmount(()=>{
-//     console.log(piniaStateUpdateHandler)
-//     ElectronAPI.removeListenerPiniaStateUpdate(piniaStateUpdateHandler)
-// })
 //监视，数值里status发生变化就放到对应ref数组里
 watch(subOptionsManageList,()=>{
     selectedList.value = subOptionsManageList.value.filter(opt=>opt.status === true)
     unselectedList.value = subOptionsManageList.value.filter(opt=>opt.status === false)
+    // console.log('se',selectedList.value)
+    // console.log('unse',unselectedList.value)
+    // console.log(baseConfigStore.subOptionsManageList)
 },{
-    deep:true
+    deep:true,
 })
-
 </script>
 
 

@@ -14,7 +14,9 @@ function stateSync({store}){
                 // 如果传递的数据和原数据一样，那么不会调用通知更新，
                 // res是bool，不一样返回true
                 if(res){
-                    ElectronAPI.notifyAllWindowUpdatePiniaState(name,JSON.stringify(args))
+                    // console.log('args[0]',[args[0]])
+                    // console.log('args',args)
+                    ElectronAPI.notifyAllWindowUpdatePiniaState(name,JSON.stringify([args[0]]))
                 }
             })
         }
