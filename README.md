@@ -21,10 +21,10 @@ QQ-NT 是我闲暇时间用于练习Electron和Vue3以及Pinia，vite，CSS，�
 ## 🪝通用hooks
 
 **useBeforeCreateGetUpdatedPiniaState**
-让该窗口可以在创建的时候就去获取最新的Pinia仓库状态并且同步更新
+> 让该窗口可以在创建的时候就去获取最新的Pinia仓库状态并且同步更新
 
 **useUpdatePiniaStateSync**
-让该窗口一直监听其他窗口的Pinia仓库状态的更新，并且同步更新，只会更新修改的部分
+> 让该窗口一直监听其他窗口的Pinia仓库状态的更新，并且同步更新，只会更新修改的部分
 
 ## Project Setup
 
