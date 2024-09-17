@@ -15,6 +15,9 @@ const router = createRouter({
         },
         {
             path: '/sub_options_manage',
+            meta:{
+                keepAlive:true
+            },
             component: () => import('@renderer/views/SubOptionsManage/index.vue'),
         },
         {

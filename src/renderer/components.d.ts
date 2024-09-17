@@ -15,6 +15,7 @@ declare module 'vue' {
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSegmented: typeof import('element-plus/es')['ElSegmented']
+    ElSlider: typeof import('element-plus/es')['ElSlider']
     InfoBlock: typeof import('./src/components/InfoBlock/index.vue')['default']
     LeftSubOptions: typeof import('./src/components/LeftSubOptions/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

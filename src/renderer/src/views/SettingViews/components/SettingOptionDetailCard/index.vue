@@ -1,5 +1,9 @@
 <script setup>
-defineProps({
+import useBaseConfigStore from '@renderer/store/baseConfigStore';
+import { storeToRefs } from 'pinia';
+
+
+const props = defineProps({
     title:{
         required:true,
         type:String
@@ -9,11 +13,12 @@ defineProps({
         type:Number
     }
 })
+const {globalFontSize} = storeToRefs(useBaseConfigStore())
 </script>
 
 
 <template>
-    <div class="container" :style="{height:height + 'px'}">
+    <div class="container" :style="{height:parseInt(height)  + parseInt(globalFontSize) + 'px'}">
         <div class="title">{{ title }}</div>
         <div class="content">
             <slot>
@@ -29,9 +34,11 @@ defineProps({
     display: flex;
     flex-direction: column;
     width:100%;
+    margin-bottom:10px;
     .title {
         color: var(--setting-font-color);
-        font-size: 14px;
+        // font-size: 14px;
+        font-size: var(--global-font-size);
         margin-left:10px;
     }
     .content{

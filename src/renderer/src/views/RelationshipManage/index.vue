@@ -55,11 +55,13 @@ onUnmounted(()=>{
 </script>
 
 <template>
-    <AppOperate class="app-operate"></AppOperate>
+    <AppOperate class="app-operate" />
     <LeftSubOptions></LeftSubOptions>
     <div class="container">
         <div class="left-view" ref="left">
-            <SearchBar />
+            <keep-alive>
+                <SearchBar />
+            </keep-alive>
             <el-scrollbar :max-height="scrollHeight" class="scroll">
                 <div class="friend-manage w">好友管理器</div>
                 <div class="informs">
@@ -89,7 +91,7 @@ onUnmounted(()=>{
         </div>
         <div class="resize" ref="resize"></div>
         <div class="right-view" ref="right">
-            <router-view></router-view>
+            <router-view />
         </div>
     </div>
 </template>

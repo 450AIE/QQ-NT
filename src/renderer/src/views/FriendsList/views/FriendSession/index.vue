@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { onActivated, onMounted, ref } from 'vue';
 import TextBubble from '@renderer/components/MessageBubble/TextMessage/index.vue'
 import { dragVertical } from '@renderer/utils/dragFunc';
 import { topIconList,bottomIconList } from './iconList';
@@ -11,6 +11,10 @@ const inpMsg = ref('')
 const scrollRef = ref(null)
 //存放所有消息的数组
 const msgArr = ref([])
+defineOptions({
+    name:'FriendSession'
+})
+onActivated(()=>console.log('FriendSession'))
 onMounted(()=>{
     dragVertical(resizeRef,bottomRef,140,400)
 })
@@ -42,7 +46,6 @@ async function sendMsg(e){
 <template>
     <div class="container">
         <div class="top ww">
-            <!-- <AppOperate class="app-operate"></AppOperate> -->
             <div class="username">TH</div>
             <div class="upper-icons" v-for="(item,index) in topIconList" :key="index">
                 <svg class="icon" aria-hidden="true">

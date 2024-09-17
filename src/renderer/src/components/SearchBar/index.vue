@@ -1,5 +1,6 @@
 <script setup>
 import { Search , Plus } from '@element-plus/icons-vue';
+import { onActivated, onMounted } from 'vue';
 defineProps({
     withIcon:{
         required:false,
@@ -7,7 +8,12 @@ defineProps({
         default:true
     }
 })
-
+defineOptions({
+    name:'SearchBar'
+})
+// onActivated(()=>{
+//     console.log('searchbar activated')
+// })
 </script>
 
 
@@ -51,7 +57,10 @@ defineProps({
             :deep(){
                 .el-input__wrapper {
                     background: var(--el-input-background-color);
-                    box-shadow: 0 0 0 0;
+                    box-shadow: 0 0 0 1px var(--el-input-background-color) inset;
+                }
+                .el-input__wrapper:hover {
+                    box-shadow: 0 0 0 1px #409eff inset;
                 }
             }
         }

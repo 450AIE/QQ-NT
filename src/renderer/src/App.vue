@@ -5,8 +5,12 @@ const baseConfigStore = useBaseConfigStore()
 
 <template>
   <div class="app"  :class="{'light-theme':!baseConfigStore.isDarkTheme,'dark-theme':baseConfigStore.isDarkTheme}">
-        <router-view class="app-router"
-        ></router-view>
+    <router-view v-slot="{Component}" class="app-router">
+        <keep-alive :include="['SettingViews']">
+            <component :is="Component" />
+        </keep-alive>
+    </router-view>
+     <!-- <router-view /> -->
   </div>
 
 </template>

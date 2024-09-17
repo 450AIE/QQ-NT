@@ -1,4 +1,5 @@
 <script setup>
+import { onActivated, onDeactivated } from 'vue';
 import { settingIconList } from './iconList';
 
 function settingOperate(index){
@@ -6,7 +7,8 @@ function settingOperate(index){
         ElectronAPI.createSettingGlobalWindow()
     }
 }
-
+// onActivated(()=>console.log('setting'))
+// onDeactivated(()=>console.log('desetting'))
 </script>
 
 
@@ -60,9 +62,10 @@ function settingOperate(index){
     backdrop-filter: blur(14px)!important;
     .column {
         display: flex;
-        width: 200px;
+        width: 220px;
         align-items: center;
         margin:0 10px;
+        font-size: 16px!important;
         flex:1;
         .icon {
             fill: var(--icon-fill-color);

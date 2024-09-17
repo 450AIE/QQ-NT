@@ -1,11 +1,16 @@
 <script setup>
 import { Search , Plus } from '@element-plus/icons-vue';
 import InfoBlock from '@renderer/components/InfoBlock/index.vue'
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onActivated, onMounted, onUnmounted, ref } from 'vue';
 import  { useRouter } from 'vue-router'
 import { dragHorizontal } from '../../utils/dragFunc';
 import AppOerate from '@renderer/components/AppOperate/index.vue'
 import SearchBar from '@renderer/components/SearchBar/index.vue'
+
+defineOptions({
+    name:'FriendList'
+})
+onActivated(()=>console.log('friend'))
 //这个不确定是否写成响应式
 const frendsList = [
     {
@@ -67,7 +72,9 @@ function openFriendSession(uid = 1){
     <LeftSubOptions></LeftSubOptions>
     <div class="container">
         <div class="left-view" ref="left">
-            <SearchBar  />
+            <keep-alive>
+                <SearchBar />
+            </keep-alive>
             <div class="scroll">
                 <el-scrollbar :max-height="scrollHeight">
                     <InfoBlock v-for="(item,index) in 11" :key="index"
@@ -81,7 +88,12 @@ function openFriendSession(uid = 1){
         </div>
         <div class="resize" ref="resize"></div>
         <div class="right-view" ref="right">
-            <router-view></router-view>
+            <!-- <router-view v-slot="{Component}"> -->
+                <!-- <keep-alive> -->
+                    <!-- <component :is="Component" /> -->
+                <!-- </keep-alive> -->
+            <!-- </router-view> -->
+             <router-view />
         </div>
     </div>
     <AppOerate class="app-operate" :type="iconType"></AppOerate>

@@ -1,17 +1,21 @@
 <script setup>
-import { ref } from 'vue';
+import { onActivated, ref } from 'vue';
 import AppOperate from '@renderer/components/AppOperate/index.vue'
-import SettingOptionDetailCard from '@renderer/views/SettingViews/components/SettingOptionDetailCard/index.vue'
 import { settingGlobalIconList } from './iconList';
 import { useRouter } from 'vue-router';
 import useBeforeCreateGetUpdatedPiniaState from '@renderer/hooks/useBeforeCreateGetUpdatedPiniaState'
 import useUpdatePiniaStateSync from '../../hooks/useUpdatePiniaStateSync';
+
+defineOptions({
+    name:'SettingViews'
+})
 useBeforeCreateGetUpdatedPiniaState()
 useUpdatePiniaStateSync()
 const scrollHeight = ref(window.innerHeight - 70)
 window.addEventListener('resize',()=>{
     scrollHeight.value = window.innerHeight - 70
 })
+onActivated(()=>console.log('setting'))
 const router = useRouter()
 //进入路由，打开相应的设置界面
 function openSettingView(index){
@@ -24,7 +28,7 @@ function openSettingView(index){
 
 
 <template>
-    <AppOperate class="app-operate"></AppOperate>
+    <AppOperate class="app-operate" />
     <div class="container">
         <div class="left w">
             <div class="option w" v-for="(item,index) in settingGlobalIconList"
@@ -36,7 +40,7 @@ function openSettingView(index){
             </div>
         </div>
         <div class="right">
-            <router-view></router-view>
+            <router-view />
         </div>
     </div>
 </template>
@@ -59,7 +63,6 @@ function openSettingView(index){
             width: 100%;
             height: 40px;
             margin-top:10px;
-            font-size: 14px;
             color: var(--setting-font-color);
             .icon {
                 display: flex;

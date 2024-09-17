@@ -2,7 +2,8 @@
 import useBeforeCreateGetUpdatedPiniaState from '@renderer/hooks/useBeforeCreateGetUpdatedPiniaState';
 import useBaseConfigStore from '@renderer/store/baseConfigStore';
 import SettingOptionDetailCard from '@renderer/views/SettingViews/components/SettingOptionDetailCard/index.vue'
-import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { onActivated, ref } from 'vue';
 //切换白天黑夜
 useBeforeCreateGetUpdatedPiniaState()
 const dayRef = ref(null)
@@ -27,7 +28,13 @@ function shiftTheme(e){
         baseConfigStore.setIsDarkTheme(true)
     }
 }
-
+onActivated(()=>console.log('general setting'))
+// 字体大小
+const {globalFontSize} = storeToRefs(baseConfigStore)
+function changeGlobalFontSize(newFontSize){
+    // console.log(newFontSize)
+    baseConfigStore.setGlobalFontSize(newFontSize,true)
+}
 </script>
 
 
@@ -46,6 +53,18 @@ function shiftTheme(e){
                     <div class="theme" ref="nightRef" :class="{'active':baseConfigStore.isDarkTheme}">
                         <img src="../../../../assets/nightTheme.png" data-id="1" alt="">
                         <span>夜间模式</span>
+                    </div>
+                </template>
+            </SettingOptionDetailCard>
+            <SettingOptionDetailCard title="字体大小" height="80">
+                <template #default>
+                    <div  class="font-size-card">
+                        <el-slider :step="2" v-model="globalFontSize"
+                         show-stops :min="12" :max="24" class="font-size-slider"
+                         @change="changeGlobalFontSize" />
+                        <span class="font-size-small">小</span>
+                        <span class="font-size-normal">标准</span>
+                        <span class="font-size-big">大</span>
                     </div>
                 </template>
             </SettingOptionDetailCard>
@@ -69,10 +88,12 @@ function shiftTheme(e){
             display: flex;
             // align-items: center;
             .theme {
+                position: relative;
+                overflow: visible;
                 display: flex;
                 flex-direction: column;
                 // position:relative;
-                width: 100px;
+                width: 120px;
                 height: 100px;
                 margin-right:15px;
                 margin-top:10px;
@@ -84,7 +105,10 @@ function shiftTheme(e){
                     margin-bottom:6px;
                 }
                 span {
-                    font-size: 12px;
+                    // font-size: 24px;
+                    position: absolute;
+                    top: 85px;
+                    left: 0;
                 }
             }
             .theme.active {
@@ -92,6 +116,42 @@ function shiftTheme(e){
                     border: 2px solid $background-blue-color;
                     border-radius: 6px;
                 }
+            }
+        }
+        .font-size-card {
+            overflow: visible;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding:10px 20px 20px 20px;
+            height: 100%;
+            .font-size-slider {
+                overflow: visible;
+                :deep(){
+                    .el-slider__runway {
+                        overflow: visible;
+                        .el-slider__button-wrapper {
+                            overflow: visible;
+                            display: flex;
+                            align-items: center;
+                        }
+                    }
+                }
+            }
+            .font-size-small {
+                position: absolute;
+                left: 14px;
+                top:30px;
+            }
+            .font-size-normal {
+                position: absolute;
+                left: 148px;
+                top:30px;
+            }
+            .font-size-big {
+                position: absolute;
+                right:16px;
+                top:30px;
             }
         }
     }

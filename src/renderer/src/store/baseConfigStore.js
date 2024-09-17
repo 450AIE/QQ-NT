@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import {isEqual} from 'lodash'
+import {isEqual} from 'lodash-es'
 
 
 const useBaseConfigStore = defineStore('baseConfigStore',()=>{
+    // 全局字体大小
+    const globalFontSize = ref(0)
     // 是否暗夜模式
     const isDarkTheme = ref(false)
     const setIsDarkTheme = (flag)=>{
@@ -71,7 +73,7 @@ const useBaseConfigStore = defineStore('baseConfigStore',()=>{
         const oldArr = subOptionsManageList.value.sort((cur,nex)=>cur.id-nex.id)
         // console.log('old:',oldArr)
         // console.log('new:',newArr)
-        console.log(isEqual(oldArr,newArr))
+        // console.log(isEqual(oldArr,newArr))
         // if(flag) return true
         if(isSubOptionsManageStrike) return true
         if(isEqual(newArr,oldArr)) return false
@@ -84,15 +86,16 @@ const useBaseConfigStore = defineStore('baseConfigStore',()=>{
         upperIconList.value = arr
         return true
     }
-    // const testText = ref(1)
-    // const setTestText = (newText)=>{
-    //     if(newText === testText.value) return false
-    //     testText.value = newText
-    //     return true
-    // }
+    const setGlobalFontSize = (newFontSize,directlyUpdate = false)=>{
+        if(globalFontSize.value === newFontSize && !directlyUpdate) return false
+        globalFontSize.value = newFontSize
+        // 并且应用
+        document.querySelector('.app').style.setProperty('--global-font-size',globalFontSize.value+'px')
+        return true
+    }
     return {
-        // testText,
-        // setTestText,
+        globalFontSize,
+        setGlobalFontSize,
         isDarkTheme,
         setIsDarkTheme,
         upperIconList,

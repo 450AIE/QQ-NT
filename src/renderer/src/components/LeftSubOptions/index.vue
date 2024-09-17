@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import SettingOptions  from '@renderer/components/SettingOptions/index.vue'
-import {watch,  onBeforeMount, onBeforeUnmount, onMounted, ref, onBeforeUpdate, onUpdated } from 'vue';
+import SettingOptions from '@renderer/components/SettingOptions/index.vue'
+import { watch, onBeforeUnmount, onMounted, ref, onBeforeUpdate, onUpdated, onActivated } from 'vue';
 import lightQQLogo from '../../assets/light-QQ-logo.png'
 import darkQQLogo from '../../assets/dark-QQ-logo.png'
 import useBaseConfigStore from '../../store/baseConfigStore';
@@ -10,32 +10,39 @@ import useUpdatePiniaStateSync from '@renderer/hooks/useUpdatePiniaStateSync'
 // import useBeforeCreateGetUpdatedPiniaState from '@renderer/hooks/useBeforeCreateGetUpdatedPiniaState'
 // 监听pinia更新
 useUpdatePiniaStateSync()
+defineOptions({
+    name:'LeftSubOptions'
+})
+onActivated(()=>{
+    console.log('leftsuboptions activated')
+})
+// console.log('全局fontSize:',document.querySelector('#app').setProperty('--global-font-size','30px'))
 // useBeforeCreateGetUpdatedPiniaState()
 const baseConfigStore = useBaseConfigStore()
 // 控制显示在左边的图标
 const upperIcons = ref([])
 // 控制被收纳的图标
 const foldedIcons = ref([])
-const {bottomIconList,upperIconList,isDarkTheme} = storeToRefs(baseConfigStore)
+const { bottomIconList, upperIconList, isDarkTheme } = storeToRefs(baseConfigStore)
 const showManageLeftSubWindow = () => {
     ElectronAPI.showManageLeftSubWindow()
 }
 // 一进入就要读取baseConfigStore的设置，注意，只有第一次才读取，之后切换到这个路由就不读取
 // 了，否则会读取旧的状态。或者卸载前就写入配置，这样每次读取就读取新的。
 // 当前选择：卸载前写入配置
-async function readBaseConfigStoreFiles(){
+async function readBaseConfigStoreFiles() {
     let res = await ElectronAPI.readBaseConfigStoreFiles()
     res = JSON.parse(res)
-    console.log('本地读取的store为:',res)
+    // console.log('本地读取的store为:',res)
     // console.log('读取到的本地存储的baseConfigStore文件:',res)
-    for(let key in baseConfigStore){
-        if(baseConfigStore.hasOwnProperty(key)){
+    for (let key in baseConfigStore) {
+        if (baseConfigStore.hasOwnProperty(key)) {
             // 调用set函数修改state
-            if(key.startsWith('set') && typeof baseConfigStore[key] === 'function'){
+            if (key.startsWith('set') && typeof baseConfigStore[key] === 'function') {
                 // 获取变量名，没有首字母
                 const dataNameWithoutFirstChar = key.slice(4)
                 // 获取首字母
-                const dataNameFirstChar = key.slice(3,4).toLowerCase()
+                const dataNameFirstChar = key.slice(3, 4).toLowerCase()
                 const dataName = dataNameFirstChar + dataNameWithoutFirstChar
                 baseConfigStore[key](res[dataName])
             }
@@ -50,82 +57,74 @@ const router = useRouter()
 //路由跳转
 function transRouter(subOptionIndex) {
     let path = undefined
-    if(subOptionIndex === 0){
+    if (subOptionIndex === 0) {
         path = '/'
-    }else if(subOptionIndex === 1){
+    } else if (subOptionIndex === 1) {
         path = '/relationship_manage'
     }
     router.push(path)
 }
 // 监听新窗口的创建，将当前的pinia状态传递给该窗口（但是不敢确定该组件内的pinia状态是否最新）
-ElectronAPI.onListenerNewWindowCreated(()=>{
-    // if(obj === JSON.stringify(baseConfigStore))
-    // {console.log('传递的仓库没变')
-    //  return}
-    //  console.log('传递了新的仓库')
-    //  console.log('obj:',obj && JSON.parse(obj))
-    //  console.log('新仓库:',JSON.parse(JSON.stringify(baseConfigStore)))
-    // obj = JSON.stringify(baseConfigStore)
+ElectronAPI.onListenerNewWindowCreated(() => {
     ElectronAPI.sendUpdatedPiniaStateToNewCreatedWindow(JSON.stringify(baseConfigStore))
-    // console.log('传递的仓库是:',baseConfigStore)
-    // ElectronAPI.writeBaseConfigStoreFiles(JSON.stringify(baseConfigStore))
 })
 //点击底部的操作。最下面是0，从下网上增大
-function bottomOperate(index){
-    if(index === 0){
+function bottomOperate(index) {
+    if (index === 0) {
         //如果组件打开了再次点击就关闭
-        if(settingOptionsComponent.value){
+        if (settingOptionsComponent.value) {
             settingOptionsComponent.value = null
-        }else{
+        } else {
             settingOptionsComponent.value = SettingOptions
         }
         // 收藏
-    }else if(index === 1){
+    } else if (index === 1) {
         ElectronAPI.createCollectWindow()
     }
 }
 // 卸载前清除IPC的监听，避免内存泄漏，并且写入配置
-onBeforeUnmount(()=>{
+onBeforeUnmount(() => {
     // console.log('卸载前的store:',baseConfigStore)
     ElectronAPI.writeBaseConfigStoreFiles(JSON.stringify(baseConfigStore))
     ElectronAPI.removeListenerNewWindowCreated()
-    window.removeEventListener('resize',onListenerWindowHeightToUnfoldIcons)
+    window.removeEventListener('resize', onListenerWindowHeightToUnfoldIcons)
 })
-onMounted(()=>{
-    window.addEventListener('resize',onListenerWindowHeightToUnfoldIcons)
+onMounted(() => {
+    window.addEventListener('resize', onListenerWindowHeightToUnfoldIcons)
+    console.log(getComputedStyle(document.querySelector('.app')).getPropertyValue('--global-font-size'))
 })
 // 监听窗口高度，控制收纳左侧多余的图标
 // 同时要watch变化
-function onListenerWindowHeightToUnfoldIcons(){
+function onListenerWindowHeightToUnfoldIcons() {
     // 上面的logo和头像占85
     // 下面的图标每个高45
     const windowHeight = window.innerHeight
     // 每个图标占据45高度
     // 已经选择了的所有options数目，排除了5个固定的
     let selectedIconsSum = upperIconList.value.length - 5
-    let restHeight = windowHeight - 85 - (5+4)*45
+    let restHeight = windowHeight - 85 - (5 + 4) * 45
     // console.log('剩余高度',restHeight)
     // console.log('当前有的多余图标数目',addedIconSum)
     let newIconSum = parseInt(restHeight / 45)
     // 要收纳的总数
     const foldedIconsSum = selectedIconsSum - newIconSum
     // console.log('当前可以存放数目为',newIconSum)
-    upperIcons.value = [...upperIconList.value.slice(0,5 + newIconSum)]
+    upperIcons.value = [...upperIconList.value.slice(0, 5 + newIconSum)]
     // selectedIconsSum === 0的话slice(5,5)得到的也是[]
-    foldedIcons.value = [...upperIconList.value.slice(5,5+foldedIconsSum)]
+    foldedIcons.value = [...upperIconList.value.slice(5, 5 + foldedIconsSum)]
 }
 // 实现见监听upperIconList改变从而改变左侧的显示
-watch(upperIconList,()=>{
+watch(upperIconList, () => {
     let selectedIconsSum = upperIconList.value.length - 5
     const windowHeight = window.innerHeight
-    let restHeight = windowHeight - 85 - (5+4)*45
+    let restHeight = windowHeight - 85 - (5 + 4) * 45
     let newIconSum = parseInt(restHeight / 45)
     const foldedIconsSum = selectedIconsSum - newIconSum
-    upperIcons.value = [...upperIconList.value.slice(0,5 + newIconSum)]
-    foldedIcons.value = [...upperIconList.value.slice(5,5+foldedIconsSum)]
-},{
-    deep:true,
-    immediate:true
+    upperIcons.value = [...upperIconList.value.slice(0, 5 + newIconSum)]
+    foldedIcons.value = [...upperIconList.value.slice(5, 5 + foldedIconsSum)]
+}, {
+    deep: true,
+    immediate: true
 })
 </script>
 
@@ -133,27 +132,25 @@ watch(upperIconList,()=>{
 <template>
     <div class="container">
         <div class="title">
-            <img :src="isDarkTheme?darkQQLogo:lightQQLogo" alt="">
+            <img :src="isDarkTheme ? darkQQLogo : lightQQLogo" alt="">
         </div>
         <div class="img">
             <img src="../../assets/user.png" alt="">
         </div>
         <div class="upper-option" v-for="(item, index) in upperIcons" :key="index" @click="transRouter(index)">
             <el-popover placement="right" trigger="hover" width="50" :disabled="(index !== 4)" hide-after="100"
-            popper-class="popper">
+                popper-class="popper">
                 <template #reference>
                     <svg class="icon bg" aria-hidden="true">
                         <use :xlink:href="item"></use>
                     </svg>
                 </template>
-                <div @click="showManageLeftSubWindow" v-if="foldedIcons.length !==0">
-                    <div
-                    :style="{
-                        margin:'5px 0 5px 0' ,
+                <div @click="showManageLeftSubWindow" v-if="foldedIcons.length !== 0">
+                    <div :style="{
+                        margin: '5px 0 5px 0',
 
-                    }"
-                      v-for="(item,index) in foldedIcons" :key="index">
-                        <svg  aria-hidden="true" width="25" height="30">
+                    }" v-for="(item, index) in foldedIcons" :key="index">
+                        <svg aria-hidden="true" width="25" height="30">
                             <use :xlink:href="item"></use>
                         </svg>
                     </div>
@@ -167,7 +164,9 @@ watch(upperIconList,()=>{
                 <use :xlink:href="item"></use>
             </svg>
         </div>
-        <component :is="settingOptionsComponent" class="setting"/>
+        <keep-alive>
+            <component :is="settingOptionsComponent" class="setting" />
+        </keep-alive>
     </div>
 </template>
 
@@ -176,7 +175,7 @@ watch(upperIconList,()=>{
 .container {
     position: relative;
     display: flex;
-    width: 60px!important;
+    width: 60px !important;
     flex-direction: column;
     flex-shrink: 0;
     align-items: center;
@@ -184,23 +183,26 @@ watch(upperIconList,()=>{
     -webkit-app-region: drag;
     background-color: var(--background-gray1-color);
     overflow: visible;
+
     .setting {
-        position:absolute;
+        position: absolute;
         left: 60px;
         z-index: 99;
-        width: 220px!important;
+        width: 220px !important;
         // width: 300px!important;
         bottom: 6px;
     }
+
     .active {
         content: attr(text);
         position: absolute;
         z-index: 10;
-        color:pink;
-        mask:linear-gradient(to left, red, transparent );
-        -webkit-mask:linear-gradient(to left, red, transparent );
-        transition:all 0.4s ease;
+        color: pink;
+        mask: linear-gradient(to left, red, transparent);
+        -webkit-mask: linear-gradient(to left, red, transparent);
+        transition: all 0.4s ease;
     }
+
     .upper-option {
         fill: var(--icon-fill-color);
         margin: 5px;
@@ -228,7 +230,7 @@ watch(upperIconList,()=>{
     }
 
     .bg:hover {
-        background-color: var(--sub-icon-hover-background-color,#e9e9e9);
+        background-color: var(--sub-icon-hover-background-color, #e9e9e9);
         border-radius: 10px;
     }
 
@@ -241,6 +243,7 @@ watch(upperIconList,()=>{
         margin: 10px 5px;
         width: 35px;
         height: 35px;
+
         img {
             width: 100%;
             height: 100%;
@@ -250,9 +253,13 @@ watch(upperIconList,()=>{
     }
 
     .title {
+        position: relative;
         margin: 6px 10px;
         flex-shrink: 0;
+        width: 40px;
+        height: 25px;
         img {
+            position: absolute;
             width: 100%;
             height: 100%;
         }

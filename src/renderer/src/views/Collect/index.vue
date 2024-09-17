@@ -3,11 +3,19 @@ import AppOperator from '@renderer/components/AppOperate/index.vue'
 import CollectBlock from './components/collectBlock/index.vue'
 import SearchBar from '@renderer/components/SearchBar/index.vue'
 import useBeforeCreateGetUpdatedPiniaState from '@renderer/hooks/useBeforeCreateGetUpdatedPiniaState'
+import useUpdatePiniaStateSync from '../../hooks/useUpdatePiniaStateSync';
+
+defineOptions({
+    // name:'Collect'
+})
+useUpdatePiniaStateSync()
 useBeforeCreateGetUpdatedPiniaState()
 function openCreateNotWindow(){
     ElectronAPI.createCreateNoteWindow()
 }
-
+// onActivated(()=>{
+//     console.log('collect activated')
+// })
 </script>
 
 
@@ -15,9 +23,10 @@ function openCreateNotWindow(){
     <AppOperator class="app-operate"/>
    <div class="container">
         <div class="left">
-            <SearchBar withIcon="false" />
+            <keep-alive>
+                <SearchBar :withIcon="false" />
+            </keep-alive>
             <div class="options-menu">
-
             </div>
             <div class="create-note" @click="openCreateNotWindow">
                 创建笔记

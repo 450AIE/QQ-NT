@@ -14,7 +14,7 @@ function useUpdatePiniaStateSync(){
 }
 
 function getUpdatedPiniaState(_,func,args){
-    if(func === 'setSubOptionsManageList')    console.log('调用了',func,'(',...JSON.parse(args),')函数')
+    // if(func === 'setSubOptionsManageList')    console.log('调用了',func,'(',...JSON.parse(args),')函数')
     const baseConfigStore = useBaseConfigStore()
     baseConfigStore[func](...JSON.parse(args))
 }
