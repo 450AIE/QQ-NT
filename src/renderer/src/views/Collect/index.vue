@@ -4,18 +4,36 @@ import CollectBlock from './components/collectBlock/index.vue'
 import SearchBar from '@renderer/components/SearchBar/index.vue'
 import useBeforeCreateGetUpdatedPiniaState from '@renderer/hooks/useBeforeCreateGetUpdatedPiniaState'
 import useUpdatePiniaStateSync from '../../hooks/useUpdatePiniaStateSync';
-
+import { ref } from 'vue';
+import { onBeforeMount } from 'vue';
+import { onMounted } from 'vue';
 defineOptions({
-    // name:'Collect'
+    name:'Collect'
 })
 useUpdatePiniaStateSync()
 useBeforeCreateGetUpdatedPiniaState()
+// 存放notes
+const scrollHeight = ref(window.innerHeight - 70)
+const noteList = ref([])
 function openCreateNotWindow(){
     ElectronAPI.createCreateNoteWindow()
 }
 // onActivated(()=>{
 //     console.log('collect activated')
 // })
+async function readNoteFiles(){
+    let res = await ElectronAPI.readAllNoteFiles()
+    noteList.value = JSON.parse(res)
+}
+readNoteFiles()
+onMounted(()=>{
+    window.onresize = ()=>{
+        scrollHeight.value = window.innerHeight - 70
+    }
+})
+onBeforeMount(()=>{
+    window.onresize = null
+})
 </script>
 
 
@@ -23,9 +41,7 @@ function openCreateNotWindow(){
     <AppOperator class="app-operate"/>
    <div class="container">
         <div class="left">
-            <keep-alive>
-                <SearchBar :withIcon="false" />
-            </keep-alive>
+            <SearchBar :withIcon="false" />
             <div class="options-menu">
             </div>
             <div class="create-note" @click="openCreateNotWindow">
@@ -37,7 +53,9 @@ function openCreateNotWindow(){
                 <span>全部收藏</span>
             </div>
             <div class="bottom">
-                <CollectBlock v-for="item in 4"/>
+                <el-scrollbar :max-height="scrollHeight">
+                    <CollectBlock v-for="item in noteList" :key="item.time" :info="item"/>
+                </el-scrollbar>
             </div>
         </div>
    </div>

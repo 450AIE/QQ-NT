@@ -59,9 +59,7 @@ onUnmounted(()=>{
     <LeftSubOptions></LeftSubOptions>
     <div class="container">
         <div class="left-view" ref="left">
-            <keep-alive>
-                <SearchBar />
-            </keep-alive>
+            <SearchBar />
             <el-scrollbar :max-height="scrollHeight" class="scroll">
                 <div class="friend-manage w">好友管理器</div>
                 <div class="informs">

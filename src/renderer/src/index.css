@@ -2,12 +2,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  overflow: hidden;
   -webkit-user-drag:none;
   -webkit-app-region: no-drag;
   user-select: none;
-  /* 注意搜索栏图标的颜色也变了，要自己设置 */
-  /* color: var(--normal-font-color); */
 }
 .w {
   padding: 0 10px;
@@ -57,7 +54,10 @@
     --friend-manage-button-border-color:#ebebeb;
     --friend-manage-button-hover-background-color:#f5f5f5;
     --group-info-column-border-bottom-background-color:#ebebeb;
+    --overflow-hidden:hidden;
+    --overflow-visible:visible;
     font-size: var(--global-font-size,16px);
+    overflow:var(--overflow-hidden);
 }
 
 
@@ -100,5 +100,8 @@
     --friend-manage-button-border-color:#494949;
     --friend-manage-button-hover-background-color:#2d2d2d;
     --group-info-column-border-bottom-background-color:#282828;
+    --overflow-hidden:hidden;
+    --overflow-visible:visible;
     font-size: var(--global-font-size,16px);
+    overflow:var(--overflow-hidden);
 }

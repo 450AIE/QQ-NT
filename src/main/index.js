@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs/promises'
+import os from 'os'
 import {resolve} from 'path'
 import  { pushThisWindow ,isHasTheWindow, getWindow, popThisWindow} from './utils/WindowStackFunc'
 import { COLLECT_WINDOW, CREATE_NOTE_WINDOW, MAIN_WINDOW, SETTING_WINDOW, SUBOPTIONS_MANAGE_WINDOW } from './window-type'
@@ -233,14 +234,14 @@ ipcMain.on('write-baseConfigStore-files',(_,fileData,path)=>{
         // console.log(resolve(__dirname,'./baseConfigStore.json'))
         // console.log(resolve(app.getPath('userData'),'./baseConfigStore.json'))
         // console.log('写文件')
-        return fs.writeFile(resolve(app.getPath('userData'),'./baseConfigStore.json'),fileData,'utf-8')
+        return fs.writeFile(resolve(app.getPath('userData'),'./baseConfigStore.DAT'),fileData,'utf-8')
     } catch (error) {
         console.dir(error)
     }
 })
 ipcMain.handle('read-baseConfigStore-files',()=>{
     try {
-        return fs.readFile(resolve(app.getPath('userData'),'./baseConfigStore.json'),'utf-8')
+        return fs.readFile(resolve(app.getPath('userData'),'./baseConfigStore.DAT'),'utf-8')
     } catch (error) {
         console.dir(error)
     }
@@ -256,4 +257,37 @@ ipcMain.on('new-window-created',()=>{
 // 监听了'new-window-created'事件的窗口可以传递pinia数据同步
 ipcMain.on('send-new-created-window-updated-pinia-state',(_,store)=>{
     windowsStack[windowsStack.length - 1].window.webContents.send('receive-new-created-window-updated-pinia-state',store)
+})
+// 将撰写的笔记保存到本地
+// ipcMain.on('write-note-files',(_,fileData)=>{
+//     try {
+//         return fs.writeFile(resolve(app.getPath('userData'),'./notes.DAT'),fileData,'utf-8')
+//     }catch(error){
+//         console.dir(error)
+//     }
+// })
+// 读取笔记
+ipcMain.handle('read-all-note-files',async ()=>{
+    try {
+        const res = await fs.readFile(resolve(app.getPath('userData'),'./notes.DAT'),'utf-8')
+        let arr = res.split('\r\n')
+        // 去掉最后一个只有换行符的元素
+        arr = arr.slice(0,arr.length - 1)
+        const len = arr.length
+        for(let i=0;i<len;++i){
+            arr[i] = JSON.parse(arr[i])
+        }
+        // Electron内不可以直接传递对象，所以序列化
+        return JSON.stringify(arr)
+    }catch(error){
+        console.dir(error)
+    }
+})
+// 将撰写的笔记保存到本地
+ipcMain.on('append-note-files',(_,fileData)=>{
+    try {
+        return fs.appendFile(resolve(app.getPath('userData'),'./notes.DAT'),fileData+os.EOL,'utf-8')
+    }catch(error){
+        console.dir(error)
+    }
 })
