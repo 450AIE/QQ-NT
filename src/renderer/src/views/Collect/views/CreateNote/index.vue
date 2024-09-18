@@ -1,38 +1,110 @@
 <script setup>
+import '@wangeditor/editor/dist/css/style.css'
 import AppOperate from '@renderer/components/AppOperate/index.vue'
-import tinymce from 'tinymce';
-import { ref } from 'vue';
+import { ref, shallowRef } from 'vue';
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import useBeforeCreateGetUpdatedPiniaState from '@renderer/hooks/useBeforeCreateGetUpdatedPiniaState';
+import useUpdatePiniaStateSync from '@renderer/hooks/useUpdatePiniaStateSync';
+import { onBeforeUnmount } from 'vue';
+import http from '@renderer/utils/http/http';
+import Note from '../../types/Note';
 
+useBeforeCreateGetUpdatedPiniaState()
+useUpdatePiniaStateSync()
 //控制标题输入的输入框的显示
 const titleInpFlag = ref(false)
 const titleValue = ref('无标题')
-tinymce.init({
-    selector:'textarea#tiny-mce',
-    height:500,
-    plugins: [
-    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-    'insertdatetime', 'media', 'table', 'help', 'wordcount'
-    ],
-    toolbar: 'undo redo | blocks | ' +
-    'bold italic backcolor | alignleft aligncenter ' +
-    'alignright alignjustify | bullist numlist outdent indent | ' +
-    'removeformat | help',
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+const editorRef = shallowRef(null)
+function handleCreated(editor){
+    editorRef.value = editor
+}
+// 保存输入的内容
+function saveNote(){
+    const note = new Note(editorRef.value.getHtml(),titleValue.value)
+    ElectronAPI.appendNoteFiles(JSON.stringify(note))
+    ElectronAPI.closeWindow()
+}
+const toolbarConfig = {
+    excludeKeys:[
+        'fontSize',
+        'fontFamily',
+        'lineHeight',
+        'headerSelect',
+        'header1',
+        'header2',
+        'header3',
+        'through',
+        'color',
+        'clearStyle',
+        'bgColor',
+        'undo',
+        'redo',
+        'fullScreen',
+        'insertTable',
+        'justifyLeft',
+        'justifyRight',
+        'justifyCenter',
+        'todo',
+        'bulletedList',
+        'numberedList',
+    ]
+}
+const editorConfig = {
+    MENU_CONF:{
+        uploadImage:{
+            async customUpload(file,insertFn){
+                const formData = new FormData()
+                formData.append('image',file)
+                const res = await http({url:'http://geek.itheima.net/v1_0/upload',method:'POST',data:formData})
+                insertFn(res.data.url,'','')
+            }
+        }
+    }
+}
+// 富文本html内容
+const editorHTML = ref()
+onBeforeUnmount(() => {
+    const editor = editorRef.value
+    if (editor == null) return
+    editor.destroy()
 })
+
+/**
+ * 每一条笔记/收藏的内容
+ */
+
+// onMounted(()=>{
+//     (async function(){
+//     const res = await ElectronAPI.readNoteFiles()
+//     editorRef.value.setHtml(res)
+//     })();
+// })
 
 </script>
 
 <template>
-    <AppOperate class="app-operate"/>
+    <AppOperate class="app-operate" />
     <div class="container">
-        <div class="title" v-if="!titleInpFlag" @dblclick="()=>titleInpFlag=true">{{ titleValue || '无标题' }}</div>
-        <el-input v-model="titleValue" v-else   class="title-inp" @blur="()=>titleInpFlag=false"/>
-        <div class="drag-region"/>
+        <div class="title" v-if="!titleInpFlag" @dblclick="() => titleInpFlag = true">{{ titleValue || '无标题' }}</div>
+            <el-input v-model="titleValue" v-else class="title-inp" @blur="() => titleInpFlag = false" />
+        <div class="drag-region" />
         <div class="editor">
-            <textarea id="tiny-mce"></textarea>
+            <Toolbar
+               :style="{borderBottom: '1px solid #ccc'}"
+               :editor="editorRef"
+               :defaultConfig="toolbarConfig"
+               :mode="simple"
+             />
+             <Editor
+               style="height: 500px;"
+               v-model="editorHTML"
+               :defaultConfig="editorConfig"
+               :mode="simple"
+               @onCreated="handleCreated"
+            />
         </div>
-   </div>
+        <el-button class="save-btn" @click="saveNote">保存</el-button>
+    </div>
 </template>
 
 
@@ -43,6 +115,7 @@ tinymce.init({
     top: 0;
     z-index: 99;
 }
+
 .drag-region {
     -webkit-app-region: drag;
     position: absolute;
@@ -50,20 +123,19 @@ tinymce.init({
     left: 0;
     height: 50px;
     width: 40%;
-    z-index: 3;
+    z-index: 999;
 }
+
 .container {
-    display: flex;
-    flex-direction: column;
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     .title-inp {
         display: flex;
         justify-content: center;
         align-items: center;
         position: absolute;
         top: 5px;
-        left:50%;
+        left: 50%;
         transform: translateX(-50%);
         width: 300px;
         z-index: 10;
@@ -82,9 +154,17 @@ tinymce.init({
         top: 10px;
         transform: translateX(-50%);
     }
-    .tiny-mce {
-
+    .editor {
+        width: 100%;
+        height: 100%;
+        margin-top:40px;
+        overflow: visible;
+    }
+    .save-btn {
+        position:absolute;
+        width: 60px;
+        bottom: 10px;
+        right: 20px;
     }
 }
-
 </style>

@@ -69,12 +69,10 @@ function openFriendSession(uid = 1){
 
 
 <template>
-    <LeftSubOptions></LeftSubOptions>
+    <LeftSubOptions />
     <div class="container">
         <div class="left-view" ref="left">
-            <keep-alive>
-                <SearchBar />
-            </keep-alive>
+            <SearchBar />
             <div class="scroll">
                 <el-scrollbar :max-height="scrollHeight">
                     <InfoBlock v-for="(item,index) in 11" :key="index"

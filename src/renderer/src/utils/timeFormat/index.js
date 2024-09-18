@@ -29,7 +29,7 @@ export function friendSessionTimeFormat(timestamp){
  * 用于'收藏'的文件的日期标识
  * @param {*} time
  */
-export function collectTimeFormat(time){
+export function collectTimeFormat(timestamp){
     const date = new Date(timestamp);
     const now = new Date();
 

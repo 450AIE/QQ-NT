@@ -80,8 +80,11 @@ function operateOption(){
         align-items: center;
         padding:0 20px 23px 20px;
         background-color: var(--sub-options-manage-item-card-background-color);
+        border-radius: 10px;
         .icon {
             fill: var(--icon-fill-color);
+            width: 100%;
+            height: 100px;
         }
     }
     .icon-plus {

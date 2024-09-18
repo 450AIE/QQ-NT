@@ -1,4 +1,6 @@
 <script setup>
+import { collectTimeFormat } from '@renderer/utils/timeFormat';
+
 defineProps({
     info:{
         required:false,
@@ -22,16 +24,16 @@ defineProps({
 <template>
    <div class="container" :style="{width:width,height:height}">
         <div class="left">
-            <div class="picture">
-                <img src="@renderer/assets/user.png" alt="">
+            <div class="picture" v-if="info.pictureUrlArr.length > 0">
+                <img :src="info.pictureUrlArr[0]" alt="">
             </div>
             <div class="text">
-
+                {{ info.content }}
             </div>
         </div>
         <div class="right-info">
-            <span class="time">{{ new Date().getTime() }}</span>
-            <span class="source">source</span>
+            <span class="time">{{ collectTimeFormat(info.time)  }}</span>
+            <span class="source">{{ info.source || '未知来源' }}</span>
         </div>
    </div>
 </template>
